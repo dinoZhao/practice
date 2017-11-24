@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script>
+		doclike()
+		function doclike(){
+			resultList = [{profitTime:1,abcd:'aaaaa'},{profitTime:2,abcd:'bbbbb'},{profitTime:3,abcd:'ccccc'},{profitTime:1,abcd:'ddddd'},{profitTime:2,abcd:'eeeee'}];
+			
+			var flag = false;
+			var profitarr=[];
+			for (var i = 0; i < resultList.length; i++){
+				profitTime = resultList[i].profitTime;
+				for(var j = 0;j < profitarr.length; j++){
+					if(profitarr[j].key == profitTime){
+						flag = true;
+						profitarr[j].values.push(resultList[i]);
+					}
+				}
+				if(!flag){
+						profitarr.push({key:profitTime, values:[resultList[i]]});
+				}
+			}
+			
+			alert(JSON.stringify(profitarr));
+		}
+	</script>
+</html>

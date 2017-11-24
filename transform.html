@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style> 
+			div.rotate1
+{float:left;
+	margin-top: 100px;
+	width:200px;
+	height:100px;
+	background-color:yellow;
+	/* Rotate div */
+	
+}
+div.rotate
+{float:left;
+	margin-top: 100px;
+	width:200px;
+	height:100px;
+	background-color:yellow;
+	/* Rotate div */
+	transform:rotate(30deg);
+	-ms-transform:rotate(30deg); /* IE 9 */
+	-webkit-transform:rotate(30deg); /* Safari and Chrome */
+}
+/*参数x,y*/
+div.translate1
+{float:left;
+	width:100px;
+	height:75px;
+	background-color:red;
+	border:1px solid black;
+}
+div.translate2
+{float:left;
+width:100px;
+	height:75px;
+	background-color:red;
+	border:1px solid black;
+	transform:translate(50px,100px);
+	-ms-transform:translate(50px,100px); /* IE 9 */
+	-webkit-transform:translate(50px,100px); /* Safari and Chrome */
+}
+div.translate3
+{float:left;
+width:100px;
+	height:75px;
+	background-color:red;
+	border:1px solid black;
+	transform:translate(50px,100px);
+	-ms-transform:translate(50px,100px); /* IE 9 */
+	-webkit-transform:translate3d(70px,70px,50px); /* Safari and Chrome */
+}
+/*参数x,y*/
+div.scale1 {
+	float:left;
+    margin: 150px;
+    width: 200px;
+    height: 100px;
+    background-color: yellow;
+    border: 1px solid black;
+    border: 1px solid black;
+    
+}
+
+div.scale2 {
+	float:left;
+    margin: 150px;
+    width: 200px;
+    height: 100px;
+    background-color: yellow;
+    border: 1px solid black;
+    border: 1px solid black;
+    -ms-transform: scale(2,3); /* IE 9 */
+    -webkit-transform: scale(2,3); /* Safari */
+    transform: scale(2,3); /* 标准语法 */
+}
+/*水平面,垂直面倾斜*/
+div.skew1
+{float:left;
+	width:100px;
+	height:75px;
+	background-color:red;
+	border:1px solid black;
+}
+div.skew2
+{float:left;
+	transform:skew(30deg,20deg);
+	-ms-transform:skew(30deg,20deg); /* IE 9 */
+	-webkit-transform:skew(30deg,20deg); /* Safari and Chrome */
+	width:100px;
+	height:75px;
+	background-color:red;
+	border:1px solid black;
+}
+</style>
+	</head>
+	<body>
+		<div class="rotate1">rotate(平面旋转前)</div>
+		<div class="rotate">rotate(平面旋转后)</div>
+		<div class="translate1">translate(移动前)</div>
+		<div class="translate2">translate(移动后)</div>
+			<div class="translate3">translate3d</div>
+		<div class="scale1">scale(放缩前)</div>
+		<div class="scale2">scale(放缩后)</div>
+		<div class="skew1">skew(倾斜前)</div>
+		<div class="skew2">skew(倾斜前)</div>
+	
+	</body>
+</html>

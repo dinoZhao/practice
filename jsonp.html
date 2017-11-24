@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript" src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+	<div id='showcontent'></div>
+</body>
+<script>
+$.ajax({  
+    type : "get",  
+    async:false,  
+    url : "http://localhost:8080/testSpring/jsonptest/jsonp",  
+    dataType : "jsonp",//数据类型为jsonp  
+    jsonp: "jsonpCallback",//服务端用于接收callback调用的function名的参数  
+    jsonpCallback:"success_jsonpCallback",//自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+    success : function(data){
+        $("#showcontent").text("Result:"+data.result)  
+    },  
+    error:function(err){  
+        alert("出错了");  
+    }  
+});   
+function success_jsonpCallback(data){
+	return data.result="555"
+}
+</script>
+</html>

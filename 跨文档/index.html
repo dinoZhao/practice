@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<p id="status" name='apple'>ready</p>
+		<p>
+			<iframe id='apple' src="http://localhost:8080/%E8%B7%A8%E6%96%87%E6%A1%A3/postmessage1.html" frameborder="0" width="100%" height="80px"></iframe>
+		</p>
+		
+		<button id="app">点击</button>
+		<script>
+			window.onload=function(){
+				document.getElementById("app").onclick=function(){
+				 window.frames[0].postMessage("jjjj",'http://localhost:8080')
+				
+			}
+			}
+			
+		</script>
+	</body>	
+</html>
+ 

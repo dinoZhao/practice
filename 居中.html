@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>居中布局</title>
+    <style>
+        .div1{
+            width: 800px;height: 600px;
+            background: #AEAEAE;
+            position: absolute;
+            
+        }
+        .div2{
+            width: 100%;line-height: 400px;
+            position: absolute;
+            text-align: center;
+            background: #e84a87;
+        }
+        .div3{
+            display: inline-block;
+            width: 200px;height: 200px;
+            vertical-align: middle;
+            background: white;
+        }
+    </style>
+
+</head>
+<body>
+<div class="div1">
+    <div class="div2">
+        <div class="div3"></div>
+    </div>
+</div>
+<div style="position: relative;top: 700px;width: 1000px;line-height: 2em;">
+	text-align 
+对于inline-block属性的标签有用，如图片，字符，还有设置了display:inline-block的标签，如div。还有要注意一点text-align是对于标签内元素的布局，也就是说要把这个属性设置在父标签中才能对子标签有效果。在这里就可以对css样式可以分类，是作用于标签内还是作用于本标签。
+vertical-align 也是对于inline-block类型的元素才有效。vertical-align中的属性top,middle,bottom也非常厉害，能对div进行轻松布局，前提是要对div设置display:inline-block;并且vertical-align是设置在要进行居中的div或者其它标签上，如果把这个属性写在了父标签中是没有效果的，还有一点得注意父标签的高度必须是由line-height撑开的，不能直接设置heigth:200px，否者设置了vertical-align:middle进行居中是没有效果的，并且最重要一点如果想要撑开div标签等容器就必须要在div中放一些东西，否者div是不能够被line-height所撑开的。然后text-top，text-bottom的意思是对于父元素中有图片和字体时，这两个属性就是设置图片的布局样式的，要在img中设置。然后还有两个属性,sub,super两个属性，分别是上标和下标。一般是设置字体。
+line-height 
+是对p标签、div或者文本设置行高(对文本设置行高有居中效果，但是它的本质和设置p标签一样，读者可以尝试设置p标签的border看看，同时设置行高),对图片设置这个属性是没有作用的，行高的作用是对p标签或者div进行撑开一定高度。行高是一行的高度。最重要一点如果想要撑开div标签等容器就必须 
+要在div中放一些东西，如放一些文本、inline-block标签，否者div是不能够被line-height所撑开的。如果子标签不是inline-block而是其它的如block的话，div也是不能被撑开的(貌似displaly:inline也能被撑开但是如果子标签是容器的话，那就没意义了，因为容器要设置大小)。(直接写文本并且line-height的高度为div高度时起到的居中效果是因为文字默认就是vertical-align:middle;的)。前提属性也必须为inline-block;，否者设置line-height是不能撑开当前容器，当前行或者当前标签要设置行高时，是把这个属性写在当前标签中。注意在很多时候，子标签的行高是不会撑开父标签div的。所以想要用子标签的行高去撑开父标签div是行不通的。
+注意：当你无法使用line-height进行居中对齐时，那么一定缺少了这一点，就是设置vertical-align:middle;因为文本的默认垂直布局就是居中，即vertical-align:middle，前提父标签是由line-height撑开的，不能直接设置高度，否者没有居中效果;
+text-align(目标是父元素的子元素)、vertical-align(目标是当前元素)它们的目标必须为inline-block，否者就不能起到效果。
+line-height的display随便设置block，inline-block都可以但是不能为inline因为inline不能设置大小。
+如果设置不来行高实现居中效果时，还可以用position或者float进行居中布局。
+当然line-height除了用来实现居中外，也可以用来设置每行文本的高度。
+
+
+如白色div的display不能为block属性可以为inline-block,inline。设置上下居中vertical-align就设置在白色div中。
+粉红色div的高度必须是由line-height撑开的，text-align就在粉红色div中设置。
+</div>
+<a href="http://blog.csdn.net/marvel__dead/article/details/53096260">资料</a>
+</body>
+</html>

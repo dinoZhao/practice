@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>菜鸟教程(runoob.com)</title>
+
+</head>
+<body>
+
+<p>单击按钮触发函数。</p>
+<div id="btn1" onclick="myfunction">点我</div>
+<p id="demo"></p>
+<script>
+function myFunction(e){
+	console.log(window.event===e)
+}
+var aaa=document.getElementById("btn1");
+console.log(aaa);
+ aaa.onclick=myFunction;
+// setInterval("myFunction()",1000);
+</script>
+</body>
+</html>
+

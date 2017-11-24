@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		
+	.first{
+width: 200px;
+height: 200px;
+margin: 200px;
+
+ opacity: 1;
+
+ transition: .5s ease-in;
+	}
+	.first:hover{
+		 transform: translateY(50px);
+	}
+
+
+	@-webkit-keyframes bounce-down {
+    25% {
+        -webkit-transform: translateY(-10px);
+    }
+    50%, 100% {
+        -webkit-transform: translateY(0);
+    }
+    75% {
+        -webkit-transform: translateY(10px);
+    }
+}
+ 
+@keyframes bounce-down {
+	0% {
+        transform: translateY(0);
+    }
+    25% {
+        transform: translateY(100px);
+    }
+    50%{
+        transform: translatex(50px);
+    }
+    100% {
+        transform: translatex(0);
+    }
+    75% {
+        transform: translateY(10px);
+    }
+}
+  /*infinite*/
+.second:hover{
+	height: 200px;
+	width: 200px;
+	background-color: red;
+   /* -webkit-animation: bounce-down 1.5s linear infinite;
+    animation: bounce-down 1.5s linear infinite;*/
+   transform: translateY(0);
+   transition: .5s ease-in;
+}
+.second{
+	height: 200px;
+	width: 200px;
+	background-color: red;
+	transform: translateY(50%);
+   /* -webkit-animation: bounce-down 1.5s linear infinite;
+    animation: bounce-down 1.5s linear infinite;*/
+   /*transform: translateY(100%);*/
+   transition: .5s ease-in;
+}
+	</style>
+</head>
+<body>
+	
+	<div class="second"></div>
+
+	<div class="first"><img src="1.png" alt=""></div>
+</body>
+</html>

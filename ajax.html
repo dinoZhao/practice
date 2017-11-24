@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<input class="btn" type="button" value="ajax啦啦啦啦"/>
+		<div id="text"></div>
+	</body>
+	<script>
+		var btn=document.getElementsByClassName("btn")[0];
+		console.log(btn)
+	
+		btn.onclick=function(){
+        var  xhr=new XMLHttpRequest();//声明xhr对象
+          var aa=xhr.open('GET','ajax.txt');//初始化
+          console.log(aa)
+          xhr.onreadystatechange=function(){
+          	if(xhr.readyState==4&&xhr.status==200){
+          		document.getElementById("text").innerHTML=xhr.responseText;
+          	}
+          	console.log(xhr.readyState+xhr.responseText)
+          }//变化时触发
+          xhr.send(null)//发送请求
+          
+         };
+	</script>
+</html>

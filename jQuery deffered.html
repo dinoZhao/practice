@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="jquery-1.8.3.min.js"></script>
+	</head>
+	<body>
+	</body>
+	<script>
+		　　var dtd = $.Deferred(); // 生成Deferred对象
+　　var wait = function(dtd){
+　　　　var tasks = function(){
+　　　　　　console.log("执行完毕！");
+　　　　　　dtd.resolve(); // 改变Deferred对象的执行状态
+　　　　};
+　　　　setTimeout(tasks,3000);
+　　};
+　　dtd.promise(wait);
+function ll(){console.log(22)}
+　　wait.done(function(){setTimeout(ll,2000) })
+　　.fail(function(){ console.log("出错啦！"); }).always(function(){ console.log("lala")});
+　　wait(dtd);
+	</script>
+</html>

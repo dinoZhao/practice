@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		555555555555555
+	</body>
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+	<script src="jquery-1.8.3.min.js"></script>
+	<script>
+		//	var requestUrl="http://172.16.1.85/aiaf/sgw/v1/security/wxShare"
+		var requestUrl = "http://192.168.1.35:8080/aiaf/sgw/v1/security/wxShare"
+		$.ajax({
+			type: "get", //使用get方法访问后台
+			dataType: "json", //返回json格式的数据
+			url: requestUrl,
+			async: true,
+			global: false,
+			data: {
+				"AppId": "079b8de8-0894-411b-aa48-853bb48f069d",
+				"url": window.location.href,
+				"x-auth-token": "3cf65c63-dc41-403b-869f-f33dc8586f7d"
+			},
+			//      beforeSend: function (XMLHttpRequest) {
+			//          beforeSendHandle(XMLHttpRequest);
+			//      },
+			contentType: "application/json; charset=utf-8",
+			success: function(res) {
+
+//				var id = '${id}'; //服务端设置的id,用于下面拼接生成需要分享的link
+				var timestamp = parseInt(res.timestamp); //因为服务端是String类型，此处转化成数值类型
+				var nonceStr = res.nonceStr;
+				var signature = res.signature;
+				wx.config({
+					debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+					appId: 'wx20bfacc748bc1697', // 必填，公众号的唯一标识
+					timestamp: timestamp, // 必填，生成签名的时间戳
+					nonceStr: nonceStr, // 必填，生成签名的随机串
+					signature: signature, // 必填，签名，见附录1
+					jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+				});
+				//wx.checkJsApi({
+				//  jsApiList: ['onMenuShareTimeline'] ,// 需要检测的JS接口列表，所有JS接口列表见附录2,
+				//  success: function(res) {
+				//  	alert(res)
+				//  }
+				//      // 以键值对的形式返回，可用的api值true，不可用为false
+				//      // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+				//  });
+				wx.hideOptionMenu();
+				//完成wx.config，执行这里  
+				wx.ready(function() {
+//					alert(5555555)
+
+					//分享到朋友圈  
+					wx.onMenuShareTimeline({
+						title: '1111111', // 分享标题  
+						link: window.location.href,
+						imgUrl: "2.png", // 分享图标  
+						success: function() {
+							// 分享成功执行此回调函数  
+							alert('success');
+						},
+						cancel: function() {
+							alert('cancel');
+						}
+					});
+
+					//分享给朋友  
+					wx.onMenuShareAppMessage({
+						title: '22222', // 分享标题  
+						desc: '22222',
+						link: window.location.href,
+						imgUrl: "2.png", // 分享图标  
+						trigger: function(res) {
+							// 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回  
+						},
+						success: function(res) {
+							// 分享成功执行此回调函数  
+							alert('已分享');
+						},
+						cancel: function(res) {
+							alert('已取消');
+						},
+						fail: function(res) {
+							alert(JSON.stringify(res));
+						}
+					});
+				});
+//				wx.error(function(res) {
+//							alert(JSON.stringify(res))
+////					alert("config 失败")
+//
+//					// config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+//				});
+
+			}, // end success_callback
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				//      	alert(JSON.stringify(XMLHttpRequest))
+				alert("接口调用失败")
+			} //end error_callback    
+		});
+	</script>
+
+</html>

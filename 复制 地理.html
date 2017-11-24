@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+
+<body>
+	<script type="text/javascript" src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+	
+	<p id="demo">点击这个按钮，获得您的坐标：</p>
+	<button onclick="getLocation()">试一下</button>
+	<script>
+		var x = document.getElementById("demo");
+
+		function getLocation() {
+			if(navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(showPosition, showError);
+			} else {
+				alert("浏览器不支持地理定位。");
+			}
+		};
+
+		function showError(error) {
+			switch(error.code) {
+				case error.PERMISSION_DENIED:
+					alert("定位失败,用户拒绝请求地理定位");
+					break;
+				case error.POSITION_UNAVAILABLE:
+					alert("定位失败,位置信息是不可用");
+					break;
+				case error.TIMEOUT:
+					alert("定位失败,请求获取用户位置超时");
+					break;
+				case error.UNKNOWN_ERROR:
+					alert("定位失败,定位系统失效");
+					break;
+			}
+		}
+
+		function showPosition(position) {
+			var lat = position.coords.latitude; //纬度
+			var lag = position.coords.longitude; //经度 
+			url = "http://api.map.baidu.com/geocoder/v2/?callback=renderReverse&location=" + lat + "," + lag + "&output=json&pois=1&ak=kBdWIBkdhvxQYftMT8kaA2e7IVONb3bj"
+
+			$.ajax({
+				async: true,
+				url: url,
+				type: "GET",
+				dataType: "jsonp", // 返回的数据类型，设置为JSONP方式
+				//              jsonp : 'callback', //指定一个查询参数名称来覆盖默认的 jsonp 回调参数名 callback
+				//              jsonpCallback: 'handleResponse', //设置回调函数名
+
+				success: function(response, status, xhr) {
+					//                  alert('状态为：' + status + ',状态是：' + xhr.statusText);
+					console.log(response)
+					alert(response.result.formatted_address);
+				}
+			});
+
+		}
+	</script>
+</body>
+
+</html>

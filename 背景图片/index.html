@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+		<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="pragram" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<title></title>
+		<style type="text/css">
+.first
+{ 
+	margin:50px auto;
+	height: 50px;
+	width: 50px;
+background-color:#999;
+background-position: left top;
+    background-size: 200%;
+background-repeat:no-repeat;
+/*background-origin:border-box;
+background-clip:padding-box;*/
+/*background-attachment:fixed;*/
+background-image:url(ico.png);
+}
+</style>
+
+	</head>
+		
+
+
+
+<body>
+	<div class="first">
+
+
+
+</div>
+	</body>
+	<script>
+		function test(){
+			alert(555)
+		}
+		var aa=document.getElementsByClassName('first').length;
+		alert(aa)
+//		alert(JSON.stringify(aa))
+document.onclick=test;
+	</script>
+</html>
+<!--注意原生写法-->
