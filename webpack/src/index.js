@@ -1,6 +1,8 @@
 import './style.css'
 import icon from './2.png'
 import printMe from './print.js';
+import './style1.css'
+
 console.log("构建成功")
  function component() {
     var element = document.createElement('div');
@@ -11,7 +13,7 @@ console.log("构建成功")
     myIcon.src = icon;
  
     element.appendChild(myIcon);
-
+console.log($);
     return element;
   }
 
