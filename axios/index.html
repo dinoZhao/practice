@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="axios.js"></script>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		axios.interceptors.request.use(function (config) {
+    // 在发送请求之前做些什么
+    console.log(config)
+    return config;
+  }, function (error) {
+    // 对请求错误做些什么
+    return Promise.reject(error);
+  });
+	axios({
+		url: './data.json',
+	}).then(function(res){
+		console.log(res)
+	})
+	</script>
+</html>
