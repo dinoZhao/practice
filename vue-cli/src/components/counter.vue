@@ -11,7 +11,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-console.log()
+console.log($)
 export default {
   computed: mapGetters([
     'count'

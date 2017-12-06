@@ -50,9 +50,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       template: 'index.html',
       inject: true
     }),
+    new webpack.ProvidePlugin({
+	  $: 'jquery',
+	  jQuery: 'jquery'
+    })
   ]
 })
-
 module.exports = new Promise((resolve, reject) => {
   portfinder.basePort = process.env.PORT || config.dev.port
   portfinder.getPort((err, port) => {
