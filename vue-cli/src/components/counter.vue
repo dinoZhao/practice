@@ -2,6 +2,7 @@
   <div>
     Value: {{ count }}
     <button @click="increment">+</button>
+    <button @click="incrementAsync">异步</button>
     
     <!--<button @click="incrementAsync">Increment async</button>-->
    
@@ -16,7 +17,8 @@ export default {
     'count'
   ]),
   methods: mapActions([
-    'increment'
+    'increment',
+'incrementAsync'    
   ])
 }
 </script>
