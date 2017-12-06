@@ -1,0 +1,1 @@
+export const INCREMENT=state=>{state.count++;console.log(state)}
