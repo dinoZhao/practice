@@ -11,7 +11,8 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-console.log($)
+import swiper from 'swiper'
+console.log(swiper)
 export default {
   computed: mapGetters([
     'count'
