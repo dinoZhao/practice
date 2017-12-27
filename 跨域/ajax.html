@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="jquery-1.8.3.min.js"></script>
+		<style>
+			.main{
+				height: 3em;
+				width: 500px;
+				background: #DDDDDD;
+				margin-bottom: 20px;
+			}
+			input{
+				height: 2em;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="main">点击后看这里</div>
+		<input class="btn" type="button" / value="点击显示数据">
+	</body>
+	<script>
+		$('.btn').on("click",function(){
+			 $.ajax({
+             type: "GET",
+             url: "./code.json",
+             success: function(data){
+             		$('.main').text(data.resultMessage)
+             },
+             error:function(msg){}
+         });
+    });
+		
+	</script>
+</html>

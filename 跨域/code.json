@@ -1,0 +1,55 @@
+{
+	"resultCode": "success",
+	"resultMessage": "处理成功",
+	"myAssets": {
+		"benefit": {
+			"totalBenefit": 15525,
+			"benefitBeat": 49547,
+			"benefitTrend": [
+				{
+					"date": 1509517888169,
+					"cashBenefit": 97239,
+					"insAndFinBenefit": 83019,
+					"incentiveBenefit": 19282,
+					"fofsBenefit": 18558,
+					"totalBenefit": 53437
+				}, {
+					"date": 1509604288169,
+					"cashBenefit": 66167,
+					"insAndFinBenefit": 29975,
+					"incentiveBenefit": 13618,
+					"fofsBenefit": 90121,
+					"totalBenefit": 5854
+				}, {
+					"date": 1509690688169,
+					"cashBenefit": 55716,
+					"insAndFinBenefit": 11621,
+					"incentiveBenefit": 37418,
+					"fofsBenefit": 96778,
+					"totalBenefit": 95555
+				}
+			]
+		},
+		"assets": {
+			"totalAssets": 12541,
+			"assetBeat": 28310,
+			"cashAssets": 1307,
+			"insAndFinAssets": 26761,
+			"fofsAssets": 82476,
+			"assetsTrend": [
+				{
+					"date": 1509517888169,
+					"assets": 73965
+				}, {
+					"date": 1509604288169,
+					"assets": 97324
+				}, {
+					"date": 1509690688169,
+					"assets": 35532
+				}
+			]
+		},
+		"startDate": 1510632711575,
+		"endDate": 1510632297060
+	}
+}
