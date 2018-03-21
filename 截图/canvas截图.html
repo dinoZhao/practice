@@ -1,48 +1,41 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta name="layout" content="main">
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
-        <script type="text/javascript" src="jquery-1.8.3.min.js"></script>
-        <script type="text/javascript" src="./html2canvas.js"></script>
-         
-        <script  type="text/javascript" >
-        $(document).ready( function(){
-                $(".example1").on("click", function(event) {
-                        event.preventDefault();
-                        html2canvas(document.body, {
-//	useCORS: true,
-                        	
-                        allowTaint: true,
-                        taintTest: false,
-                        onrendered: function(canvas) {
-                            canvas.id = "mycanvas";
-                            //document.body.appendChild(canvas);
-                            //生成base64图片数据
-                            var dataUrl = canvas.toDataURL();
-                            console.log(dataUrl)
-                            var newImg = document.createElement("img");
-                            newImg.src =  dataUrl;
-//                          document.body.appendChild(newImg);
-$('html').html(newImg)
-                        }
-                    });
-                }); 
-             
-        });
-         
-        </script>
-    </head>
-    <body>
-         
-        Hello!
-        <div class="" style="background-color: #abc;">
-            计算机天堂测试html5页面截图
-            <br>jsjtt.com
-        </div>
-         
-        <textArea id="textArea" col="20" rows="10" ></textArea>
-        <input class="example1" type="button" value="button">
-        生成界面如下：
-    </body>
-</html>不到
+
+	<head>
+		<meta name="layout" content="main">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript" src="jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="./html2canvas.js"></script>
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$(".example1").on("click", function(event) {
+					event.preventDefault();
+					html2canvas(document.body, {
+						allowTaint: true,
+						taintTest: false,
+						onrendered: function(canvas) {
+							canvas.id = "mycanvas";
+							//生成base64图片数据
+							var dataUrl = canvas.toDataURL();
+							var newImg = document.createElement("img");
+							newImg.src = dataUrl;
+							$('html').html(newImg)
+						}
+					});
+				});
+
+			});
+		</script>
+	</head>
+
+	<body>
+
+		<div class="" style="background-color: #eee;height: 500px;font-size: 5vw;">
+			欢迎和dino一起用html5截图
+			<img src="1.png" alt="" />
+		</div>
+		<input class="example1" type="button" value="点击截图" style="height: 10vw;font-size: 5vw;">
+	</body>
+
+</html>

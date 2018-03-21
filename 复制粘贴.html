@@ -1,0 +1,25 @@
+
+</html>
+<head>
+    <script type="text/javascript">
+        function selectValue() {
+            var Url2 = document.getElementById("test").innerText;
+            var oInput = document.createElement('input');
+            oInput.value = Url2;
+            document.body.appendChild(oInput);
+            oInput.select(); // 选择对象
+            document.execCommand("Copy"); // 执行浏览器复制命令
+            oInput.className = 'oInput';
+            oInput.style.display = 'none';
+            alert('复制成功');
+
+        }
+    </script>
+</head>
+
+<body>
+    <a id="test">999</a>
+    <input type="button" value="copy" onclick="selectValue()">
+</body>
+
+</html>

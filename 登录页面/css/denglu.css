@@ -1,0 +1,119 @@
+*{
+    border:none;
+}
+
+body{
+    width:100vw;
+    height:100vh;
+    background-image: url("../images/login_bg.jpg");
+    background-size: 100vw 100vh;
+    display: block;
+    border-style:none;
+    overflow: hidden;
+}
+
+#logo{
+    width: 100vw;
+    height: 30vh;
+    margin-top: 15vh;
+    margin-bottom:6vh;
+}
+
+#logo img{
+    width: 46vw;
+    height: 42vw;
+    margin: 0 auto;
+    display: block;
+}
+
+.inp{
+    width:100vw;
+    height:6vh;
+    margin-bottom: 2vh;
+}
+
+.inp input{
+    width:80vw;
+    height:6vh;
+    display: block;
+    border-radius: 5vw;
+    margin:0 auto;
+    font-size: 5vw;
+    color: white;
+    text-indent: 16vw;
+    vertical-align: middle;
+    border-style: none;
+}
+
+#phone input{
+    background-image: url("../images/phone_img.png");
+    background-size: cover;
+}
+
+#pwd input{
+    background-image: url("../images/pwd_img.png");
+    background-size: cover;
+}
+/*修改提示文字的颜色*/
+.inp input::-webkit-input-placeholder{/* WebKit browsers */
+    color: white;
+}
+
+.inp input:-moz-placeholder{/* Mozilla Firefox 4 to 18 */
+    color: white;
+}
+
+.inp input::-moz-placeholder{/* Mozilla Firefox 19+ */
+    color: white;
+}
+
+.inp input:-ms-input-placeholder{/* Internet Explorer 10+ */
+    color: white;
+}
+
+#loginIn{
+    width:80vw;
+    height:6vh;
+    border-radius: 5vw;
+    margin:0 auto;
+    font-size: 5vw;
+    color: white;
+    display: block;
+    background-color: #00c4ff;
+    margin-bottom: 1vh;
+}
+
+#createUser{
+    width:80vw;
+    height:3vh;
+    margin:0 auto;
+    display: block;
+}
+
+.divider{
+    width:29vw;
+    height:1.5vh;
+    float: left;
+    border-bottom: solid 1px red;
+}
+
+#newUsr{
+    width:20vw;
+    height:3vh;
+    float: left;
+    line-height: 3vh;
+    text-align: center;
+    font-size: 3vw;
+}
+
+a{
+    text-decoration: none;
+    color: #000;
+}
+
+#forgetPwd{
+    width: 100vw;
+    height: auto;
+    text-indent: 80vw;
+    margin-top: 14vh;
+}

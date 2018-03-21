@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>client</title>
+    <script src="angular.js"></script>
+    <script src="client.js"></script>
+</head>
+<body>
+    <div ng-app="myapp" ng-controller="clientController">
+        
+        <button ng-click="doSearch()">提交</button>
+        <table>
+            <tr ng-repeat="x in client">
+                <td>{{ x }}</td>
+            </tr>
+            55
+        </table>
+    </div>
+</body>
+</html>

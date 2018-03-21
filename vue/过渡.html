@@ -1,37 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Document</title>
-	<style>
-		body{
-			font-size: 10vw
-		}
-		.fad-enter-active, .fad-leave-active {
-  transition: opacity .5s
-}
-.fad-enter, .fad-leave-to /* .fade-leave-active in below version 2.1.8 */ {
-  opacity: 0
-}
-	</style>
-</head>
-<body>
-<div id="demo">
-  <button v-on:click="show = !show">
-    Toggle
-  </button>
-  <transition name="fad">
-    <p v-if="show">hello</p>
-  </transition>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+		<style>
+			body,
+			button {
+				margin: 0 500px;
+				/*font-size: 3vw;*/
+				width: 200px;
+				position: absolute;
+			}
+			
+			p {
+				color: #007AFF;
+			}
+			 .no-mode-fade-enter-active,
+    .no-mode-fade-leave-active {
+        transition: all 1s;
+        transform: translateX(1000px);
+        
+    }
+    
+    .no-mode-fade-enter,
+    .no-mode-fade-leave-active {
+        opacity: 0;
+        transform: translateX(1000px);
+    }
+		</style>
+	</head>
+
+	<body>
+
+		<div id="app">
+    <div id="no-mode-demo" class="demo">
+        <transition name="no-mode-fade" mode="in-out">
+            <button v-if="on" key="on" @click="on = false">
+          on
+        </button  name="no-mode-fade" mode="in-out">
+            <button v-else="" key="off" @click="on = true">
+          off
+        </button>
+        </transition>
+    </div>
 </div>
-<script src="vue.js"></script>	
-<script>
-	new Vue({
-  el: '#demo',
-  data: {
-    show: true
-  }
-})
+		<script src="vue.js"></script>
+	<script>
+    new Vue({
+        el: '#no-mode-demo',
+        data: {
+            on: false
+        }
+    })
 </script>
-</body>
+
+	</body>
+
 </html>
