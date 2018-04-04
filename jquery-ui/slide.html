@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>jQuery UI 滑块（Slider） - 颜色选择器</title>
+  <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+  <script src="//apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+  <style>
+  #red, #green, #blue {
+    float: left;
+    clear: left;
+    width: 300px;
+    margin: 15px;
+    height: 7px;
+  }
+  .ui-slider-horizontal .ui-slider-handle{
+  	    top: -0.45em;
+  }
+  .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{
+    background: #e6e6e6 url() 50% 50% repeat-x;
+    font-weight: 400;
+    color: #555;
+    border-radius: 1.2em;
+        
+  }
+  .ui-state-default:focus{
+  outline:none
+  	}
+  #swatch {
+    width: 120px;
+    height: 100px;
+    margin-top: 18px;
+    margin-left: 350px;
+    background-image: none;
+  }
+  .ui-slider-range { background: #d43c33; }
+
+  </style>
+  <script>
+
+  function refreshSwatch() {
+    var red = $( "#red" ).slider( "value" ),
+      green = $( "#green" ).slider( "value" ),
+      blue = $( "#blue" ).slider( "value" );
+    console.log(red)
+  }
+  $(function() {
+    $( "#red, #green, #blue" ).slider({
+      orientation: "horizontal",
+      range: "min",
+      max: 10,
+      min:1,
+//    slide: refreshSwatch,
+      change: refreshSwatch
+    });
+    $( "#red" ).slider( "value", 5);
+    $( "#green" ).slider( "value", 2);
+    $( "#blue" ).slider( "value", 1 );
+  });
+  </script>
+</head>
+<body class="ui-widget-content" style="border:0;">
+ 
+
+ 
+<div id="red"></div>
+<div id="green"></div>
+<div id="blue"></div>
+ 
+
+ 
+ 
+</body>
+</html>

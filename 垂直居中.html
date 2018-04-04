@@ -7,14 +7,24 @@
 <style>
 
 .img_wrap{
-    width: 400px;
-    height: 300px;
+    width: 800px;
+    height:600px;
     border: 1px dashed #ccc;
-    background: url(2.png) no-repeat center center;
+    position: relative;
+    
+}
+.element {
+    width: 600px; height: 400px;
+    position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+    margin: auto;    /* 有了这个就自动居中了 */
+   background: #eee;
 }
 </style>
 <body> 
 	
-<div class="img_wrap"></div>
+<div class="img_wrap">
+	
+	<div class="element"></div>
+</div>
 </body>
 </html>
