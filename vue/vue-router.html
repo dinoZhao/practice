@@ -13,24 +13,36 @@
     <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
     <router-link to="/foo">Go to Foo</router-link>
     <router-link to="/bar">Go to Bar</router-link>
-     <router-link to="/bb">Go to bb</router-link>
+     <router-link to="/bb/55">Go to bb</router-link>
+     <router-link to="/bb/66">Go to bb1</router-link>
+     
   </p>
   <!-- 路由出口 -->
   <!-- 路由匹配到的组件将渲染在这里 -->
-  <router-view></router-view>
+  	<router-view class="view one"></router-view>
+<router-view class="view two" name="a"></router-view>
+<router-view class="view three" name="b"></router-view>
 </div>
 <script src="vue.js"></script>
 <script src="vue-router.min.js"></script>
 <script>
     // 0. 如果使用模块化机制编程，導入Vue和VueRouter，要调用 Vue.use(VueRouter)
 Vue.component('bb',{
-	template:`<div>666</div>`
+	template:`<div>{{ $route.params.id }}
+	  <router-link to="/bb/55/profile">Go to bb</router-link>
+     <router-link to="/bb/66/posts">Go to bb1</router-link>
+
+	</div>`,
+	
+	
 })
 // 1. 定义（路由）组件。
 // 可以从其他文件 import 进来
 const Foo = { template: '<div>foo</div>' }
 const Bar = { template: '<div>bar</div>' }
 const bb = { template: '<bb></bb>' }
+const Barnei = { template: '<div>barnei</div>' }
+const Barpost = { template: '<div>barpost</div>' }
 // 2. 定义路由
 // 每个路由应该映射一个组件。 其中"component" 可以是
 // 通过 Vue.extend() 创建的组件构造器，
@@ -39,7 +51,28 @@ const bb = { template: '<bb></bb>' }
 const routes = [
   { path: '/foo', component: Foo },
   { path: '/bar', component: Bar },
-   { path: '/bb', component: bb }
+   { path: '/bb/:id', component: bb , children: [
+        {
+          // 当 /user/:id/profile 匹配成功，
+          // UserProfile 会被渲染在 User 的 <router-view> 中
+          path: 'profile',
+          component: Barnei
+        },
+        {
+          // 当 /user/:id/posts 匹配成功
+          // UserPosts 会被渲染在 User 的 <router-view> 中
+          path: 'posts',
+          component: Barpost
+        }
+      ]},
+       {
+      path: '/de',
+      components: {
+        default: Bar,
+        a: Foo,
+        b: Bar
+      }
+    }
 ]
 
 // 3. 创建 router 实例，然后传 `routes` 配置

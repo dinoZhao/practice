@@ -4,55 +4,71 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Document</title>
-		<style>
-			body,
-			button {
-				margin: 0 500px;
-				/*font-size: 3vw;*/
-				width: 200px;
-				position: absolute;
-			}
-			
-			p {
-				color: #007AFF;
-			}
-			 .no-mode-fade-enter-active,
-    .no-mode-fade-leave-active {
-        transition: all 1s;
-        transform: translateX(1000px);
-        
-    }
-    
-    .no-mode-fade-enter,
-    .no-mode-fade-leave-active {
-        opacity: 0;
-        transform: translateX(1000px);
-    }
-		</style>
+	<style> 
+.fade-enter-to, .fade-leave-active {
+  transition: opacity 1.5s;
+  opacity: 0.5;
+  width:500px;
+  background: #003EFF;
+  
+  
+}
+p{
+  background: #003EFF;
+	
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in below version 2.1.8 */ {
+  opacity: 0.1;
+  width: 200px;
+  background: #003EFF;
+}
+
+    @media (min-width: 1024px){
+    body{font-size: 18px}
+    } /*>=1024的设备*/
+
+    @media (min-width: 1100px) {
+    body{font-size: 20px}
+    } /*>=1100的设备*/
+    @media (min-width: 1280px) {
+    body{font-size: 22px;}
+    } /*>=1280的设备*/
+
+    @media (min-width: 1366px) {
+
+    body{font-size: 24px;}
+    }  
+
+    @media (min-width: 1440px) {
+    body{font-size: 25px !important;}
+    } 
+
+    @media (min-width: 1680px) {
+    body{font-size: 28px;}
+    } 
+    @media (min-width: 1920px) {
+    body{font-size: 33px;}
+    } 
+</style>
 	</head>
 
 	<body>
-
-		<div id="app">
-    <div id="no-mode-demo" class="demo">
-        <transition name="no-mode-fade" mode="in-out">
-            <button v-if="on" key="on" @click="on = false">
-          on
-        </button  name="no-mode-fade" mode="in-out">
-            <button v-else="" key="off" @click="on = true">
-          off
-        </button>
-        </transition>
-    </div>
+<div id="demo">
+  <button v-on:click="show = !show">
+    Toggle
+  </button>
+  <transition name="fade">
+    <p v-if="show">hello</p>
+  </transition>
 </div>
 		<script src="vue.js"></script>
 	<script>
-    new Vue({
-        el: '#no-mode-demo',
-        data: {
-            on: false
-        }
-    })
+ new Vue({
+  el: '#demo',
+  data: {
+    show: true
+  }
+})
 </script>
 
 	</body>
