@@ -20,6 +20,9 @@ export default {
     'decrement',
     'incrementIfOdd',
     'incrementAsync'
-  ])
+  ]),
+  created(){
+  	console.log(this.$store.state)
+  }
 }
 </script>
