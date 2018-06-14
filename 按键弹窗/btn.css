@@ -1,0 +1,156 @@
+/*验证码*/
+.captcha-box{
+	display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 9;
+}
+.captcha-container{
+	position: absolute;
+    width: 70%;
+    top: 25%;
+    background: #fff;
+    z-index: 100;
+    left: 15%;
+    border-radius: 10px;
+    padding: 30px 10px 35px 10px;
+    text-align: center;
+}
+#captcha-groups{
+	width: 90%;
+    margin: 0 auto;
+    position: relative;
+    line-height: 0;
+    text-align: center;
+}
+#captcha-groups .col-xs-3{
+	padding:0;
+	text-align: center;
+} 
+span.captcha-item{
+    display: inline-block;
+    width: 38px;
+    height: 40px;
+    line-height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+#receive-tips{
+	border: 1px solid #007DAE;
+    font-size: 13px;
+    color: #007DAE;
+    padding: 5px 8px;
+    margin: 10px 0;
+    display: inline-block;
+    border-radius: 5px;
+}
+#Send-again{
+	display: none;
+	border: 1px solid #007DAE;
+    font-size: 13px;
+    color: #007DAE;
+    padding: 5px 8px;
+    margin: 10px auto;
+    border-radius: 5px;
+    width: 70px;
+}
+#captcha-tel{
+	font-size: 14px;
+}
+#error-message{
+	position: absolute;
+    bottom: -25px;
+    font-size: 12px;
+    text-align: center;
+    width: 100%;
+    color: #999;
+}
+#error-message img{
+	width: auto;
+	height: 15px;
+	margin-right: 10px;
+}
+.close-btn{
+	width: 30px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+.close-btn img{
+	width: auto;
+    height: 16px;
+}
+.captcha-item.current{
+	border-color: #007DAE;
+}
+button[disabled]{
+	background:#999 !important;
+}
+#confirmQuote.buttonQuote{
+	border: 0;
+	outline: none;
+	line-height: 50px;
+	background:#53A8E2;
+}
+#captcha-groups .blank{
+	width: 25%;
+	float: left;
+	position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    box-sizing: border-box;
+}
+
+/*键盘*/
+.showkeyboard{
+	display: none !important;
+}
+.safe-keyboard {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 2;
+    display: none;
+    overflow: visible !important;
+    z-index: 11;
+        margin: 0;
+}
+.safe-keyboard > * {
+    height: 54px;
+    text-align: center;
+    line-height: 54px;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    font-size: 24px;
+}
+.safe-keyboard > *:nth-child(1), .safe-keyboard > *:nth-child(4), .safe-keyboard > *:nth-child(7), .safe-keyboard > *:nth-child(10) {
+    border-left: none;
+}
+.safe-keyboard > *:nth-child(1), .safe-keyboard > *:nth-child(2), .safe-keyboard > *:nth-child(3) {
+    border-top: none;
+}
+
+.safe-keyboard > *:nth-child(10), .safe-keyboard > *:nth-child(12) {
+    background-color: #eee !important;
+}
+.safe-keyboard > *:nth-child(12) {
+    background: url(./key_delete~.png) no-repeat center center;
+    -webkit-background-size: auto 35%;
+    background-size: auto 35%;
+}
+#safeKeyboard>div{
+	width: 33.3%;
+	float: left;
+	position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    box-sizing: border-box;
+}

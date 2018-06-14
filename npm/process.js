@@ -1,0 +1,11 @@
+const chalk = require('chalk')
+const semver = require('semver')
+const packageConfig = require('../package.json')
+const shell = require('shelljs')
+const childprocess=require("child_process")
+
+console.log(childprocess.execSync('npm --version').toString())
+process.stdout.write("\n")
+console.log(semver.clean(process.version))
+process.stdout.write("\n")
+console.log(shell.which("npm"))

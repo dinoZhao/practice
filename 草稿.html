@@ -1,91 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Test</title>
-	<meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-2.2.4.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/js/swiper.js"></script>
+    <style>.fixed_memu{ width: 100%;max-width:640px;height: 100%;position:fixed;top: 0;left:-1000px;z-index: 9999;background: #fff;}
+   </style>
 </head>
-
-<body onload="init();">
-   	<input type="button" value="从左到右装载图片"  onclick="startLeftToRight();"/><br/>
-    <input type="button" value="从中间到两边加载图片" onclick="startCenterToOuter();"/>
-    <br/>
-    <input type="button" value="百叶窗方式装载图片"  onclick="startBaiyechuang();"/>
-    <div>
-        <canvas id="canvas1" width="600px" height="400px">
-        </canvas>
+<body>
+<a href="javascript:void(0);" class="navBtn"><button>点我</button></a>
+<div class="fixed_memu">
+    <div class="fixed_top"><a href="http://m.yahanmr.com/talk.html">亚韩品牌</a><a href="http://m.yahanmr.com/doctor/">名医专家部</a><a href="http://m.yahanmr.com/talk.html">美丽日记</a><a href="http://m.yahanmr.com/talk.html">安全体系</a></div>
+    <div class="fixed_bot">
+        <div class="bot_left">
+            <div class="swiper-container swiper-container-vertical">
+                <ul id="xmm1" class="swiper-wrapper">
+                    <li class="swiper-slide on swiper-slide-active" style="height: 20px;">眼部</li>
+                    <li class="swiper-slide swiper-slide-next" style="height: 20px;">鼻部</li>
+                    <li class="swiper-slide" style="height: 20px;">胸部</li>
+                    <li class="swiper-slide" style="height: 20px;">面部精雕</li>
+                    <li class="swiper-slide" style="height: 20px;">吸脂瘦身</li>
+                    <li class="swiper-slide" style="height: 20px;">私密整形</li>
+                </ul>
+                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+        </div>
+        <div class="bot_right">
+            <ul class="botxm_lst"></ul>
+        </div>
+        <div class="return"><button>返回</button></div>
     </div>
-
-
-
-<script type="text/javascript">
-var image;
-var intervalId1;
-var intervalId2;
-var intervalId3;
-var drawW1 = 0;
-var canvas;
-var context;
-var drawLeft;
-
-var baiyechuangItemW;
-
-function init() {
-	image = new Image();
-	image.src = "1.png";
-	canvas = document.getElementById("canvas1");
-	context = canvas.getContext("2d");
-	drawLeft = image.width/2;
-}
-
-function startLeftToRight() {
-	clearInterval(intervalId1);
-	context.clearRect(0, 0, image.width, image.height);
-	intervalId1 = setInterval("leftToRight();", 50);
-}
-
-function leftToRight() {
-	context.drawImage(image, 0, 0, drawW1, image.height, 0, 0, drawW1, image.height);
-	drawW1 += 2;
-	if (drawW1 > image.width) {
-		drawW1 = 0;
-		clearInterval(intervalId1);
-	}
-}
-
-function centerToOuter() {
-	//drawLeft-drawW1/2是左端点，drawLeft是中间， drawLeft+drawW1/2是右端点
-	context.drawImage(image, drawLeft - drawW1 / 2, 0, drawW1, image.height, drawLeft - drawW1 / 2, 0, drawW1, image.height);
-	drawW1 += 2;　
-	if (drawW1 > 2*drawLeft) {
-		drawW1 = 0;
-		clearInterval(intervalId2);
-	}
-}
-
-function startCenterToOuter() {
-	clearInterval(intervalId2);
-	context.clearRect(0, 0, image.width, image.height);
-	intervalId2 = setInterval("centerToOuter();", 50);
-}
-
-function baiyechuang() {
-	for (i = 0; i < 10; i++) {
-		context.drawImage(image, baiyechuangItemW * i, 0, drawW1, image.height, baiyechuangItemW * i, 0, drawW1, image.height);
-	}
-	drawW1 += 0.2;
-	if (drawW1 > baiyechuangItemW) {
-		clearInterval(intervalId3);
-	}
-}
-
-function startBaiyechuang() {
-	drawW1 = 0;
-	baiyechuangItemW = image.width / 10.0;
-	clearInterval(intervalId3);
-	context.clearRect(0, 0, image.width, image.height);
-	intervalId3 = setInterval("baiyechuang();", 50);
-}
+</div>
+<script>
+    //项目集合左边滑动
+    $('#xmm1').find('li').click(function(){
+        var index = $(this).index();
+        $(this).addClass('on').siblings().removeClass('on');
+        $('.botxm_lst').find('li').eq(index).show().siblings().hide();
+    })
+    var myswiper3 = new Swiper(".bot_left .swiper-container", {
+        //direction: "vertical",
+        direction:'vertical',
+        height: 20,
+    });
+    //项目集合页显示OR隐藏
+    $(".return").bind("click", function (){
+        $('.fixed_memu').css({animation:'hideit 0.9s 0.1s ease both'});
+        $('.fixed_memu').animate({left:'-1000px'});
+    });
+    $(".navBtn").bind("click", function () {
+        $('.fixed_memu').css({animation: 'showit 0.6s 0.1s ease both'});
+        $('.fixed_memu').animate({left: '0px'});
+    });
 </script>
-
 </body>
 </html>
