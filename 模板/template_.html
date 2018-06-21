@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="underscore.js"></script>
+	</head>
+	<body>
+		<!--<% %> 里包裹的是一些可执行的 JavaScript 语句，比如 if-else 语句，for 循环语句，等等。 
+<%= %> 会打印传入数据相应的 key 的值， 
+<%- %> 和前者相比，多了步 HTML 实体编码的过程，可以有效防止 XSS 攻击。-->
+		
+	</body>
+	<script type="text/template" id="tpl">
+  <ul class="list">
+    <% _.each(obj, function(e, i, a){ %>
+      <% if (i === 0) %>
+        <li><%- e.name %> </li>
+      <% else if (i === a.length - 1) %> 
+        <li class="last-item"><%- e.name %></li>
+      <% else %>
+        <li><%- e.name %></li>
+    <% }) %>
+  </ul>
+</script>
+	<script>
+		var tt=_.template(document.getElementById("tpl").innerHTML)([{name: "<script>"}, {name: "orange"}, {name: "peach"}])
+		document.querySelector("body").innerHTML = tt;
+		
+	</script>
+</html>
