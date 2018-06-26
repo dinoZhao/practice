@@ -28,7 +28,6 @@ class Tabs {
 
     this.events = new EventEmitter();
     this.selector = Selector(this.options.classPrefix);
-
     this._initElement();
     this._initTabs();
     this._initPanels();
