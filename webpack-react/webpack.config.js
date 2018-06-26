@@ -9,7 +9,7 @@ module.exports = {
 	},
 	output: {
 		path: __dirname + "/dist",
-		filename: '[name].js'
+		filename: 'js/[name].js'
 	},
 	mode: "development",
 	plugins: [
@@ -17,7 +17,7 @@ module.exports = {
 			template: 'src/index.html'
 		}),
 		new ExtractTextPlugin({
-			filename: "style.css",
+			filename: "css/style.css",
 		}),
 		new webpack.optimize.SplitChunksPlugin({
 			chunks: "all",
