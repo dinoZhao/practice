@@ -44,8 +44,9 @@ class Tabs {
     this.panels = $(this.options.panels);
     this.nav = $(this.options.nav);
     this.content = $(this.options.content);
-
     this.length = this.tabs.length;
+console.log(this)
+    
   }
 
   _initTabs() {
