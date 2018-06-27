@@ -1,9 +1,6 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
-import App from './App';
+import App from './App.jsx';
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render(<App />, document.getElementById('root'));
 
-Array.of(1,2,3,4).forEach(function(item){
-        console.log(item);
-    });
