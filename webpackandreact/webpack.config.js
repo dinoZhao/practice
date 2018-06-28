@@ -6,7 +6,8 @@ module.exports={
 	entry:['babel-polyfill','./src/index.js'],
 	output:{
 		path:path.join(__dirname,'dist'),
-		filename:'index.js'
+		filename:'index.js',
+		chunkFilename:[id].chunk.js
 	},
 	plugins:[
 	new webpackhtmlplugin({
@@ -27,7 +28,8 @@ module.exports={
 				use: {
 					loader: 'babel-loader',
 					options: {
-				       presets: ['env',"react"],
+					   presets: ['env',"react","es2015"],
+					  
 					}
 				}
 			},
