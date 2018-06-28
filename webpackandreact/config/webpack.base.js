@@ -4,10 +4,7 @@ var CleanWebpackPlugin = require('clean-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 module.exports={
 	entry:['babel-polyfill','./src/index.js'],
-	output:{
-		path:path.join(__dirname,"..",'dist'),
-		filename:'index.js'
-	},
+	
 	plugins:[
 	new webpackhtmlplugin({
 		template:'src/index.html'
@@ -42,13 +39,7 @@ module.exports={
 					fallback: "style-loader",
 					use: "css-loader"
 				})
-			},
-			 {
-        test: /\.(png|jpg|svg|gif)/,
-        use:[
-          "file-loader"
-        ]
-      }
+			}
 
 		]
 	},

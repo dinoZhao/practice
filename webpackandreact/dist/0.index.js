@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[0],{344:function(e,n,o){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.add=function(e){return 2*e}}}]);
