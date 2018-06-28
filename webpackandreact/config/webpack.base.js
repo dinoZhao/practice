@@ -2,6 +2,7 @@ const path = require('path');
 var webpackhtmlplugin=require("html-webpack-plugin")
 var CleanWebpackPlugin = require('clean-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 module.exports={
 	entry:['babel-polyfill','./src/index.js'],
 	
@@ -12,6 +13,10 @@ module.exports={
 	new ExtractTextPlugin({
 		filename: "css/style.css",
 	}),
+	new CopyWebpackPlugin([{
+		from:"src/static",
+		to:"static"}
+	])
 	],
 		module: {
 		rules: [{
