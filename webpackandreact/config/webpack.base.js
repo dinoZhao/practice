@@ -11,7 +11,7 @@ module.exports={
 		template:'src/index.html'
 	}),
 	new ExtractTextPlugin({
-		filename: "css/style.css",
+		filename: "static/css/style.css",
 	}),
 	new CopyWebpackPlugin([{
 		from:"src/static",

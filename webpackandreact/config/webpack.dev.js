@@ -20,8 +20,8 @@ module.exports=merge(base,{
         use:[{
 loader: "file-loader",
 options:{
-	name:"images/[hash:8].[name].[ext]",
-	publicPath: '../'
+	name:"static/images/[hash:8].[name].[ext]",
+	publicPath: '/'
 }
 		}
          

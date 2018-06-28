@@ -10,7 +10,7 @@ module.exports=merge(base,{
 	mode:'production',
 	output:{
 		path:path.join(__dirname,"..",'dist'),
-		filename:'js/index.js',
+		filename:'static/js/index.js',
 		publicPath: './',
 	},
 	module: {
@@ -20,7 +20,7 @@ module.exports=merge(base,{
         use:[{
 loader: "file-loader",
 options:{
-	name:"images/[hash:8].[name].[ext]",
+	name:"static/images/[hash:8].[name].[ext]",
 	publicPath: '../'
 }
 		}
