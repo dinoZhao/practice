@@ -12,6 +12,9 @@ module.exports={
 	new webpackhtmlplugin({
 		template:'src/index.html'
 	}),
+	new ExtractTextPlugin({
+		filename: "css/style.css",
+	}),
 	],
 		module: {
 		rules: [{
