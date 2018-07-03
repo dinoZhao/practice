@@ -31,7 +31,7 @@ module.exports={
 					loader: 'babel-loader',
 					options: {
 					   presets: ['env',"react"],
-					   plugins:['dynamic-import-webpack']
+					   plugins:['dynamic-import-webpack',"transform-object-rest-spread"]
 					}
 				}
 			},
