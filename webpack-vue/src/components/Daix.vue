@@ -1,14 +1,14 @@
 <template>
 	<div>
-		<daix></daix> 
+		66666
 	</div>
 </template>
 
 <script>
-	import Daix from "components/Daix"
 	export default{
-		components:{
-			Daix 
+		created(){
+			console.log(this.$store.state.count)
+
 		}
 	}
 </script>

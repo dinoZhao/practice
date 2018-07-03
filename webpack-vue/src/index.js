@@ -1,9 +1,10 @@
-import vue from "vue/dist/vue.esm.js"
+import vue from "vue"
 import App from "./App.vue"
 
-
-new vue({
+import store from "./store"
+var vm=new vue({
 	el: '#app',
 template: '<App/>',
-components: { App }
+components: { App },
+store
 })

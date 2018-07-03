@@ -22,7 +22,7 @@ module.exports = merge(base, {
 						loader: "file-loader",
 						options: {
 							name: "static/images/[hash:8].[name].[ext]",
-							publicPath: '../'
+							publicPath: '../../'
 						}
 					}
 

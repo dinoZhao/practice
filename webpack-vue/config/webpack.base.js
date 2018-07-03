@@ -4,6 +4,9 @@ var CleanWebpackPlugin = require('clean-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader');
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
 module.exports={
 	entry:['babel-polyfill','./src/index.js'],
 	
@@ -56,5 +59,13 @@ module.exports={
 
 		]
 	},
+	  resolve: {
+    extensions: ['.js', '.vue', '.json'],
+    alias: {
+      'vue$': 'vue/dist/vue.esm.js',
+      '@': resolve('src'),
+      "components":resolve('src/components')
+    }
+  },
 }
 
