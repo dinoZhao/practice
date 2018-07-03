@@ -37,7 +37,7 @@
 			]),
 			mutl(){
 				this.$store.dispatch("mutlmsg",{
-					"msg":5
+					"msg":2
 				})
 			}
 		}
