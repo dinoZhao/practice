@@ -12,7 +12,11 @@ export default {
 
 			console.log(to)
 		}
-	}
+	},
+		  beforeRouteUpdate (to, from, next) {
+		  	console.log(from)
+             next()
+},
 }
 </script>
 

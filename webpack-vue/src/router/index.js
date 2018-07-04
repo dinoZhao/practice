@@ -17,7 +17,11 @@ children:[
 ]
 }
 ]
-
-export default new vueRouter({
+var router=new vueRouter({
 	routes
 })
+router.beforeEach((to, from, next) => {
+//console.log("")
+  next()
+})
+export default router
