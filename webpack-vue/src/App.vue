@@ -6,7 +6,9 @@
     <!-- 通过传入 `to` 属性指定链接. -->
     <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
     <router-link to="/vuex">Go to vuex</router-link>
-    <router-link to="/other">Go to other</router-link>
+    <router-link to="/other/1">Go to other</router-link>
+    <router-link to="/child">Go to child</router-link>
+    
   </p>
    <router-view></router-view>
 	</div>
