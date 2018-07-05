@@ -2,7 +2,8 @@
 <div>
 	555
 	<br />
-<child message="hello prop"></child>
+	
+<child message="hello prop" v-on:toprop="emit"></child>
 </div>
 
 </template>
@@ -12,6 +13,11 @@
 	export default{
 		components:{
 			Child
+		},
+		methods:{
+			emit(a){
+				console.log(a)
+			}
 		}
 	}
 </script>
