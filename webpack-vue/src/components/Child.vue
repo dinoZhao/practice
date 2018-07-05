@@ -10,6 +10,7 @@
 
 <script>
 	export default{
+  myOption: '我的孩子',
 	
 	}
 </script>

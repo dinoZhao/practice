@@ -1,5 +1,6 @@
 const Vue = require('vue')
 const server = require('express')()
+const createApp = require('./app')
 const createRenderer= require('vue-server-renderer').createRenderer
 const context = {
   title: 'hello',
@@ -9,12 +10,9 @@ const context = {
   `
 }
 server.get('*', (req, res) => {
-  const app = new Vue({
-    data: {
-      url: req.url
-    },
-    template: `<div>访问的 URL 是： {{ url }}</div>`
-  })
+	
+	const param = { url: req.url }
+  const app = createApp(param)
   const renderer = createRenderer({
   template: require('fs').readFileSync('./index.html', 'utf-8')
 })

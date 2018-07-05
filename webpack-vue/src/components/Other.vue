@@ -1,12 +1,28 @@
 <template>
 	<div>
 		other
+		<mix></mix>
 	</div>
 </template>
 
 <script>
+	var myMixin = {
+  created: function () {
+    this.hello()
+  },
+  methods: {
+    hello: function () {
+      console.log('hello from mixin!')
+    }
+  }
+}
 export default {
-	created() {},
+	created() {
+		console.log(88)
+	},
+mixins: [myMixin],
+  myOption: 'hello!',
+	
 	watch: {
 		'$route' (to, from) {
 

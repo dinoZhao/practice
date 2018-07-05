@@ -17,6 +17,7 @@ renderer.renderToString(app, (err, html) => {
 // 在 2.5.0+，如果没有传入回调函数，则会返回 Promise：
 renderer.renderToString(app).then(html => {
   console.log(html)
+  // => <div data-server-rendered="true">Hello World</div>
 }).catch(err => {
   console.error(err)
 })
