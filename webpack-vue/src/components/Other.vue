@@ -2,6 +2,7 @@
 	<div>
 		other
 		<mix></mix>
+		<mycom></mycom>
 	</div>
 </template>
 

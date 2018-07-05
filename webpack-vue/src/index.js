@@ -17,7 +17,9 @@ Vue.mixin({
   	Mix
   }
 })
-
+Vue.component('Mycom',{
+	template:'<div>公共组件</div>'
+})
 var vm=new Vue({
 	el: '#app',
 template: '<App/>',
