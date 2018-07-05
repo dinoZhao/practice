@@ -8,6 +8,8 @@
     <router-link to="/vuex">Go to vuex</router-link>
     <router-link to="/other/1">Go to other</router-link>
     <router-link to="/child">Go to child</router-link>
+    <router-link to="/prop">Go to prop</router-link>
+    
     
   </p>
    <router-view></router-view>

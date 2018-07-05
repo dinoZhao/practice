@@ -3,6 +3,8 @@ import vue from "vue"
 import Daix from "components/Daix"
 import Other from "components/Other"
 import Child from "components/Child"
+import Prop from "components/Prop"
+
 vue.use(vueRouter)
 var Bar={ template: '<div>bar</div>' }
 var Foo={ template: '<div>foo</div>' }
@@ -15,7 +17,8 @@ children:[
 {path:'bar',component:Bar},
 {path:'foo',component:Foo},
 ]
-}
+},
+{path:'/prop',component:Prop},
 ]
 var router=new vueRouter({
 	routes
