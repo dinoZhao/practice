@@ -9,6 +9,8 @@
     <router-link to="/other/1">Go to other</router-link>
     <router-link to="/child">Go to child</router-link>
     <router-link to="/prop">Go to prop</router-link>
+    <router-link to="/slot">Go to slot</router-link>
+    
     
     
   </p>
