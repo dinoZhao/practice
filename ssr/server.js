@@ -19,7 +19,7 @@ server.get('*', (req, res) => {
 
 renderer.renderToString(app,context, (err, html) => {
   console.log(html) // html 将是注入应用程序内容的完整页面
- res.end(html)
+ res.status(200).end(html)
 })
 
 

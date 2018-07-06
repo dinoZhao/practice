@@ -10,6 +10,8 @@
     <router-link to="/child">Go to child</router-link>
     <router-link to="/prop">Go to prop</router-link>
     <router-link to="/slot">Go to slot</router-link>
+    <router-link to="/animate">Go to animate</router-link>
+    
     
     
     
@@ -28,4 +30,7 @@
 </script>
 
 <style>
+	a{
+		display: block;
+	}
 </style>

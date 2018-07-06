@@ -5,6 +5,7 @@ import Other from "components/Other"
 import Child from "components/Child"
 import Prop from "components/Prop"
 import Slots from "components/Slots"
+import Animate from "components/Animate"
 
 vue.use(vueRouter)
 var Bar={ template: '<div>bar</div>' }
@@ -21,6 +22,7 @@ children:[
 },
 {path:'/prop',component:Prop},
 {path:'/slot',component:Slots},
+{path:'/animate',component:Animate},
 ]
 var router=new vueRouter({
 	routes
