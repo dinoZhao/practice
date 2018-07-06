@@ -12,6 +12,7 @@
 			emit(){
 				console.log(44444444)
 				 this.$emit('toprop',"家属")
+				 
 			}
 		}
 		
