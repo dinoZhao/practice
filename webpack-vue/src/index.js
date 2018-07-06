@@ -3,6 +3,12 @@ import App from "./App.vue"
 import router from "./router"
 import store from "./store"
 import Mix from "components/Mix"
+import {hello} from "components/Dataimport"
+
+var hungry = "hippo";
+console.log(
+hello( hungry ).toUpperCase()
+);
 Vue.config.optionMergeStrategies.filters = function (parent, child, vm) {
   return [parent,child,vm]
 }
