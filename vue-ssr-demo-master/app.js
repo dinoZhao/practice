@@ -8,5 +8,5 @@ export default function () {
         store,
         render: h => h(App)
     });
-    return {app, store}
+    return {app, store,App}
 }
