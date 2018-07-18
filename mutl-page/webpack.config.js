@@ -2,14 +2,24 @@ const path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader');
 var webpackhtmlplugin=require("html-webpack-plugin")
+var glob=require("glob")
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
+
+//配置入口
+function entries(){
+	 var entryFiles = glob.sync("./src/**/*.js")
+	  var map = {};
+	   for (var i = 0; i < entryFiles.length; i++) {
+  var filePath = entryFiles[i];
+  var filename = filePath.substring(filePath.lastIndexOf('\/') + 1, filePath.lastIndexOf('.'));
+  map[filename] = filePath;
+ }
+	 return map;
+}
 module.exports={
-	entry:{
-		login:"./src/page/login/login.js",
-		index:"./src/page/index/index.js",
-	},
+	entry:entries(),
 	output:{
 		path: path.resolve(__dirname, 'dist'),
         filename: '[name].js'
