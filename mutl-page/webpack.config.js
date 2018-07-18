@@ -38,7 +38,7 @@ module.exports={
       chunks: ['login']
     }),
 	new VueLoaderPlugin(),
-	new ExtractTextPlugin('style.css')
+	new ExtractTextPlugin('[name].css')
 	],
   	module: {
 		rules: [{
@@ -91,4 +91,5 @@ module.exports={
       "components":resolve('src/components')
     }
   },
+
 }
