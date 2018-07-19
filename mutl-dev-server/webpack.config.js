@@ -91,5 +91,9 @@ module.exports={
       "components":resolve('src/components')
     }
   },
+  	devServer: {
+  compress: true,
+  port: 9000
+}
 
 }
