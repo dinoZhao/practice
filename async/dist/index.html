@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="./jquery.min.js"></script>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		function ajax(param,cb){
+		$.ajax({
+			type:"get",
+			url:"http://localhost:3000/"+param,
+			async:true,
+			success:function(data){
+				cb(data)
+			}
+		});	
+		}
+		ajax("s",function(da){
+			console.log(da)
+		})
+	</script>
+</html>
