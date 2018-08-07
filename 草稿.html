@@ -5,53 +5,26 @@
     <title>Title</title>
     <script src="https://code.jquery.com/jquery-2.2.4.js" ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/js/swiper.js"></script>
-    <style>.fixed_memu{ width: 100%;max-width:640px;height: 100%;position:fixed;top: 0;left:-1000px;z-index: 9999;background: #fff;}
-   </style>
+<style>
+	div{
+		width: 100px;
+		height: 100px;
+		
+	}
+	div.up{
+		
+	}
+</style>
+
 </head>
 <body>
-<a href="javascript:void(0);" class="navBtn"><button>点我</button></a>
-<div class="fixed_memu">
-    <div class="fixed_top"><a href="http://m.yahanmr.com/talk.html">亚韩品牌</a><a href="http://m.yahanmr.com/doctor/">名医专家部</a><a href="http://m.yahanmr.com/talk.html">美丽日记</a><a href="http://m.yahanmr.com/talk.html">安全体系</a></div>
-    <div class="fixed_bot">
-        <div class="bot_left">
-            <div class="swiper-container swiper-container-vertical">
-                <ul id="xmm1" class="swiper-wrapper">
-                    <li class="swiper-slide on swiper-slide-active" style="height: 20px;">眼部</li>
-                    <li class="swiper-slide swiper-slide-next" style="height: 20px;">鼻部</li>
-                    <li class="swiper-slide" style="height: 20px;">胸部</li>
-                    <li class="swiper-slide" style="height: 20px;">面部精雕</li>
-                    <li class="swiper-slide" style="height: 20px;">吸脂瘦身</li>
-                    <li class="swiper-slide" style="height: 20px;">私密整形</li>
-                </ul>
-                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
-        </div>
-        <div class="bot_right">
-            <ul class="botxm_lst"></ul>
-        </div>
-        <div class="return"><button>返回</button></div>
-    </div>
+<div style="width: 100%;height: 200px;">
+	oooooooooo<br />
+	<img style="float: left;" src="1.png"/>5555555555
 </div>
+
 <script>
-    //项目集合左边滑动
-    $('#xmm1').find('li').click(function(){
-        var index = $(this).index();
-        $(this).addClass('on').siblings().removeClass('on');
-        $('.botxm_lst').find('li').eq(index).show().siblings().hide();
-    })
-    var myswiper3 = new Swiper(".bot_left .swiper-container", {
-        //direction: "vertical",
-        direction:'vertical',
-        height: 20,
-    });
-    //项目集合页显示OR隐藏
-    $(".return").bind("click", function (){
-        $('.fixed_memu').css({animation:'hideit 0.9s 0.1s ease both'});
-        $('.fixed_memu').animate({left:'-1000px'});
-    });
-    $(".navBtn").bind("click", function () {
-        $('.fixed_memu').css({animation: 'showit 0.6s 0.1s ease both'});
-        $('.fixed_memu').animate({left: '0px'});
-    });
+
 </script>
 </body>
 </html>

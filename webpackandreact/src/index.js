@@ -10,11 +10,10 @@ document.getElementById("logo").src='./static/images/logo.png'
 
 
 
-const numbers = [1, 2, 3, 4, 5];
-const listItems = numbers.map((number) =>
-  <li key={number.toString()}>{number}</li>
-);
+var BB=function(){
+	return <div>4444</div>
+}
 
-ReactDOM.render( <ul>{listItems}</ul>, document.getElementById('root'));
+ReactDOM.render( <BB>555555</BB>, document.getElementById('root'));
 
   
