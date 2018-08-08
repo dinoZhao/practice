@@ -13,7 +13,7 @@ document.getElementById("logo").src='./static/images/logo.png'
 var BB=function(){
 	return <div>4444</div>
 }
-
+console.log(555)
 ReactDOM.render( <BB>555555</BB>, document.getElementById('root'));
 
   

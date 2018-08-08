@@ -6,25 +6,38 @@
     <script src="https://code.jquery.com/jquery-2.2.4.js" ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/js/swiper.js"></script>
 <style>
-	div{
-		width: 100px;
-		height: 100px;
-		
-	}
-	div.up{
-		
-	}
+div.up{
+	background: #D0E9C6;
+	/*float: left;*/
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	/*flex-direction: column-reverse;*/
+	
+}
+div.down{
+	width: 1080px;
+    height: 500px;
+	margin: 40px;
+	background: #D58512 url(1.png) repeat;
+	padding: 40px;
+	background-position: 10px 0;
+}
 </style>
 
 </head>
 <body>
-<div style="width: 100%;height: 200px;">
-	oooooooooo<br />
-	<img style="float: left;" src="1.png"/>5555555555
+
+<div class="up">
+
+	<div class="down" style="order: 2;">1</div>
+
+		
+	
 </div>
 
+</body>
 <script>
 
 </script>
-</body>
 </html>
