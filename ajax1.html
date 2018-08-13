@@ -49,7 +49,7 @@ function ajax(options) {
           options.success && options.success(xhr.responseText, xhr.responseXML);
           console.log(xhr.getResponseHeader("Content-Type"))
         } else {
-          options.error && options.error(status);
+          options.error && options.error(status);  
         }
       }
     }
