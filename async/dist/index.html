@@ -10,33 +10,34 @@
 		
 	</body>
 	<script type="text/javascript">
-		function ajax(param,cb){
-		$.ajax({
-			type:"get",
-			url:"http://localhost:3000/"+param,
-			async:true,
-			success:function(data){
-				cb(data)
-			}
-		});	
-		}
-		ajax("s",function(da){
-			console.log(da)
-		})
+//		function ajax(param,cb){
+//		$.ajax({
+//			type:"get",
+//			url:"http://localhost:3000/"+param,
+//			async:true,
+//			success:function(data){
+//				cb(data)
+//			}
+//		});	
+//		}
+//		ajax("s",function(da){
+//			console.log(da)
+//		})
+$.ajax({
+	type:'post',
+	data:{
+			"startDate":11111,
+			'endDate':2222
+		},
+	url:"http://localhost:3000/b",
+	success:function(data){
+		console.log(data)
+	}
+})
 		
 		
                 
-              $.getJSON("http://localhost:3000/b?callback=?", 
-                function(data) {  
-                    console.log(data.user);  
-                });  
-             $.ajax({
-    url: 'http://localhost:3000/b',
-    dataType: "jsonp",
-    success:function(data){
-    	console.log(data)
-    }
-}); 
+
                 
 
 	</script>
