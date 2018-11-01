@@ -40,9 +40,9 @@ window.LCalendar = (function() {
                 this.maxM = maxArr[1];
                 this.maxD = maxArr[2];
             }
-            this.bindEvent(this.type);
+            this.bindEvent();
         },
-        bindEvent: function(type) {//根据type不同，进行不同操作
+        bindEvent: function() {
             var _self = this;
            /*日期插件开始*/
             function popupDate(e) {
