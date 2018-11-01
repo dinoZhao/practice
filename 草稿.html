@@ -21,42 +21,32 @@ div{
 	<body>
 
 	<script>
-function mix(...mixins) {
-  class Mix {}
+var arr=[{
+  'num': 1,
+  'word': 'One'
+}, {
+  'num': 2,
+  'word': 'Two'
+}, {
+  'num': 3,
+  'word': 'Three'
+}, {
+  'num': 4,
+  'word': 'Four'
+}, {
+  'num': 5,
+  'word': 'Five'
+}, {
+  'num': 0,
+  'word': 'Zero'}]
 
-  for (let mixin of mixins) {
-    copyProperties(Mix.prototype, mixin); // 拷贝实例属性
-    copyProperties(Mix.prototype, Reflect.getPrototypeOf(mixin)); // 拷贝原型属性
-  }
-
-  return Mix;
+function numToWord(num) {
+	for(var val of arr) {
+		if(val.num == num) {
+			return(val.word)
+		}
+	}
 }
-
-function copyProperties(target, source) {
-  for (let key of Reflect.ownKeys(source)) {
-    if ( key !== "constructor"
-      && key !== "prototype"
-      && key !== "name"
-    ) {
-      let desc = Object.getOwnPropertyDescriptor(source, key);
-      Object.defineProperty(target, key, desc);
-    }
-  }
-}
-
-
-//class DistributedEdit extends mix(Loggable, Serializable) {
-//
-//}
-var obj1={a:3}
-var obj2={b:4}
-class DistributedEdit extends mix(obj1,obj2) {
- constructor() {
- 	super()
-  }
-}
-
-console.log(new DistributedEdit().a)
-	</script>
+console.log(numToWord(4))</script>
 
 </html>

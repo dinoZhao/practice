@@ -5,15 +5,32 @@ import React from 'react';
 import('./add.js').then(add=>add)
 document.getElementById("logo").src='./static/images/logo.png'
 
-//ReactDOM.render(<App />, document.getElementById('root'));
+function CustomTextInput(props) {
+  // 这里必须声明 textInput，这样 ref 回调才可以引用它
+  let textInput = null;
 
+  function handleClick() {
+    textInput.focus();
+  }
 
+  return (
+    <div>
+      <input
+        type="text"
+        ref={function(val){textInput=val}} />
 
-
-var BB=function(){
-	return <div>4444</div>
+      <input
+        type="button"
+        value="Focus the text input"
+        onClick={handleClick} 
+      />
+    </div>
+  );  
 }
-console.log(555)
-ReactDOM.render( <BB>555555</BB>, document.getElementById('root'));
+ReactDOM.render(
+  <CustomTextInput />,
+  document.getElementById('root')
+);
 
-  
+
+
