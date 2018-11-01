@@ -434,28 +434,7 @@ window.LCalendar = (function() {
                                 clearInterval(target["int_" + target.id]);
                             }
                             break;
-                        case "time_hh":
-                            if (pos < -38) {
-                                pos = -38;
-                                setDuration();
-                            }
-                            if (stopGear) {
-                                var gearVal = Math.abs(pos - 8) / 2;
-                                setGear(target, gearVal);
-                                clearInterval(target["int_" + target.id]);
-                            }
-                            break;
-                        case "time_mm":
-                            if (pos < -110) {
-                                pos = -110;
-                                setDuration();
-                            }
-                            if (stopGear) {
-                                var gearVal = Math.abs(pos - 8) / 2;
-                                setGear(target, gearVal);
-                                clearInterval(target["int_" + target.id]);
-                            }
-                            break;
+                     
                         default:
                     }
                     target["pos_" + target.id] = pos;
@@ -468,11 +447,7 @@ window.LCalendar = (function() {
             function setGear(target, val) {
                 val = Math.round(val);
                 target.setAttribute("val", val);
-                if (/date/.test(target.dataset.datetype)) {
-                    setDateGearTooth();
-                } else {
-                    setTimeGearTooth();
-                }
+                setDateGearTooth();
             }
             //取消
             function closeMobileCalendar(e) {
