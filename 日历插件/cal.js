@@ -1,21 +1,17 @@
-/**
- * LCalendar移动端日期时间选择控件
- * 
- * version:1.7.1
- * 
- * author:黄磊
- * 
- * git:https://github.com/xfhxbb/LCalendar
- * 
- * Copyright 2016
- * 
- * Licensed under MIT
- * 
- * 最近修改于： 2016-6-12 17:22:20
- */
+
+/* 初始化
+init(param)
+param={
+	type:"",
+	trigger:"",
+	minDate:"",
+	maxGate:''
+}
+*/
+
 window.LCalendar = (function() {
-    var MobileCalendar = function() {
-        this.gearDate;
+    var MobileCalendar = function() {//日历类
+        this.gearDate;//相关属性
         this.minY = 1900;
         this.minM = 1;
         this.minD = 1;
@@ -23,38 +19,32 @@ window.LCalendar = (function() {
         this.maxM = 12;
         this.maxD = 31;
     }
-    MobileCalendar.prototype = {
-        init: function(params) {
-            this.type = params.type;
-            this.trigger = document.querySelector(params.trigger);
-            if (this.trigger.getAttribute("data-lcalendar") != null) {
-                var arr = this.trigger.getAttribute("data-lcalendar").split(',');
-                var minArr = arr[0].split('-');
-                this.minY = ~~minArr[0];
-                this.minM = ~~minArr[1];
-                this.minD = ~~minArr[2];
-                var maxArr = arr[1].split('-');
-                this.maxY = ~~maxArr[0];
-                this.maxM = ~~maxArr[1];
-                this.maxD = ~~maxArr[2];
-            }
+    MobileCalendar.prototype = {//方法放在原型上
+        init: function(params) {//初始化
+            this.type = params.type;//选项
+            this.trigger = document.querySelector(params.trigger);//具体操作的input节点
             if (params.minDate) {
                 var minArr = params.minDate.split('-');
+
+                
                 this.minY = ~~minArr[0];
-                this.minM = ~~minArr[1];
-                this.minD = ~~minArr[2];
+                this.minM = minArr[1];
+                this.minD = minArr[2];
+                console.log(this.minY)
+                
             }
+
             if (params.maxDate) {
                 var maxArr = params.maxDate.split('-');
-                this.maxY = ~~maxArr[0];
-                this.maxM = ~~maxArr[1];
-                this.maxD = ~~maxArr[2];
+                this.maxY = maxArr[0];
+                this.maxM = maxArr[1];
+                this.maxD = maxArr[2];
             }
             this.bindEvent(this.type);
         },
-        bindEvent: function(type) {
+        bindEvent: function(type) {//根据type不同，进行不同操作
             var _self = this;
-            //呼出日期插件
+           /*日期插件开始*/
             function popupDate(e) {
                 _self.gearDate = document.createElement("div");
                 _self.gearDate.className = "gearDate";
@@ -105,6 +95,8 @@ window.LCalendar = (function() {
                 date_mm.addEventListener('touchend', gearTouchEnd);
                 date_dd.addEventListener('touchend', gearTouchEnd);
             }
+
+            
             //初始化年月日插件默认值
             function dateCtrlInit() {
                 var date = new Date();
@@ -113,7 +105,7 @@ window.LCalendar = (function() {
                     mm: date.getMonth(),
                     dd: date.getDate() - 1
                 };
-                if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(_self.trigger.value)) {
+                if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(_self.trigger.value)) {//如果输出框原本有值
                     rs = _self.trigger.value.match(/(^|-)\d{1,4}/g);
                     dateArr.yy = rs[0] - _self.minY;
                     dateArr.mm = rs[1].replace(/-/g, "") - 1;
@@ -126,7 +118,9 @@ window.LCalendar = (function() {
                 _self.gearDate.querySelector(".date_dd").setAttribute("val", dateArr.dd);
                 setDateGearTooth();
             }
-            //呼出年月插件
+           /*日期插件结束*/
+            
+           /*年月插件开始*/
             function popupYM(e) {
                 _self.gearDate = document.createElement("div");
                 _self.gearDate.className = "gearDate";
@@ -185,7 +179,9 @@ window.LCalendar = (function() {
                 _self.gearDate.querySelector(".date_mm").setAttribute("val", dateArr.mm);
                 setDateGearTooth();
             }
-            //呼出日期+时间插件
+           /*年月插件结束*/
+            
+           /*日期时间插件开始*/
             function popupDateTime(e) {
                 _self.gearDate = document.createElement("div");
                 _self.gearDate.className = "gearDatetime";
@@ -284,7 +280,9 @@ window.LCalendar = (function() {
                 _self.gearDate.querySelector(".time_mm").setAttribute("val", dateArr.mi);
                 setTimeGearTooth();
             }
-            //呼出时间插件
+           /*日期时间插件结束*/
+            
+           /*时间插件开始*/
             function popupTime(e) {
                 _self.gearDate = document.createElement("div");
                 _self.gearDate.className = "gearDate";
@@ -341,6 +339,10 @@ window.LCalendar = (function() {
                 _self.gearDate.querySelector(".time_mm").setAttribute("val", e.mm);
                 setTimeGearTooth();
             }
+           /*时间插件结束*/
+            
+            
+         //具体
             //重置日期节点个数
             function setDateGearTooth() {
                 var passY = _self.maxY - _self.minY + 1;
@@ -711,7 +713,6 @@ window.LCalendar = (function() {
                 date_dd = date_dd > 9 ? date_dd : '0' + date_dd;
                 _self.trigger.value = (date_yy % passY + _self.minY) + "-" + date_mm + "-" + date_dd;
                 closeMobileCalendar(e);
-                console.log(_self.trigger)
             }
             //年月确认
             function finishMobileYM(e) {
