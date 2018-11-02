@@ -1,9 +1,5 @@
-if (typeof require !== 'function') {
-	require = function (array, func) {
-		func(array);
-	}
-}
-require([jQuery], function () {
+
+
 	
 	$.fn.keyBoard = function (params) {
 		var isinput=true;
@@ -90,4 +86,49 @@ require([jQuery], function () {
 	}
 	
 	
-});
+		//自定义键盘
+		var params = {
+			inputNum: 4,
+			captchaItemGroup: $('.captcha-item'),
+			inputNode: $('#captcha-groups input:hidden'),
+			currentClassName: 'current',
+			inputComplete: function() {
+				console.log(5)
+			}
+		};
+		$('#captcha-groups').keyBoard(params);
+
+		$('.captcha-box').show();
+		$('#safeKeyboard').show();
+		countDown(10)
+			function countDown(value) {
+						var counts = value,
+							receiveTipsNode = $('#receive-tips'),
+							sendAgainNode = $('#Send-again');
+						receiveTipsNode.show();
+						sendAgainNode.hide();
+						tick();
+						countInterval = setInterval(tick, 1000);
+
+						function tick() {
+							if(counts < 1) {
+								clearInterval(countInterval);
+								counts = value;
+								receiveTipsNode.hide();
+								sendAgainNode.show();
+								return false;
+							}
+							receiveTipsNode.find('span').text(counts);
+							counts--;
+						}
+					}
+			
+			 function colseWin() {
+						clearInterval(countInterval);
+						$('.captcha-box').hide();
+						$('#safeKeyboard').hide()
+						
+					}
+			 function countDown2(){
+			 	countDown(60)
+			 }
