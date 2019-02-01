@@ -7,22 +7,20 @@
 <body>
 
 <div id="app">
-	44444444
-	{{aa}}
-	<bb></bb>
+{{aa}}
+		<bb inline-template>
+			<span>{{hh}}</span>
+		</bb>
+	
+	
 </div>
 </body>
 <script src="vue.js"></script>
-<script type="x-template" id="tem">
-	<div>77777777{{hh}}</div>
-</script>
-<template id="oo">
-	<div>76666666{{hh}}</div>
-</template>
+
 <script>
 	
 	Vue.component("bb",{
-		template:"#oo",
+		
 		data:function(){
 			return{
 				hh:5
