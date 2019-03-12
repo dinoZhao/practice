@@ -23,16 +23,37 @@
 for(var i=0;i<10;i++){
 	arr.push(Math.floor(Math.random()*100))
 }
+
 for(var i=1;i<arr.length;i++){
-	var temp=arr[i]
 	var j=i-1
+	var temp=arr[i]
 	while(j>=0&&arr[j]>temp){
 		arr[j+1]=arr[j]
 		j--
 	}
+	
 	arr[j+1]=temp
 }
+//for(i=1;i<arr.length;i++){
+//  var j=i-1
+//  var temp=arr[i]
+//  while(j>=0&&arr[j]>temp){
+//      arr[j+1]=arr[j]
+//      j--
+//  }
+//  arr[j+1]=temp
+//}
+
 console.log(arr)
+
+
+var img=new Image()
+img.onloadend=this.get
+img.src='./1.png'
+document.getElementsByTagName('body')[0].appendChild(img);
+function get(para){
+	console.log(para)
+}
 
 	</script>
 </html>

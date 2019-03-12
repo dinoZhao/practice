@@ -4,5 +4,6 @@
 //console.log(window.webpacknumbers.numToWord(4))
 require('./test.js')
 //console.log(5)
-var exec = require('child_process').exec;
-console.log(exec)
+//var exec = require('child_process').exec;
+//console.log(exec)
+console.log(5)
