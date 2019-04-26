@@ -28,11 +28,11 @@
 				
 				leftButtonText: '取消',
 				leftButtonCallback: null,
-				leftTextColor: '#000',
+				leftTextColor: '#666',
 				
 				rightButtonText: '确定',
 				rightButtonCallback: null,
-				rightTextColor: '#000',
+				rightTextColor: '#3c9bff',
 				
 				isShow: false
 			}
@@ -97,7 +97,7 @@
 		height: 100%;
 		top: 0;
 		left: 0;
-        z-index: 2;
+        z-index: 11;
 	}
 	#alert-win .alert-shadow{
 		position: fixed;
@@ -106,22 +106,22 @@
 		top: 0;
 		left: 0;
 		background: rgba(0, 0, 0, .5);
-		z-index: 3;
+		z-index: 11;
 	}
 	#alert-main {
 		position: absolute;
-		width: 74%;
-		top: 35%;
-		left: 13%;
-		border-radius: .12rem;
+		width:50%;
+		top: 26%;
+		left: 25%;
+		border-radius: 0.4rem;
 		box-shadow: 0 .24rem .48rem 0 rgba(0,0,0,.3);
 		background: #fff;
-		z-index: 4;
+		z-index: 11;
 	}
 	.alert-title, #alert-footer{
-		line-height: 2.6;
+		line-height: 1.6;
 		text-align: center;
-		font-size: .3rem;
+		font-size: 0.5rem;
 	}
 	.alert-title{
 		border-bottom: 1px solid #ddd;
@@ -129,7 +129,11 @@
 	.alert-text{
 		text-align: center;
 		padding: .5rem .2rem;
-		font-size: .28rem;
+		font-family: PingFangSC-Regular;
+		font-size: .4rem;
+		color: #666666;
+		letter-spacing: 0;
+		line-height: .4rem;
 	}
 	#alert-footer{
 		color: #d43c33;
@@ -141,9 +145,11 @@
 	.alert-button-group span{
 		display: inline-block;
 		width: 48%;
-		line-height: 2.6;
+		line-height: 1.05rem;
 		text-align: center;
-		font-size: .3rem;
+		font-family: PingFangSC-Medium;
+		font-size: .4rem;
+		letter-spacing: 0;
 	}
 	.alert-button-group #alert-button-left{
 		border-right: 1px solid #ddd;

@@ -2,7 +2,6 @@
 h1, h2, h3, h4, h5, h6, p { margin:0; font-weight:normal;}
 i, em { font-style:normal;}
 body {font-family:Arial,"Helvetica Neue",Helvetica,sans-serif; font-size:16px;}
-img { width:100%;}
 a{text-decoration: none;color: #000}
 a:hover, a:focus, a:active, a:visited { text-decoration:none;}
 ul { margin-bottom:0;}
@@ -11,3 +10,48 @@ label { font-weight:normal;}
 input:hover, input:focus { outline:none;}
 input, button, select, textarea{font-family:Arial,"Helvetica Neue",Helvetica,sans-serif;-moz-appearance: none;-webkit-appearance: none;appearance: none;}
 body.greyBg{background: #eee;}
+#win-loading{
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left:0;
+	background:rgba(0,0,0,0.7);
+	z-index: 20;
+}
+.loading-content{
+	margin-top: 20%;
+}
+.loading-content img{
+	width: auto;
+	height: 60px;
+}
+.cov-date-caption{
+ 	color:#3C9BFF !important;
+ }
+ .checked{
+ 	background:#3C9BFF !important;
+ }
+ .cov-datepicker{
+ 	border-color:#999 !important;
+ 	padding: 0 0 0 10px !important;
+	box-sizing: border-box;
+ 	width: 150px !important;
+ 	height: 40px !important;
+ 	line-height: 40px !important;
+ }
+ .cov-date-caption{
+ 	font-size: 1.5vw !important;
+ }
+ .cov-date-body,.cov-picker-box{
+ 	width: 647px !important;
+ }
+ .cov-picker-box{
+ 	height: 420px !important;
+ }
+ .day{
+ 	width: 65px !important;
+ 	height: 65px !important;
+	line-height: 65px !important;
+	font-size: 23px;
+ }

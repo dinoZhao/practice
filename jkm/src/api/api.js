@@ -17,21 +17,21 @@ if (requestItem) {
 }
 let isregister=window.location.href.indexOf('register.html');
 // 添加请求拦截器
-axios.interceptors.request.use((config) => {
-    let accessToken = window.sessionStorage.getItem('accessToken') || window.localStorage.getItem('accessToken');
-    if (accessToken) {
-        config['headers']['x-auth-token'] = accessToken;
-    }
+// axios.interceptors.request.use((config) => {
+//     let accessToken = window.sessionStorage.getItem('accessToken') || window.localStorage.getItem('accessToken');
+//     if (accessToken) {
+//         config['headers']['x-auth-token'] = accessToken;
+//     }
 
-    if (config.loading) {
-        //TODO startLoading
-    }
-    return config;
-}, (error) => {
-    //请求错误处理
-    //TODO stopLoading
-    return Promise.reject(error);
-});
+//     if (config.loading) {
+//         //TODO startLoading
+//     }
+//     return config;
+// }, (error) => {
+//     //请求错误处理
+//     //TODO stopLoading
+//     return Promise.reject(error);
+// });
 
 //添加响应拦截器
 axios.interceptors.response.use((response) => {

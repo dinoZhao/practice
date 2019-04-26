@@ -17,6 +17,11 @@ export default {
         appId: '50815d32-64e5-4dc7-a5e1-13816ffd196f',
         appSecret: 'hdOv56nThwaZPfh0zP9x'
     },
+    'http://192.168.0.': {
+        requestUrl: 'http://172.16.1.140',
+        appId: '50815d32-64e5-4dc7-a5e1-13816ffd196f',
+        appSecret: 'hdOv56nThwaZPfh0zP9x'
+    },
     //User Acceptance Test
     'http://172.16.1.140': {  //TODO
         requestUrl: 'http://172.16.1.140',

@@ -1,9 +1,7 @@
-var server = require("./server");
-var router = require("./router");
-var requestHandlers = require("./requestHandlers");
-
-var handle = {}
-handle["/"] = requestHandlers.start;
-handle["/start"] = requestHandlers.start;
-handle["/upload"] = requestHandlers.upload;
-server.start(router.route,handle);
+var bb=require('./module.js')
+bb()
+function aa(para){
+	console.log(para)
+	para=5
+}
+aa(5)

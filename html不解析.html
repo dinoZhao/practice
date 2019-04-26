@@ -5,9 +5,21 @@
 		<title></title>
 	</head>
 	<body>
-	&lt;a href=""&gt;5555&lt;/a&gt;
-	&lt;555&gt;
 	
-	<code><a href="">55</a></code>
 	</body>
+	<script type="text/javascript">
+	var module = {
+        exports: {
+        }
+    };
+
+    (function(module,exports){
+          //可以修改module对象下的exports属性
+//　　　 exports = 123;　　　　　
+//修改的是当前函数环境里的exports变量,而非module.exports
+　　　exports.foo = 123       //可以修改module.exports下的foo属性
+ module.exports.foo = 12;
+　　 })(module,module.exports);
+console.log(module)
+	</script>
 </html>

@@ -21,7 +21,7 @@ module.exports = {
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 8081, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
-    openPage: 'bookbuild/personal.html',
+    openPage: 'main.html',
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
@@ -42,8 +42,8 @@ module.exports = {
     cssSourceMap: true,
 
     //开发指定目录(为保证compile速度，目录最多设置5个, list为空则默认compile所有模块)
+    //devDirectoryList: ['remoteclinic/reservation','remoteclinic/experts','remoteclinic/record','rapidetection/rapidhome','rapidetection/startdetection']
     devDirectoryList: []
-    //devDirectoryList: []
   },
 
   build: {
@@ -77,4 +77,3 @@ module.exports = {
     bundleAnalyzerReport: process.env.npm_config_report
   }
 }
-

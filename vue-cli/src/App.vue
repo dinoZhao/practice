@@ -1,8 +1,8 @@
 <template>
 	<div id="app">
         <img src="./assets/logo.png"/>
-        <img src="./assets/huge.png"/>
-        
+        <!--<img src="./assets/huge.png"/>-->
+        <child  inline-template><div>5555</div></child>
 		<div>
 			<router-link to='/foo'>foo</router-link>
 			<router-link to='/bar'>bar</router-link>
@@ -14,8 +14,11 @@
 </template>
 
 <script>
+	import child from './components/child.vue'
 	export default {
-//		name: 'app'
+components:{
+	child
+}
 
 	}
 </script>

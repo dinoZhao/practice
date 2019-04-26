@@ -3,6 +3,9 @@ import {weeks as weeksMap, months as monthsMap} from '../config/date'
 import patterns from '../config/regExps'
 import {userAgentGroups} from '../config/userAgent';
 import _alert from 'components/common/alert'
+import _loading from 'components/common/loading'
+import _toast from 'components/common/toast'
+import _construction from 'components/common/construction/construction'
 
 /**
  * 格式化数字（字符串）
@@ -147,8 +150,44 @@ export const mountToBody = (vm, component, property) => {
 		document.querySelector('body').appendChild(vm[property].$el);
 	}
 }
+//根据身份证号码得到年龄
+export const   GetAgeByIdNum = (identityCard)=>{
+  var len = (identityCard + "").length;
+  var strBirthday = "";
+  if (len == 18)//处理18位的身份证号码从号码中得到生日和性别代码
+  {
+    strBirthday = identityCard.substr(6, 4) + "/" + identityCard.substr(10, 2) + "/" + identityCard.substr(12, 2);
+  }
+  if (len == 15) {
+    strBirthday = "19" + identityCard.substr(6, 2) + "/" + identityCard.substr(8, 2) + "/" + identityCard.substr(10, 2);
+  }
+  //时间字符串里，必须是“/”
+  var birthDate = new Date(strBirthday);
+  var nowDateTime = new Date();
+  var age = nowDateTime.getFullYear() - birthDate.getFullYear();
+  //再考虑月、天的因素;.getMonth()获取的是从0开始的，这里进行比较，不需要加1
+  if (nowDateTime.getMonth() < birthDate.getMonth() || (nowDateTime.getMonth() == birthDate.getMonth() && nowDateTime.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+}
 
 Vue.prototype.alertDefault = function (params) {
 	mountToBody(this, _alert, '$alertDefault');
 	this.$alertDefault.show(params);
+}
+Vue.prototype.showLoading = function (params) {
+	mountToBody(this, _loading, '$showLoading');
+	this.$showLoading.show(params);
+}
+Vue.prototype.hideLoading = function (params) {
+	this.$showLoading.hide(params);
+}
+Vue.prototype.showtoast = function (params) {
+	mountToBody(this, _toast, '$showtoast');
+	this.$showtoast.show(params);
+}
+Vue.prototype.construction = function (params) {
+	mountToBody(this, _construction, '$construction');
+	this.$construction.show(params);
 }

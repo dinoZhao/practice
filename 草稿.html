@@ -4,21 +4,44 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Title</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<!--<script src="https://cdn.jsdelivr.net/npm/vue"></script>-->
 		<!--<script src="https://code.jquery.com/jquery-2.2.4.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/js/swiper.js"></script>-->
 		<link rel="shortcut icon" href="" type="image/x-icon" />
 		<style type="text/css"></style>
 		
 <style>
-			
+div{
+	width: 200px;
+	height: 200px;
+	border-left: 1px solid #000000;
+	border-top: 2px solid #000000;
+	margin-left: 20px;
+}
 		</style>
 	</head>
 	<body>
 		
-			
-</span>
+  <body>
+        <div>55</div>
+    </body>
+
 	</body>
 	<script type="text/javascript">
+		var width=50
+		function bb(){
+			  for (var i = 1; i < 1000; i++) {
+                    for (var j = 1; j < 1000; j++) {
+                        for (var k = 1; k < 5000; k++) {
+                            var b = k * 100;
+                        }
+                    }
+                }
+//			setInterval(function(){
+//				document.getElementsByClassName('tab')[0].style.width=width+'px'
+//				width+=1
+//			},0)
+		}
 	var arr=[]
 for(var i=0;i<10;i++){
 	arr.push(Math.floor(Math.random()*100))
@@ -31,29 +54,13 @@ for(var i=1;i<arr.length;i++){
 		arr[j+1]=arr[j]
 		j--
 	}
-	
 	arr[j+1]=temp
 }
-//for(i=1;i<arr.length;i++){
-//  var j=i-1
-//  var temp=arr[i]
-//  while(j>=0&&arr[j]>temp){
-//      arr[j+1]=arr[j]
-//      j--
-//  }
-//  arr[j+1]=temp
-//}
 
 console.log(arr)
 
 
-var img=new Image()
-img.onloadend=this.get
-img.src='./1.png'
-document.getElementsByTagName('body')[0].appendChild(img);
-function get(para){
-	console.log(para)
-}
+
 
 	</script>
 </html>
