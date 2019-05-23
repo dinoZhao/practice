@@ -1,21 +1,29 @@
 <template>
-  <div class="screeninghome" >
-    <headline headtxt="体检套餐" none></headline>
+	<div class="screening">
+		    <!--<headTop></headTop>-->
+		      <div class="screeninghome" >
+
     <div class="screening-content">
       <div class="screening-sidebar">
-        <div :class="currentTab===true?'active':''" @click="changeTab1">
+        <div :class="currentTab==='tab1'?'active':''" @click="changeTab1">
           <span>疾病筛查</span>
         </div>
-        <div :class="currentTab===false?'active':''" @click="changeTab2">
+        <div :class="currentTab==='tab2'?'active':''" @click="changeTab2">
           <span id>筛查结果</span>
         </div>
+        <div :class="currentTab==='tab3'?'active':''" @click="changeTab3">
+          <span id>优选计划</span>
+        </div>
+        <span class="all-record" @click="turnAllrecord">
+        	<img src="../../../assets/all-record.png"/><span>全部记录</span>
+        </span>
         <!--<div class="">
 					<span id="">
   				预约记录
   			</span>
         </div>-->
       </div>
-      <div class="middle-content" v-show="currentTab">
+      <div class="middle-content" v-show="currentTab==='tab1'">
         <div class="screening-titlebar">
           <div class="screening-titlebar-list">
             <span  class="active">公卫服务</span>
@@ -25,19 +33,60 @@
         </div>
         <div class="screening-content-item-1">
           <div class="screening-content-item-1-title">基层服务</div>
+          <div class="screening-content-item-1-panel" style="font-size: .3rem;padding-top: 20px;padding-bottom: 0.18rem;">
+                              加强综合防治能力，做到早发现、早治疗，减少重大疾病发病率，提高居民健康水平。
+          </div>
+        </div>
+        <div class="screening-content-item-2">
+          <div class="screening-content-item-1-title">筛查项目</div>
           <div class="screening-content-item-1-panel">
             <div>
-              <img src="../../../assets/healthy-condition.png"> 健康状况评估
+              <img src="../../../assets/ECG.png"> 心电
             </div>
             <div>
-              <img src="../../../assets/body.png"> 体格检查
+              <img src="../../../assets/blood-pressure.png"> 血压
             </div>
             <div>
-              <img src="../../../assets/check.png"> 辅助检查
+              <img src="../../../assets/blood-sugar.png"> 血糖
             </div>
             <div>
-              <img src="../../../assets/health-education.png"> 健康指导
+              <img src="../../../assets/ox.png"> 血氧
             </div>
+            <div>
+              <img src="../../../assets/BMI.png"> BMI
+            </div>
+            <div>
+              <img src="../../../assets/tempture.png"> 体温
+            </div>
+            <div>
+              <img src="../../../assets/urine-routine.png"> 尿常规
+            </div>
+            <div>
+              <img src="../../../assets/blood-fat.png"> 血脂
+            </div>
+            <!--<div>
+              <img src="../../../assets/hemoglobin.png"> 血红蛋白
+            </div>
+            <div>
+              <img src="../../../assets/POCT.png"> POCT
+            </div>-->
+          </div>
+        </div>
+        
+      </div>
+      <a href="###" class="submit cliect" @click="startDetection('public')" v-show="currentTab==='tab1'">开始检测</a>
+      <div class="middle-content" v-show="currentTab==='tab3'">
+        <div class="screening-titlebar">
+          <div class="screening-titlebar-list">
+            <span  class="active">公卫服务</span>
+            <span>优选计划</span>
+            <span>至尊计划</span>
+          </div>
+        </div>
+        <div class="screening-content-item-1">
+          <div class="screening-content-item-1-title">优选计划</div>
+          <div class="screening-content-item-1-panel" style="font-size: .3rem;padding-top: 20px;padding-bottom: 0.18rem;">
+			通过医学手段和方法对受检者进行身体检查,了解受检者健康状况、早期发现疾病线索和健康隐患的诊疗。
           </div>
         </div>
         <div class="screening-content-item-2">
@@ -53,28 +102,25 @@
               <img src="../../../assets/blood-sugar.png"> 血糖
             </div>
             <div>
-              <img src="../../../assets/B-super.png"> B超
+              <img src="../../../assets/ox.png"> 血氧
             </div>
             <div>
               <img src="../../../assets/BMI.png"> BMI
             </div>
             <div>
+              <img src="../../../assets/tempture.png"> 体温
+            </div>
+            <!--<div>
               <img src="../../../assets/urine-routine.png"> 尿常规
             </div>
             <div>
               <img src="../../../assets/blood-fat.png"> 血脂
-            </div>
-            <div>
-              <img src="../../../assets/hemoglobin.png"> 血红蛋白
-            </div>
-            <div>
-              <img src="../../../assets/POCT.png"> POCT
-            </div>
+            </div>-->
           </div>
         </div>
-        <a href="###" class="submit" @click="startDetection">开始检测</a>
       </div>
-      <div class="middle-chart" v-show="!currentTab">
+      <a href="###" class="submit cliect" @click="startDetection('preference')" v-show="currentTab==='tab3'">开始检测</a>
+      <div class="middle-chart" v-show="currentTab==='tab2'">
         <div class="finish-situation">
           <div class>
             <span>已完成</span>
@@ -119,6 +165,8 @@
       </div>
     </div>
   </div>
+	</div>
+
 </template>
 <script>
 import {
@@ -126,11 +174,11 @@ import {
   getExamScreening,
   createMedicalRecord
 } from "API/requst";
-import headline from "components/headline/headline.vue";
 import echarts from "utils/echarts.common.min";
-import { dateFormat } from 'utils/util'
+import headTop from 'components/common/headTop.vue';
+import { dateFormat,getURLParameter } from 'utils/util'
 export default {
-  name: "healthyCheckupHome",
+  name: "screeningHome",
   components: {},
   data() {
     return {
@@ -138,8 +186,9 @@ export default {
       bennLike: false,
       contentChange: true,
       pageChange: true,
-      currentTab: true,
+      currentTab: 'tab1',
       isChart: false,
+      padcode:'',
       num_of_participants_show:false,
       tabButtonIndex: 0,
       num_of_participants:{},
@@ -213,30 +262,27 @@ export default {
   methods: {
     startDetection() {
       var vm = this;
-      let personId = window.location.search.split('=')[1];
+      let personId = getURLParameter('personId');
       let params = {
         personId: personId,
-        padDeviceCode: "P1",
-        type: "公卫服务"
+        padDeviceCode: vm.padcode||sessionStorage.getItem('padcode'),
+        type: "疾病筛查"
       };
       createMedicalRecord(params).then(data => {
         console.log(data.recordId);
         sessionStorage.setItem("medicalRecordId", data.recordId);
 //      window.location.href ="../physical/result.html?medicalRecordId=" + data.recordId;
-        window.location.href = "../physical/result.html?recordId=" + data.recordId + '&personId=' + personId;
-      });
+        window.location.href = "../physical/result.html?recordId=" + data.recordId + '&personId='+personId + '&planType=public';
+      }).catch(err=>{
+			    	vm.alertDefault({
+			    		text:err.data.resultMessage?'患者未登记，请先进行"身份读取"':'',
+			    		rowButton: true
+			    	})
+			    });
       
     },
-    changeTab1() {
-      let vm = this;
-      vm.currentTab = true;
-      vm.num_of_participants_show = false;
-    },
-
-    changeTab2() {
-      let vm = this;
-      vm.currentTab = false;     
-      //	console.log(document.getElementById(""));
+    initEcharts(){
+    let vm = this;
     var myChart = echarts.init(document.getElementById("mycharts"));
     console.log(document.getElementById("mycharts"));
 		vm.option.series[0].data[0].value = vm.all_patient.normalCount;
@@ -244,9 +290,33 @@ export default {
 		vm.option.series[0].data[2].value = vm.all_patient.highGluCount;
 		vm.option.series[0].data[3].value = vm.all_patient.ecgAbnormalCount;
     console.log(myChart);
-    myChart.setOption(vm.option);
-    vm.num_of_participants = vm.all_patient;
-    vm.num_of_participants_show = true;
+    myChart.setOption(vm.option);	
+//  vm.num_of_participants_show = true;
+    },
+    changeTab1() {
+      let vm = this;
+      vm.currentTab = 'tab1';
+    },
+    changeTab2() {
+      let vm = this;
+      vm.currentTab = 'tab2'; 
+      if(JSON.stringify(vm.finish_situation)==='{}'){
+      	console.log('没取到')
+      	vm.showLoading();
+      }
+      else{
+      	console.log('取到了'+Object.getOwnPropertyNames(vm.finish_situation))
+      }
+      //	console.log(document.getElementById(""));
+			vm.initEcharts();
+//			vm.num_of_participants = vm.all_patient; 
+    },
+    changeTab3() {
+      let vm = this;
+      vm.currentTab = 'tab3';
+    },
+    turnAllrecord(){
+    	window.location.href ='../screening/allrecord.html?type=jbsc'
     },
     changeTabButton(event) {
       let vm = this;
@@ -276,37 +346,60 @@ export default {
       }
        var myChart = echarts.init(document.getElementById("mycharts"));
        exctPie[event.target.dataset.index]();
-       console.log('success');
+       console.log(event);
        myChart.setOption(vm.option);
     },
-    toDetailInfo() {
+    toDetailInfo(e) {
       window.location.href = "../screening/detailInfo.html";
     }
   },
   components: {
-    headline
+    headTop
   },
   created() {
     let vm = this;
+    try {
+			var padcode = window.android.getPadCode();
+	  	vm.padcode = padcode;
+		} catch(err) {
+			console.log(err);
+		} 
+    var personId = getURLParameter('personId');
+		if(personId){
+			sessionStorage.setItem('personId',personId)
+		}
     let params = {
-      padDeviceCode: "P1"
+      padDeviceCode: vm.padcode||sessionStorage.getItem('padcode')
     };
     getExamScreening(params).then(data => {
-      console.log(data);
+    	vm.showLoading();
+    	vm.hideLoading();
       let finish_situation={}
       finish_situation.quota = data.quota;
       finish_situation.done = data.done;
       finish_situation.finish_percentage = ((data.done/data.quota)*100).toFixed(2);
       finish_situation.expireDate = dateFormat(data.expireDate,'Y-m-d');
       vm.finish_situation = finish_situation;
-      console.log(finish_situation);
+      console.log(vm.finish_situation);
       vm.all_patient= data.allExamDto;
       vm.female_patient = data.femaleExamDto;
       vm.male_patient= data.maleExamDto;
+      vm.initEcharts();
       vm.num_of_participants_show= true;
-      vm.changeTab2();
-      vm.currentTab = !vm.currentTab;
+      vm.num_of_participants = vm.all_patient;
+//    vm.currentTab = !vm.currentTab;
     });
+		//获取地址栏参数--head
+  	let tabIndex;
+  	tabIndex = getURLParameter('tabIndex');
+  	vm.currentTab = tabIndex==='check'?'tab1':'tab2';
+  	if(tabIndex==='check'){
+  
+  	}
+  	else{	
+  			vm.showLoading();
+  	}
+  	//获取地址栏参数--end
   },
   mounted() {
 
@@ -318,21 +411,41 @@ $blueColor: #3c9bff;
 $greyColor: #ececec;
 body {
   height: 100vh;
+  overflow: hidden;
 }
 
 .home {
   color: #d43c33;
 }
-
+.all-record {
+	vertical-align: middle;
+	display: inline-block;
+	position: relative;
+	right: -40%;
+	img {
+		width: .4rem;
+		vertical-align: middle;
+	}
+	span {
+		margin-left: 0.15rem;
+		color: $blueColor;
+		font-size: 1.3em;
+		vertical-align: middle;
+	}
+}
 .screeninghome,
 .screening-content {
-  height: 100%;
+  height: 93.6%;
+
+}
+.screeninghome{
+	  padding-left: 210px;
 }
 
 .middle-content {
   display: inline-block;
   height: calc(100% - 80px);
-  width: calc(100% - 1.56rem);
+  width: calc(100%  - 240px);
   vertical-align: top;
   .screening-content-item-1,
   .screening-content-item-2 {
@@ -342,24 +455,23 @@ body {
       color: $blueColor;
       background-color: #ebf5ff;
       font-size: 0.36rem;
-      padding: 0.05rem 0.09rem;
-      width: 10.8%;
+      padding: 0.05rem 0.02rem;
+      width: 15.8%;
       height: 5.5%;
       text-align: center;
-      margin: 0.3rem 0 0.3rem 0;
+      margin: 0.1rem 0 0.1rem 0;
       border-radius: 25px;
     }
     .screening-content-item-1-panel {
-      width: 90%;
       div {
         display: inline-block;
-        width: 13.5%;
+        width: 13.9%;
         text-align: center;
-        font-size: 0.32rem;
-        margin-bottom: 0.35rem;
+        font-size: 0.30rem;
+        margin-bottom: 0.25rem;
         img {
           display: block;
-          width: 0.6rem;
+          width: 0.7rem;
           height: 0.6rem;
           margin: 0.05rem auto;
         }
@@ -369,11 +481,11 @@ body {
 }
 .middle-chart {
   display: inline-block;
-  width: 92.1vw;
+  width: 100%;
   height: 100%;
   vertical-align: top;
   .finish-situation {
-    width: 100.6%;
+    width: 100.9%;
     height: 8vw;
     background-color: #f2f2f2;
     margin-top: 0px;
@@ -382,7 +494,7 @@ body {
     
     div {
       display: inline-block;
-      margin: 0.35rem 0.5rem 0.3rem 0.9rem;
+      margin: 0.35rem 0.10rem 0.3rem 0.30rem;
       span {
         font-size: 0.35rem;
       }
@@ -442,36 +554,41 @@ body {
   vertical-align: top;
   display: inline-block;
   position: relative;
-  margin-top: 80px;
+  /*margin-top: 80px;*/
 }
 
 .screening-sidebar {
-  width: 1.4rem;
-  height: calc(100% - 80px);
-  border-right: solid 1px $greyColor;
-  border-bottom: solid 1px $greyColor;
+  width:100%;
+  /*margin-left: 240px;*/
+  /*height: 103%;*/
+/*  border-right: solid 1px $greyColor;*/
+  /*border-bottom: solid 1px $greyColor;*/
   display: inline-block;
   position: relative;
-  top: 80px;
+  display: block;
+  margin-left: 0.25rem;
+  /*top: 80px;*/
   div {
-    width: 100%;
+    width: 12%;
     height: 50%;
     font-size: 0.36rem;
-    color: $blueColor;
+    color: black;
     position: relative;
+    display: inline-block;
+    padding: 0.25rem 0.2rem 0.2rem 0.2rem;
     span {
       display: block;
-      width: 51.5%;
+      /*width: 60%;*/
       text-align: center;
-      position: absolute;
+      /*position: absolute;
       top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      left: 50%;*/
+      /*transform: translate(-50%, -50%);*/
     }
   }
   .active {
-    background-color: $blueColor;
-    color: white;
+    color: $blueColor;
+    border-bottom: solid 2.5px $blueColor;
   }
 }
 
@@ -495,13 +612,18 @@ body {
   display: block;
   margin: 0 auto;
   width: 26vw;
-  height: 11.7vh;
+  height: 1rem;
   text-align: center;
-  font-size: 0.4rem;
-  line-height: 11.7vh;
+  font-size: 0.48rem;
+  line-height: 1rem;
   color: white;
   background-color: #3c9bff;
   border-radius: 15px;
+  margin-top: 0.1rem;
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-25%);
 }
 .special_y {
   font-family: PingFangSC-Regular;
@@ -509,14 +631,14 @@ body {
   color: #333333;
 }
 #mycharts{
-	width:82vw;
+	width:72vw;
 	height: 28vw;
 	margin-top: 0.5rem;
 }
 .patient-num{
-	position: absolute;
-	top: 30.5vw;
-	left: 44.5vw;
+	position: fixed;
+	top:  35.5vw;
+	left: calc(29.7vw + 240px);
 	p{
 		line-height: 0.6rem;
 		color: #adadad;

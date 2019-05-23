@@ -1,7 +1,7 @@
 <template>
 <div class="index">
   <div class="main">
-    <head>
+    <!-- <head>
       <img class="head_logo" src="@/assets/index_head_logo.png" alt>
       <div class="head_right">
         <img class="doctor_headurl" :src="doctorMsg.headUrl||require('@/assets/headUrl.png')">
@@ -16,14 +16,15 @@
           <span @click="loginAgain">注销</span>
         </div>
       </div>
-    </head>
+    </head> -->
+    <headTop />
     <div class="content">
       <div class="left">
         <div class="top" v-show="hadIdCard">
           <img class="head_url" :src="patientMsg.headUrl||'http://ww1.sinaimg.cn/large/005SvFg2ly1g0tb4guu90j302i02ijr6.jpg'">
           <div class="personal_msg" v-show="patientMsg.patientName">
             <span style="margin-right:.32rem;">{{patientMsg.patientName}}</span>
-            <span>{{patientMsg.patientSex?"男":"女"}}&nbsp;&nbsp;{{patientMsg.patientAge}}岁</span>
+            <span>{{patientMsg.patientSex}}&nbsp;&nbsp;{{patientMsg.patientAge}}岁</span>
           </div>
           <div class="telphone">
             <input type="text" maxlength="11" :value="patientMsg.patientPhone" disabled>
@@ -47,24 +48,32 @@
         <img class="logo" src="@/assets/home_index_xinxia.png" alt>
       </div>
       <div class="right">
-        <div class="scroll_x move">
-          <div
-            class="item"
-            v-for="(item, index) in items"
-            :key="index"
-          > 
-            <img class="bkg" :src="item.src" @click="clickItem(index)">
-            <span @click="clickItem(index)">{{item.name}}</span>
-          </div>
-          <img class="notice" src="@/assets/more_right.png" alt="" @click="moveLeft">
-        </div>
-        <div class="scroll_x">
-          <div class="item" v-for="(item, index) in moreItems" :key="index+'i'">
-            <img class="bkg" :src="item.src" @click="clickItem(index+6)">
-            <span @click="clickItem(index+6)">{{item.name}}</span>
-          </div>
-          <img class="switch" src="@/assets/more_left.png" alt="" @click="moveRight">
-        </div>
+        <swiper :options="swiperOption"  ref="mySwiper">
+          <!-- slides -->
+          <swiper-slide>
+            <div class="scroll_x move">
+              <div
+                class="item"
+                v-for="(item, index) in items"
+                :key="index"
+              > 
+                <img class="bkg" :src="item.src" @click.stop="clickItem(index)">
+                <span @click.stop="clickItem(index)">{{item.name}}</span>
+              </div>
+              <img class="swiper-next" src="@/assets/more_right.png" alt="">
+            </div>
+          </swiper-slide>
+          <swiper-slide>
+            <div class="scroll_x">
+              <div class="item" v-for="(item, index) in moreItems" :key="index+'i'">
+                <img class="bkg" :src="item.src" @click.stop="clickItem(index+6)">
+                <span @click.stop="clickItem(index+6)">{{item.name}}</span>
+              </div>
+              <img class="swiper-prev" src="@/assets/more_left.png" alt="">
+            </div>
+          </swiper-slide>
+          <!-- Optional controls -->
+        </swiper>
       </div>
       <div class="waiting" v-show="showWaiting">
         <div style="width:100%;">
@@ -165,7 +174,10 @@
 <script>
 import { readPatientMsg, getTodayTasks, getSomethingDo,checkArchives,rakeCareEnd } from "API/requst";
 import headline from "../../../components/headline/headline.vue";
+import headTop from "../../../components/common/headTop.vue";
 import { dateFormat,getURLParameter } from "utils/util";
+import 'swiper/dist/css/swiper.css'     //这里注意具体看使用的版本是否需要引入样式，以及具体位置。
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import 'utils/play'
 import $ from 'jquery'
 
@@ -173,6 +185,15 @@ export default {
   name: "index",
   data() {
     return {
+      swiperOption:{
+        notNextTick: true,
+        preventClicksPropagation: true,//阻止click冒泡。拖动Swiper时阻止click事件。
+        //左右点击
+        navigation: {
+            nextEl: '.swiper-next',
+            prevEl: '.swiper-prev',
+        },
+      },    //轮播图信息
       doctorMsg: {},
       patientMsg: {},
       showMore: true,
@@ -215,36 +236,46 @@ export default {
         
       personId: '',   //病人id
       patientIdNumber:'',   //病人身份证
+      padcode:''
     };
   },
   methods: {
     clickItem(index) {
-      if (!this.personId&&index!=9&&index!=10) {
-        window.location.href = "../bookbuild/personal.html";
-        return 
-      }
       switch (index) {
         case 0:
-          window.location.href ='../remoteclinic/reservation.html'
+          window.location.href ='../remoteclinic/reservation.html?index=3';
           break;
         case 1:
-          window.location.href = '../screening/screeninghome.html?personId='+this.personId
+          if (!this.personId) {
+            window.location.href = "../bookbuild/personal.html";
+            return 
+          }
+          window.location.href = '../screening/screeninghome.html?personId='+this.personId+'&index=6';
           break;
         case 2:
-          window.location.href ='../healthyCheckup/healthyCheckupHome.html?personId='+this.personId
+          if (!this.personId) {
+            window.location.href = "../bookbuild/personal.html";
+            return 
+          }
+          window.location.href ='../healthyCheckup/healthyCheckupHome.html?personId='+this.personId+'&index=5'
           break;
         case 3:
           window.location.href = '../rapidetection/rapidhome.html'
           break;
         case 4:
           window.location.href = 'http://apitest.cipmr.cn/distribution/index'
+          // 清除历史栈记录
           history.pushState(null, null, document.URL);
           window.addEventListener("popstate", function() {
             history.pushState(null, null, document.URL);
           });
           break;
         case 5:
-          window.location.href = "../healthrecord/healthhome.html?personId="+this.personId;
+          // if (!this.personId) {
+          //   window.location.href = "../bookbuild/personal.html";
+          //   return 
+          // }
+          window.location.href = "../healthrecord/healthhome.html?personId="+this.personId+'&index=2';
           break;
         case 6:
           this.construction()
@@ -253,7 +284,7 @@ export default {
           this.construction()
           break;
         case 8:
-          window.location.href='./excellentPlan.html'
+          window.location.href='./excellentPlan.html?index=9'
           break;
         case 9:
           window.android.startPolicyPropaganda()
@@ -269,7 +300,7 @@ export default {
     },
     endTakacare(){
       var vm = this;
-      rakeCareEnd({idNumber: vm.patientIdNumber,padDeviceCode: 'P1',serialNo: '',}).then(data=>{
+      rakeCareEnd({idNumber: vm.patientIdNumber,padDeviceCode: vm.padcode||sessionStorage.getItem('padcode'),serialNo: '',}).then(data=>{
         // console.log(data)
         if(data.resultCode=='success'){
           vm.personId =''
@@ -281,7 +312,7 @@ export default {
       }).catch(err=>{console.log(err.data.resultMessage)})
     },
     changePersonMsg(){
-      window.location.href = '../bookbuild/personal.html'
+      window.location.href = '../bookbuild/noPerson.html?index=11'
     },
     closeWaitPage() {
       this.showWaiting = false;
@@ -344,7 +375,7 @@ export default {
     },
     establishmentBySelf() {
       this.isAllowInterval = false
-      window.location.href = "../bookbuild/info.html";
+      window.location.href = "../bookbuild/info.html?index=11";
     },
     openWaiting() {
       var vm = this;
@@ -358,7 +389,7 @@ export default {
       var vm = this;
       var docMsg = JSON.parse(sessionStorage.getItem("doctorMsg"));
       vm.doctorMsg = docMsg;
-      readPatientMsg({ serialNo: "", padDeviceCode: "P1",thirdUniqueId:docMsg.doctorId,personId:vm.personId}).then(res => {
+      readPatientMsg({ serialNo: "", padDeviceCode:vm.padcode||sessionStorage.getItem('padcode'),thirdUniqueId:docMsg.doctorId,personId:vm.personId}).then(res => {
         // console.log(res)
         if (res.resultCode == "success") {
           vm.patientMsg = res;
@@ -421,24 +452,14 @@ export default {
     },
     openNextPage(Type){
       if(Type=='outpatient'){
-        window.location.href ='../remoteclinic/reservation.html'
+        window.location.href ='../remoteclinic/reservation.html?index=3';
       }
       // if(Type=='exam'){
       // }
     },
-    moveLeft(){
-      this.$nextTick(function(){
-        var width = $('.move').width()
-        $('.right').scrollLeft(width)
-      })
-    },
-    moveRight(){
-      this.$nextTick(function(){
-        $('.right').scrollLeft(0)
-      })
-    },
     loginAgain(){
       window.location.href = '../user/login.html'
+      sessionStorage.clear()
     },
     interVal(){
       var vm = this;
@@ -485,7 +506,10 @@ export default {
     }
   },
   components: {
-    headline
+    headline,
+    swiper,
+    swiperSlide,
+    headTop
   },
   created(){
     var idNumber = getURLParameter('patientIdNumber'),vm = this;
@@ -500,7 +524,13 @@ export default {
     }else{
       vm.personId =''
     }
-    vm.interVal()
+    vm.interVal();
+    try {
+			var padcode = window.android.getPadCode();
+	  	vm.padcode = padcode;
+		} catch(err) {
+			console.log(err);
+		}
   },
   beforeMount() {
     var vm = this;
@@ -510,7 +540,7 @@ export default {
     var vm = this;
   },
   destroyed() {
-    window.removeEventListener('scroll', this.moveLeft)
+    
   },
 };
 </script>
@@ -588,8 +618,8 @@ export default {
   }
   .content {
     background: url("../../../assets/home_index_bg.png") no-repeat center center;
-    background-size: 100%;
-    height: calc(100% - 1rem);
+    background-size: cover;
+    height: 100%;
     display: flex;
     position: relative;
     .left {
@@ -739,7 +769,7 @@ export default {
           flex-wrap: wrap;
           align-content: flex-start;
         }
-        .notice{
+        .swiper-next{
           width: .74;
           height: 1.54rem;
           position: absolute;
@@ -747,7 +777,7 @@ export default {
           top: 39%;
         }
         flex-shrink: 0;
-        .switch{
+        .swiper-prev{
           width: .74rem;
           height: 1.54rem;
           position: absolute;
@@ -760,7 +790,7 @@ export default {
         height: 3.4rem;
         display: inline-block;
         position: relative;
-        margin-left: 6.5%;  //.9rem
+        margin-left: 4.5%;  //.9rem
         margin-top: 5%;
         // &:nth-of-type(7),&:nth-of-type(8),&:nth-of-type(9) {
         //   margin-bottom: 0.6rem;

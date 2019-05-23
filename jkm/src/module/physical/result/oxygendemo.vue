@@ -1,7 +1,7 @@
 <template>
 	<div class="ecgfur">
 		<div class="process">
-
+<ignore  :preindex="2"></ignore>
 			<div class="box">
 				<div class="boxleft">
 					<div class="step step1 on"></div>
@@ -25,25 +25,31 @@
 			</div>
 
 		</div>
-
+       <manu class='mymanu' :type='0' :manu='2'></manu>
 	</div>
 </template>
 
 <script>
 	var interval;
+	import ignore from './ignore.vue'
+	import manu from './manu.vue'
 	export default {
 		inject: ['getresult'],
 		props: ['detact'],
+		components:{
+			ignore,
+			manu
+		},
 		activated() {
 			var self = this
-			if(this.detact['SpO2']) {
-				this.$emit('promote', 2)
+			if(this.detact['SpO2']&&(self.detact['SpO2']['saturation']||self.detact['SpO2']['VS_HeartRate'])) {
+				this.$emit('promote', 2,1)
 			} else {
 				interval = setInterval(function() {
 					self.getresult()
-					if(self.detact['SpO2']) {
+					if(self.detact['SpO2']&&(self.detact['SpO2']['saturation']||self.detact['SpO2']['VS_HeartRate'])) {
 						clearInterval(interval)
-						self.$emit('promote', 2)
+						self.$emit('promote', 2,1)
 					}
 				}, 2000)
 			}
@@ -57,11 +63,19 @@
 <style scoped="scoped" lang="scss">
 	.ecgfur {
 		box-sizing: border-box;
+		.mymanu{
+			// margin-left: 0.3rem;
+			position: absolute;
+			bottom: .4rem;
+			left: 2.5vw;
+			font-size: 0.3rem;
+		}
 		.process {
 			height: 7rem;
 			padding: 0.3rem 0.7rem 0 0.8rem;
 			display: flex;
 			flex-direction: column;
+			position: relative;
 			.box {
 				width: 4.5rem;
 				height: 2rem;

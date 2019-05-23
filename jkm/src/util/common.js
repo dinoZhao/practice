@@ -3,10 +3,15 @@
 // 3）、屏蔽登录、注册等一些认证页面
 
 import {shieldPageList, mainPageList} from './shield'
+import { getURLParameter,dateFormat,empty  } from 'utils/util'
 
 var currentPath = window.location.pathname;
 const historyUrlKey = 'historyUrl';
 // const homePagePath = '/cloudmm/issue/recommend.html';
+var personId = getURLParameter('personId');
+if(personId){
+	sessionStorage.setItem('personId',personId)
+}
 var _historyUrl = getHistoryUrl();
 if (mainPageList.indexOf(currentPath) > -1) {
     sessionStorage.setItem(historyUrlKey, window.location.href);

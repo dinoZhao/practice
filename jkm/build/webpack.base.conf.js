@@ -29,7 +29,8 @@ module.exports = {
       'utils': resolve('src/util'),
       'API': resolve('src/api'),
       'components': resolve('src/components'),
-      'static': resolve('src/static')
+      'static': resolve('src/static'),
+      'assets':resolve('src/assets')
     },
     modules:[path.resolve(__dirname,'..','node_modules')]
   },

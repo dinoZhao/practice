@@ -54,7 +54,7 @@ export default {
 		text-align: center;
 	    background: rgba(0,0,0,0.7);
 	    width: 20%;
-	    line-height: 120px;
+	    padding:30px 20px;
 	    color: #fff;
 	    border-radius: 20px;
 	    position: absolute;

@@ -2,9 +2,13 @@
   <div class="hometest"> 
   	hometest<img src="../../../assets/weixin.png" /><headline headtxt="首页" none=""></headline>
   	<div class="time"><date-picker :date="startTime" :option="option" :limit="limit"></date-picker></div>
+  	<div class="pinch-zoom">
+        <img src="../../../assets/casehistory.png" class="big">
+    </div>
   </div>
 </template>
 <script>
+import $ from 'jquery'
 import {getKnowledgeTag,cancelAttention} from 'API/requst'
 import headline from 'components/headline/headline.vue';
 import { getURLParameter,dateFormat } from 'utils/util'
@@ -80,25 +84,16 @@ export default {
   },
   created () {
   	var vm = this;
-  	setTimeout(function(){
-  		vm.alertDefault({
-            text:'课程学习完毕，来检验一下学习成果吧',
-            rowButton:true,
-            rightButtonCallback:function(){
-               
-            }
-        })
-  	},1000)
   },
   mounted(){
-    let id ={'productCode':'YQB00101'};
-    let per = {'content':'h5/homePage/index.h5_default'}
-    getKnowledgeTag(id).then(data=>{
-      console.log(data)
-    })
-    cancelAttention(per).then(data=>{
-      console.log(data)
-    })
+//  let id ={'productCode':'YQB00101'};
+//  let per = {'content':'h5/homePage/index.h5_default'}
+//  getKnowledgeTag(id).then(data=>{
+//    console.log(data)
+//  })
+//  cancelAttention(per).then(data=>{
+//    console.log(data)
+//  })
   }
 }
 </script>

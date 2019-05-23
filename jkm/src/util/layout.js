@@ -12,9 +12,15 @@ import "static/css/init.css"
             }
             docNode.style.fontSize = clientWidth / 19.2 + 'px';
         }
-        if (!doc.addEventListener) {
-            return;
-        }
-        global.addEventListener(resizeEventName, recalcRemHandler, false);
-        doc.addEventListener('DOMContentLoaded', recalcRemHandler, false);
+    if (!doc.addEventListener) {
+        return;
+    }
+    global.addEventListener(resizeEventName, recalcRemHandler, false);
+    doc.addEventListener('DOMContentLoaded', recalcRemHandler, false);
 })(window, document);
+//暴露给原生的方法
+window.loginAgain = () => {
+    window.location.href = "../user/login.html";
+    window.android ? window.android.cancellation() : "";
+    sessionStorage.clear();
+}

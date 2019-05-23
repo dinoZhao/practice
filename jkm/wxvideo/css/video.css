@@ -1,0 +1,96 @@
+html,body,#counter-event-example,#app{
+	width: 100%;
+	height: 100%;
+}
+.video-btoom-left{
+	width: 100%;
+}
+#video-btoom{
+    height: 90vh;
+    overflow: hidden;
+}
+#remote-video-wrap{
+	height: 90vh;
+    width: 100%;
+    position: relative;
+}
+.video-operation{
+	z-index: 2;
+}
+#nopatient{
+height: 90vh;	
+}
+video.yuancheng{
+	width: 85vh;
+    height: 88vw;
+    transform:rotate(90deg) translate(10px,-89vw);
+    transform-origin: left top;
+}
+@media screen and (min-width:1600px) {
+	video.yuancheng{
+	    transform:rotate(90deg) translate(10px,-89vw);
+	   transform-origin: left top;
+    	object-fit: fill;
+	}
+	.video-operation {
+	    width: 35%;
+	    position: absolute;
+	    top: 76vh;
+	    left: 30px;
+	}
+	#remote-video-wrap{
+		height: 90vh;
+	}
+}
+@media screen and (max-width:1300px) {
+	video.yuancheng{
+	   transform:rotate(90deg) translate(10px,-89vw);
+	   transform-origin: left top;
+    	object-fit: fill;
+    	width: 83vh;
+	}
+	.video-operation {
+	    width: 35%;
+	    position: absolute;
+	    top: 76vh;
+	    left: 30px;
+	}
+	#remote-video-wrap{
+	   height: 90vh;
+	}
+	.video-operation>div img {
+	    width: auto;
+	    height: 30px;
+	    margin-right: 10px;
+	    vertical-align: middle;
+	}
+}
+@media screen and (min-width:1301px) and (max-width: 1599px) {
+	video.yuancheng{
+	    transform:rotate(90deg) translate(10px,-89vw);
+	   	transform-origin: left top;
+	    object-fit: fill;
+	    top: -15.1%;
+    	left: 20.8%;
+	}
+	.video-operation {
+	    width: 35%;
+	    position: absolute;
+	    top: 76vh;
+	    left: 30px;
+	}
+	#remote-video-wrap{
+		height: 90vh;
+	}
+	.video-operation>div img {
+	    width: auto;
+	    height: 30px;
+	    margin-right: 10px;
+	    vertical-align: middle;
+	}
+	#local{
+		width:15vw !important;
+		height: auto;
+		transform: rotate(0deg);
+	}
+}

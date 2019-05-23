@@ -18,7 +18,17 @@
                </div>
                <div class="databottom">
                    <span>{{healthInfo.bloodOxygen||''}}</span>
-                   <i>BPM</i>
+                   <i>%</i>
+                   &nbsp;
+                   <div class="pulse-rate">
+                   	<span>
+                   		脉率 
+                   	</span>
+                   	<span >&nbsp;
+                   		 {{healthInfo.vs_heartRate||''}}
+                   	</span>
+                   	<span> BPM</span>
+                   </div>
                </div>
            </div>
            <div v-show="healthInfo.bloodSugar ===''?false:true">
@@ -45,37 +55,56 @@
         <div class="container2" v-show="healthInfo.ecgUrl ===''?false:true">
             <div class="containertop">
                 <span>心电图</span>
-                <i :class="healthInfo.ecgStatus==='正常'?'normal-panel':'alert'">{{healthInfo.ecgStatus||''}}</i>
+                <i :class="healthInfo.ecgStatus==='正常'?'normal-panel':'alert'" v-if="healthInfo.ecgUrl">{{healthInfo.ecgStatus||'异常'}}</i>
             </div>
             <div class="containerbottom">
+            	<viewer class='view'>
                 <img :src="healthInfo.ecgUrl" alt="">
+                </viewer>
             </div>
         </div>
     </div>
 </template>
 <script>
+import Viewer from 'v-viewer'
 export default {
 	props: ['healthInfo'],
     data(){
         return {
+        	Options:{//预览插件配置
+				"inline": true, "button": true, "navbar": false, "title": false, "toolbar": false, "tooltip": false,
+				"movable": false, "zoomable": true, "rotatable": false, "scalable": false, "transition": true, 
+				"fullscreen": true, "keyboard": false, "url": "data-source"
+  		       },
 		tabShow:true
         }
     },
+    components:{
+		},
+    
     methods:{
 
     },
     created(){
-
+    	let vm = this;
+		Viewer.setDefaults({
+			Options:vm.Options
+		});
     }
 
 }
 </script>
 <style scoped>
+	#healthdata{
+		overflow-x: hidden;
+	}
     .container1{
+        width: 100%;
         overflow: hidden;
+        overflow-x: hidden;
     }
     .container1>div{
-      width:5rem;
+      width:4.6rem;
       height:1.4rem;
       border:1px solid #eee;
       float: left;
@@ -111,6 +140,16 @@ export default {
     .datatop,.databottom{
         height: 50%;
     }
+    .databottom>span,.databottom>i{
+    	vertical-align: middle; 
+    }
+    .databottom>.pulse-rate{
+    		display: inline-block;
+vertical-align: middle; 	
+    }
+    .databottom>.pulse-rate>span:last-child{
+    	color: #999;
+    }
     .datatop>span{
         line-height: 0.7rem;
         font-size: 0.28rem;
@@ -122,16 +161,18 @@ export default {
     }
     .alert {
         background-color: #FC6350;
-        height: 0.3rem;
-        width: 0.6rem;
+        /*height: 0.3rem;
+        width: 0.6rem;*/
+        font-size: 0.25rem;
+        padding: 0.01rem 0.22rem;
         display: inline-block;
         overflow: hidden;
         box-sizing: border-box;
         margin:0rem 0 0rem 0.2rem;
         vertical-align: middle;
         text-align: center;
-        line-height: 0.32rem;
-        border-radius: 0.3rem;
+        line-height: 0.4rem;
+        border-radius: 0.2rem;
         color: #fff;
         
     }
@@ -140,15 +181,15 @@ export default {
 
         /*width: 0.7rem;*/
         font-size: 0.25rem;
-        padding: 0.05rem 0.2rem;
+        padding: 0.00rem 0.2rem;
         display: inline-block;
         overflow: hidden;
         box-sizing: border-box;
         margin:0.2rem 0 0.2rem 0.2rem;
         border:1px solid #30CBE1; 
         text-align: center;
-        line-height: 0.32rem;
-        border-radius: 0.3rem;
+        line-height: 0.4rem;
+        border-radius: 0.2rem;
         color: #30CBE1;
         font-weight: lighter;
         vertical-align: middle;
@@ -169,8 +210,8 @@ export default {
         color: #999;
     }
     .containertop{
-        font-size: 0.24rem;
-        font-weight: bold;
+        font-size: 0.28rem;
+        /*font-weight: bold;*/
         margin-left:0.7rem;
         margin-top:0.5rem;
         display: inline-block;
@@ -179,6 +220,9 @@ export default {
     }
     .containertop>span{
     	vertical-align: middle;
+    }
+    .containerbottom{
+    	padding-top: 0.2rem;
     }
     .containerbottom>img{
         margin-left:0.7rem;
@@ -198,6 +242,16 @@ export default {
         font-size: 0.16rem;
         line-height: 0.3rem;
         color:#30CBE1; 
+    }
+    .view {
+        width: 90%;
+        margin-left: 0.5rem;
+        height: calc(100% - 2.49rem);
+        margin-bottom: 0.6rem;
+    }
+	.view>img{
+        width: 100%;
+        height: 100%;
     }
 </style>
 

@@ -1,0 +1,120 @@
+#coat {
+    overflow: hidden;
+    height: 100%;
+}
+
+.content {
+    width: 100%;
+    display: flex;
+    min-height: 100%;
+    height: 100%;
+    .left {
+        width: 16.8%;
+        min-height: calc(100% - 1rem);
+        border-right: 1px solid #D9D9D9;
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-content: flex-start;
+        height: 100%;
+        overflow: scroll;
+        padding-bottom: 2rem;
+        box-sizing: border-box;
+        .info {
+            justify-content: center;
+            width: 100%;
+            display: inline-flex;
+            height: 6.77vw;
+            align-items: center;
+            display: none;
+            img {
+                width: 0.9rem;
+                height: 0.9rem;
+                margin-right: 10px;
+                border-radius: 0.9rem;
+            }
+            /*margin:0.2rem auto;*/
+            .detail {
+                display: inline-flex;
+                flex-direction: column;
+            }
+        }
+        .inquire{
+            width: 100%;
+             height: 66px;
+            line-height: 66px;
+            text-align: center;
+            font-size: 0.32rem;
+            position: relative;
+            color: #3C9BFF;
+            border-bottom: 1px solid #D9d9d9;
+            img{
+                width: 0.43rem;
+                height: 0.5rem;
+                vertical-align: middle;
+                margin-right: 0.2rem;
+            }
+        }
+        .item {
+            width: 100%;
+             height: 66.5px;
+            line-height: 66.5px;
+            text-align: center;
+            font-size: 0.32rem;
+            position: relative;
+            img {
+                position: absolute;
+                width: 0.44rem;
+                right: 0.15rem;
+                top: 0.25rem;
+            }
+        }
+        
+        .on {
+            background: #3C9BFF;
+            color: #fff;
+        }
+        .create {
+             width: calc( (100% - 200px) * 0.167 );
+             bottom: 0;
+             position: fixed;
+             height: 0.9rem;
+             padding-bottom: calc(0.4rem + 2px);
+             background: #fff;
+             border-right: 1px solid #D9D9D9;
+            div{
+                height: 0.9rem;
+                line-height: 0.9rem;
+                color: #FC9452;
+                border-radius: 10px;
+                border: 2px solid #FC9452;
+                text-align: center;
+                font-size: 0.4rem;
+                width: 80%;
+                margin-left: 10%;
+            }
+   
+        }
+    }
+    .right {
+        width: 83%;
+        height: calc(100%);
+        overflow: scroll;
+        position: relative;
+        /deep/ .icon {
+            width: 0.3em;
+            position: static;
+            height: 0.8em;
+            opacity: 1;
+            vertical-align: baseline;
+        }
+        /deep/ .suggest{
+            background: #F5FAFF;
+            padding: 0.3rem;
+            box-sizing: border-box;
+            width: 100%;
+        }
+        /deep/ .ecgfur .process{
+            padding: 0.3rem 2.5vw 0 2.5vw;
+        }
+    }
+}

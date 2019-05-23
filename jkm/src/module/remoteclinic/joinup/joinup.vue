@@ -43,7 +43,7 @@
 </template>
 <script>
 var timer = null;
-import {clinicAppointmentAccess,queryClinicAppointmentInfo,uploadFile,updateAppointment,submitAppointmentRoomId} from 'API/requst'
+import {clinicAppointmentAccess,queryClinicAppointmentInfo,uploadFile,updateAppointment,submitAppointmentRoomId,visitClinicAppointment} from 'API/requst'
 import headline from 'components/headline/headline.vue'
 import myDatepicker from 'vue-datepicker'
 import { getURLParameter,dateFormat,empty} from 'utils/util'

@@ -44,11 +44,11 @@ axios.interceptors.response.use((response) => {
     if (!error) {
         return false;
     }
+    
     //400 Bad Request
     if (error.status == '400') {
         return Promise.reject(error);
     }
-
     //401 Unauthorized
     if (error.status == '401') {
         //未授权跳转到登录

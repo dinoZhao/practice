@@ -1,0 +1,171 @@
+.appoint-content{
+    display: inline-block;
+    /*width:69%;*/
+    width:90%;
+    padding: 0 5vw;
+}
+.appoint-date{
+	display: inline-block;
+    width: calc(27%-30px);
+    padding: 0 15px;
+    vertical-align: top;
+    padding-top: 20px;
+    padding-left: 0;
+}
+.appointlist-head{
+    font-size: 20px;
+    padding: 15px 0;
+}
+.appoint-content-head{
+	background: #f5faff;
+}
+.appoint-content-list{
+	font-size: 16px;
+}
+.appoint-content-head>div,.appoint-item-head>div{
+    display: inline-block;
+    width: 16%;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 16px;
+    line-height: 50px;
+}
+.Revisiting{
+	color:#3C9BFF;
+}
+.unfinish{
+	color:#EB5454;
+}
+.appoint-item-head>div:nth-child(1){
+	font-size: 18px;
+	font-weight: bold;
+}
+.appoint-item-head>div:nth-child(2){
+	font-size: 18px;
+	color: #999;
+}
+.appoint-item-head>div:nth-child(2) span{
+	color:#3C9BFF;
+	font-size: 22px;
+}
+.appoint-content-head .operation,.appoint-item-head .operation-btn{
+	width: 20%;
+}
+.appoint-item-head .operation-see{
+	color: #3C9BFF;
+}
+.appoint-list>li:nth-child(odd){
+	background: #fff;
+}
+.appoint-list>li:nth-child(even){
+	background: #f5faff;
+}
+.appoint-item-bottom{
+	padding: 0 5%;
+	display: none;
+    padding-bottom: 10px;
+}
+.appoint-diagnose,.appoint-pharmacy,.appoint-proposal{
+	font-size: 16px;
+	margin-top: 10px;
+}
+.appoint-diagnose>p,.appoint-pharmacy>p,.appoint-proposal>p{
+	color: #999;
+}
+.appoint-pharmacy-text>div{
+	color: #999;
+    margin-bottom: 5px;
+}
+.appoint-pharmacy-text>div>p{
+	display: inline-block;
+	width: 25%;
+    max-width: 33.33%;
+}
+.appoint-pharmacy-text>div span{
+	color: #333;
+	margin-right: 15px;
+}
+/*插件*/
+#layui-laydate1{
+	box-shadow: none;
+}
+.layui-laydate-main {
+    width: auto;
+    min-width: 202px;
+}
+.layui-laydate-content td, .layui-laydate-content th {
+    width: 3.2vw;
+    height: 3.6vw;
+    padding: 5px;
+    text-align: center;
+    border: 5px solid #fff;
+}
+.laydate-day-mark {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    line-height: 18px;
+    font-size: 12px;
+    overflow: hidden;
+    border: 1px solid #3C9BFF;
+    border-radius: 5px;
+}
+.laydate-day-mark::after {
+    position: absolute;
+    content: '';
+    right: 2px;
+    top: 2px;
+    width: 0px;
+    height: 0px;
+}
+.laydate-day-mark>b:nth-child(1){
+	font-weight: 100;
+    width: 100%;
+    display: inline-block;
+    height: 50%;
+    line-height: 1.8vw;
+}
+.laydate-day-mark>b:nth-child(2){
+	font-weight: 100;
+    width: 100%;
+    display: inline-block;
+    border-top: 1px solid #3C9BFF;
+    color: #3C9BFF;
+    height: 50%;
+    line-height: 1.6vw;
+}
+.layui-this .laydate-day-mark{
+	border-color: #F59C31;
+    background: #fff;
+    border-radius: 0;
+}
+.layui-laydate .layui-this {
+    background-color: #3C9BFF!important;
+    color: #fff!important;
+    
+}
+.layui-this .laydate-day-mark>b:nth-child(1){
+	color:#F59C31;
+}
+.layui-this .laydate-day-mark>b:nth-child(2){
+	background:#F59C31;
+	color: #fff;
+	border-top: 1px solid #F59C31;
+}
+.laydate-btns-clear,.laydate-btns-confirm{
+	display: none !important;
+}
+.layui-laydate-footer{
+	height: 50px;
+}
+span.laydate-btns-now{
+    border: 1px solid #3C9BFF;
+    color: #3C9BFF;
+    border-radius: 5px;
+    line-height: 30px;
+    height: 30px;
+    width: 100px;
+    text-align: center;
+}

@@ -132,7 +132,7 @@
 		}
 		.item {
 			height: 0.8rem;
-			width: 36vw;
+			width: 28vw;
 			display: flex;
 			align-items: center;
 			span {

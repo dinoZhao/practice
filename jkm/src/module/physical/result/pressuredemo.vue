@@ -1,6 +1,8 @@
 <template>
 	<div class="ecgfur">
+		
 		<div class="process">
+			<ignore  :preindex="1"></ignore>
 			<img src="../../../assets/pressuredemo.png" />
 			<div class="describe">
 				<div class="above">
@@ -25,26 +27,34 @@
 		</div>
 
 		<div class="line">
+			<manu :type='0' :manu='1'></manu>
 			<div class="left"  @click="toggle($event)">
 				<div  :class="{on:mode==0}">成人模式</div>
 				<div  :class="{on:mode==1}">儿童模式</div>
 				<div  :class="{on:mode==2}">婴幼儿模式</div>
 			</div>
-			<div class="right"  @click="$emit('promote',1)">
+			<!--<div class="right"  @click="$emit('promote',1,1)">
 				开始测量
-			</div>
+			</div>-->
 		</div>
 	</div>
 </template>
 
 <script>
+	import ignore from './ignore.vue'
+	import manu from './manu.vue'
+	var  interval;
 	export default {
 data(){
    	return {
    		mode:0
    	}
    },
+   components:{
+   	ignore,manu
+   },
    props: ['detact'],
+   inject: ['getresult'],
    methods:{
    		toggle(e){
    			switch (e.target.innerText){
@@ -63,8 +73,22 @@ data(){
    		}
    },
  
-		created(){
-			
+		activated() {
+			var self = this
+			if(this.detact['bloodPressure']) {
+				this.$emit('promote', 1,1)
+			} else {
+				interval = setInterval(function() {
+					self.getresult()
+					if(self.detact['bloodPressure']) {
+						clearInterval(interval)
+						self.$emit('promote', 1,1)
+					}
+				}, 2000)
+			}
+		},
+		deactivated() {
+			clearInterval(interval)
 		}
 	}
 </script>
@@ -76,6 +100,7 @@ data(){
 			height: 7rem;
 			padding: 0.3rem 0.7rem 0 2.34rem;
 			display: flex;
+			position: relative;
 			.describe {
 				display: flex;
 				flex-direction: column;
@@ -140,15 +165,22 @@ data(){
 				}
 			}
 			img {
-				height: 100%;
+				height: 90%;
+				    margin-left: 20%;
 			}
 		}
 		.line {
+			width: 100%;
+			position: absolute;
+			bottom: .4rem;
+			// left: -1.3rem;
 			display: flex;
 			margin-top: 0.2rem;
-			margin-left: 0.8rem;
-			margin-right: 0.8rem;
-			    font-size: 0.4rem;
+			padding-left: 2.5vw;
+			box-sizing: border-box;
+			margin-right: 0.3rem;
+			font-size: 0.3rem;
+			// justify-content: space-between;
 			.left {
 				width: 64%;
 				display: flex;
@@ -173,6 +205,9 @@ data(){
 				border-radius: 12px;
 				text-align: center;
 				color: #fff;
+			}
+			/deep/ .manu{
+				margin-right: .5rem;
 			}
 		}
 	}

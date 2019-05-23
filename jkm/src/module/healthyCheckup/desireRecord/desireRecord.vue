@@ -105,8 +105,8 @@
 				pageChange:true,
 				startTime: {
 					time: ''
-				}
-
+				},
+				padcode:''
 			}
 		},
 		methods: {
@@ -115,7 +115,7 @@
 			let personId = window.location.search.split('=')[1];
 			let params = {
 				"personId":personId,
-				"padDeviceCode":"P1",
+				"padDeviceCode":vm.padcode||sessionStorage.getItem('padcode'),
 				"type":"公卫服务"
 			}
 			createMedicalRecord(params).then(data=>{
@@ -129,7 +129,13 @@
 			headline
 		},
 		created() {
-
+			var vm =this;
+			try {
+				var padcode = window.android.getPadCode();
+		  		vm.padcode = padcode;
+			} catch(err) {
+				console.log(err);
+			}
 		},
 		mounted() {
            

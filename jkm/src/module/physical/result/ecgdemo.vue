@@ -1,7 +1,7 @@
 <template>
 	<div class="ecgfur">
 		<div class="btngroup">
-			<div class="btn btn1" @click="$emit('promote',0)">
+			<div class="btn btn1" @click="$emit('promote',0,1)">
 				<img src="../../../assets/refresh.png" />
 				<div>刷新</div>
 			</div>
@@ -11,37 +11,50 @@
 			</div>
 
 		</div>
+		<ignore :preindex="0"></ignore>
 		<img :src="mode==0?require('../../../assets/ecgdemo.png'):require('../../../assets/ecg-six.png')" />
 		<div class="line">
+			<div class="file" style="display: none;">
+				手动输入
+				<input type="file" class='fileinput' accept="image/*" placeholder="照相" capture='camera'>
+			</div>
 			<div class="left" @click="toggle($event)">
 				<div :class="{on:mode==0}">心电模式十二导</div>
 				<div :class="{on:mode==1}">心电模式六导</div>
 			</div>
-			<div class="right" @click="startthirdapp">
+			<div class="right cliect" @click="startthirdapp">
 				开始测量
 			</div>
 		</div>
 		<div class="printmeun" v-show="show_print">
-		<div class="print_content">
-			<img class="print_content_main" src="@/assets/ecgsample.png">
-			<img class="print_content_del" src="@/assets/close.png" @click="closePrint">
+			<div class="print_content">
+				<img class="print_content_main" src="@/assets/ecgsample.png">
+				<img class="print_content_del" src="@/assets/close.png" @click="closePrint">
+			</div>
 		</div>
-	</div>
 	</div>
 </template>
 
 <script>
 	import vue from "vue"
-	import { printingReport } from "API/requst"
+	import { printingReport, savePhysicalExamData } from "API/requst"
+	import ignore from './ignore.vue'
+	import manu from './manu.vue'
+   var interval;
 	export default {
 		props: ['detact', 'personId', 'recordId'],
+		inject: ['getresult', "tab"],
 		data() {
 			return {
 				mode: 0,
-				localdetact: this.detact,
+				localdetact: {},
 				show_print: false,
 			}
 
+		},
+		components: {
+			ignore,
+			manu
 		},
 		methods: {
 			toggle(e) {
@@ -57,56 +70,104 @@
 				}
 			},
 			startthirdapp() {
-				window.android.startThirdAPP()
+				var self = this
+
+				if(sessionStorage.getItem('padDeviceCode') == 'P3') {
+					this.alertDefault({
+						text: '信息盒未连接，心电功能暂不可用',
+						rowButton: true,
+					})
+				} else {
+					window.android.showXindian()
+				}
+
 			},
 			print() {
 				var vm = this;
 				vm.show_print = true;
 				printingReport({
 					recordId: vm.recordId,
-					padDeviceCode: 'P1',
+					padDeviceCode: sessionStorage.getItem('padcode'),
 					personId: vm.personId,
 					type: 'ECG'
 				}).then(res => {
 
 				})
 			},
-			closePrint(){
-		this.show_print = false;
-	}
+			closePrint() {
+				this.show_print = false;
+			},
+			//			manu(para){
+			//				this.manualinput(para)
+			//			}
 		},
 		created() {
 
 		},
 		mounted() {
+			var self = this
+			document.getElementsByClassName('fileinput')[0].addEventListener('change', function() {
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					//调用图片压缩方法：compress();
+					savePhysicalExamData({
+						hospitalCode: sessionStorage.getItem("hospitalCode"),
+						medicalRecordFolderId: self.recordId,
+						exams: [{
+							recordTime: new Date().getTime(),
+							type: 'ecg',
+							value: e.target.result.split('base64,')[1],
+							unit: 'base64',
+							condition: ''
+						}]
+					}).then(function(res) {
+						self.$emit('promote', 0, 1)
+					})
+				};
+				reader.readAsDataURL(this.files[0]);
 
+			}, false);
 		},
-		inject: ['getresult'],
 
-		watch: {
-			//			detact:function(val){
-			//				if(val['ecg']){
-			//					this.$emit('promote',0)
-			//				}
-			//			}
-		},
 		deactivated() {
-
-		}
+        clearInterval(interval)
+		},
+		activated() {
+			var self=this;
+						if(sessionStorage.getItem('padDeviceCode')=='P3'){
+							this.alertDefault({
+						text: '信息盒未连接，心电功能暂不可用',
+						rowButton: true,
+					})
+			}else{
+				
+					interval = setInterval(function() {
+						self.getresult()
+						console.log(self.detact)
+						if(self.detact['ecg']&&self.detact['ecg'].ReportUrl) {
+							clearInterval(interval)
+							self.$emit('promote', 0, 1)
+						}
+					}, 2000)
+										
+		  }
+		},
 	}
 </script>
 
 <style scoped="scoped" lang="scss">
+	$lan:#3C9BFF;
 	.ecgfur {
-		padding: 0.3rem 1.34rem;
+		padding: 0.3rem;
 		box-sizing: border-box;
-		text-align: center;
 		position: relative;
+		height: 100%;
 		.btngroup {
 			position: absolute;
 			right: 0.6rem;
 			display: flex;
 			flex-direction: column;
+			display: none;
 			.btn {
 				width: 1.5rem;
 				height: 1.5rem;
@@ -126,14 +187,39 @@
 			}
 		}
 		&>img {
-			width: 80%;
+			margin-left: 0.5rem;
+			height: 70%;
 		}
 		.line {
+			width: 100%;
+			padding: 0 0.7rem;
+			box-sizing: border-box;
+			position: absolute;
+			bottom: .4rem;
+			left: 0;
 			display: flex;
 			margin-top: 0.1rem;
-			font-size: 0.4rem;
-			justify-content: center;
-			margin-top: 0.5rem;
+			font-size: 0.3rem;
+			justify-content: flex-end;
+			.file {
+				width: 2.3rem;
+				line-height: 0.9rem;
+				color: $lan;
+				border: 0.02rem solid $lan;
+				border-radius: 0.12rem;
+				text-align: center;
+				margin-right: 0.5rem;
+				flex-shrink: 0;
+				position: relative;
+				input {
+					width: 100%;
+					height: 100%;
+					opacity: 0;
+					position: absolute;
+					top: 0;
+					left: 0;
+				}
+			}
 			.left {
 				display: flex;
 				overflow: hidden;
@@ -151,7 +237,7 @@
 				}
 			}
 			.right {
-				width: 36%;
+				width: 30%;
 				line-height: 0.9rem;
 				background: #3C9BFF;
 				border-radius: 12px;

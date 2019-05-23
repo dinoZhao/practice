@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width, initial-scale=1" name="viewport">
+		<title>登陆</title>
+		<script type="text/javascript" src="libs/jquery.min.js"></script>
+		<script type="text/javascript" src="libs/qrcode.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>
+	</head>
+	<style>
+		*{
+			padding: 0;
+			margin: 0;
+		}
+		html,body,.login{
+			width: 100%;
+			height: 100%;
+		}
+		.login{
+			background: url('images/bg.png') no-repeat center;
+			background-size:100% 100% ;
+		}
+		.login-head{
+			background: #fff;
+			color: #4d8fcc;
+			padding: 10px 10px;
+		}
+		.login-head>*{
+			vertical-align: middle;
+		}
+		.yuan{
+			display: inline-block;
+		    width: 10px;
+		    height: 10px;
+		    border-radius: 50%;
+		    background: #4d8fcc;
+		    margin: 0 10px;
+		}
+		.login-code{
+			position: fixed;
+		    top: 45%;
+		    left: 50%;
+		    transform: translate(-50%,-50%);
+		    background: #fff;
+		    padding: 20px 20px;
+		    text-align: center;
+		}
+		#qrcode img{
+			border: 5px solid #fff;
+		}
+	</style>
+	<body>
+		<div class="login">
+			<div class="login-head">
+				<img src="images/logo.png" /><span class="yuan"></span><span>互联网医院</span>
+			</div>
+			<div class="login-code">
+				<div><img src="images/logo.png"/></div>
+				<div id="qrcode"></div>
+				<p>请使用微信扫码登陆</p>
+			</div>
+		</div>
+		<script>
+			$(function(){
+				var accessobj = sessionStorage.getItem('access');
+				var doctorid = getUrlParam('doctorId')||423254276;
+				var origin = window.location.origin;
+			  	switch(origin){
+			  		case'http://localhost':
+			  			var url = 'https://ymmdev.verify.fc18.com.cn';
+			  		case'http://127.0.0.1:8020':
+			  			var url = 'https://ymmdev.verify.fc18.com.cn';
+			  		case'https://ymmdev.verify.fc18.com.cn':
+			  			var url = 'https://ymmdev.verify.fc18.com.cn';
+			  		break;
+			  		case'https://ymmsit.verify.fc18.com.cn':
+			  			var url = 'https://ymmsit.verify.fc18.com.cn';
+			  		break;
+			  		case'https://demoymm.verify.fc18.com.cn':
+			  			var url = 'https://demoymm.verify.fc18.com.cn';
+			  		break;
+			  		case'https://www.fc18.com.cn':
+			  			vm.url = 'https://www.fc18.com.cn';
+			  		break;
+			  		default:var url = 'https://ymmdev.verify.fc18.com.cn';
+			  	}
+				if(!accessobj){
+					var _uuid = uuid();
+					var timer = null;
+					var _url = url+'/ymmopenapi/sgw/v1/integratedMachine/remoteDoctorLoginQuery?uuid='+_uuid;
+					var _text = url+'/jkjch5/wxvideo/signin.html?uuid='+_uuid+'&doctorId='+doctorid;
+					var qrcode = new QRCode(document.getElementById("qrcode"), {
+						width : 200,
+						height : 200,
+						text: _text
+					});
+					function uuid(len, radix) {
+					  var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+					  var uuid = [], i;
+					  radix = radix || chars.length;
+					 
+					  if (len) {
+					   // Compact form
+					   for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random()*radix];
+					  } else {
+					   var r;
+					   // rfc4122 requires these characters
+					   uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+					   uuid[14] = '4';
+					 
+					   // Fill in random data. At i==19 set the high bits of clock sequence as
+					   // per rfc4122, sec. 4.1.5
+					   for (i = 0; i < 36; i++) {
+					    if (!uuid[i]) {
+					     r = 0 | Math.random()*16;
+					     uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+					    }
+					   }
+					  }
+					 
+					  return uuid.join('');
+					}
+					function getAccess(){
+						$.ajax({
+							method: "get",
+							dataType: "json",
+							url: _url,
+							data:{},
+							beforeSend: function(xhr) {
+								xhr.setRequestHeader("AppId", "50815d32-64e5-4dc7-a5e1-13816ffd196f");
+								xhr.setRequestHeader("AppSecret", "hdOv56nThwaZPfh0zP9x");
+								xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
+							}
+						}).success(function(msg) {
+							clearInterval(timer);
+							window.location.href='record.html?doctorId='+doctorid+'&uuid='+_uuid;
+							sessionStorage.setItem('access','success');
+						}).error(function(xhr) {
+							console.log(xhr);
+						});
+					}
+					timer = setInterval(function(){
+						getAccess()
+					},2000)
+				}else{
+					window.location.href='record.html?doctorId='+doctorid+'&uuid='+_uuid;
+				}
+			})
+		</script>
+	</body>
+</html>

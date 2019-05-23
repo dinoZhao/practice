@@ -1,0 +1,41 @@
+.video-operation{
+	position: relative !important;
+	top: 0;
+	left: 0;
+}
+.title{
+	padding: 15px 0;
+}
+.title span{
+	background: #ebf5ff;
+    color: #3C9BFF;
+    padding: 3px 10px;
+    border-radius: 15px;
+    border: 1px solid #3c9bff;
+}
+.diagnose, .suggest,.pharmacy{
+	border:0;
+	height: auto;
+}
+.diagnose>div, .pharmacy>div, .suggest>div{
+	width: 100%;
+	display: block;
+}
+.diagnose-right, .pharmacy-right, .suggest-right{
+	border: 1px solid #eee;
+}
+.diagnose-left, .pharmacy-left, .suggest-left{
+	text-align: left;
+    padding: 0 0 10px 0;
+}
+.diagnose-left span, .pharmacy-left span, .suggest-left span{
+	vertical-align: middle;
+}
+.diagnose-left img, .pharmacy-left img, .suggest-left img{
+	vertical-align: middle;
+}
+.diagnose-right textarea, .suggest-right textarea{
+	border:0;
+	height: 100px;
+    width: 99%;
+}

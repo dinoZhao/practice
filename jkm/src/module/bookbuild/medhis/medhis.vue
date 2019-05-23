@@ -1,33 +1,33 @@
 <template>
-
 	<div id="coat">
+		<headTop />
+		<div class="fornative">
 		<temp headtxt="个人信息"></temp>
 		<div class="main">
 			<div class="histitle">既往病史</div>
 			<div class="detail">
-
 				<div class="item" v-for="(item, index) in troublelist" v-bind:class="{on:listarr[0]}">
 					<img :data-index='index' @click="confirm($event)" v-if="!listarr[index]" src="../../../assets/notyet.png" />
 					<img :data-index='index' @click="cancel($event)" v-if="listarr[index]" src="../../../assets/already.png" />
 					<span>{{item}}</span>
 					<date-picker v-if="listarr[index]" class='picker' :date="startTimearr[index]" :option="option" :limit="limit"></date-picker>
 				</div>
-
 			</div>
 		</div>
 		<btn class='next' @click.native="next" fragment="下一步"></btn>
 		<div @click="manu" class="manu">
 			跳过
 		</div>
-
+      </div>
 	</div>
-
 </template>
 <script>
 	import temp from "components/headline/headline.vue"
 	import btn from "components/stuff/btn.vue"
+	import headTop from "components/common/headTop.vue";
 	import myDatepicker from 'vue-datepicker'
-	import {dateFormat} from 'utils/util'
+	import {dateFormat,getURLParameter,empty} from 'utils/util'
+	import { queryPersonalRecord } from 'API/requst'
 	import vue from 'Vue'
 	export default {
 
@@ -35,6 +35,7 @@
 		components: {
 			temp,
 			btn,
+			headTop,
 			'date-picker': myDatepicker
 		},
 		data() {
@@ -110,7 +111,8 @@
 				vue.set(this.listarr, e.target.dataset['index'], false)
 			},
 			manu() {
-				window.location.href = "./sibhis.html"
+				var vm = this;
+				window.location.href = './sibhis.html?did='+vm.did+'&scid='+vm.scid+'&type='+vm.type;
 			},
 			next() {
 				var listarr = this.listarr;
@@ -131,12 +133,53 @@
 			}
 		},
 		created() {
-			for(var i = 0; i < 12; i++) {
-				this.listarr.push(false)
-				this.startTimearr.push({
-					time: ''
-				})
-			}
+			var vm = this;
+			var type = getURLParameter('type');
+		  	var scid = getURLParameter('scid');
+		  	var did = getURLParameter('did');
+		  	var personId = sessionStorage.getItem('personId');
+		  	vm.type = type;vm.scid = scid;vm.did = did;
+		  	if(!empty(personId)&&type=='edit'){
+		  		var obj = {
+					"personId": personId
+			  	}
+			  	queryPersonalRecord(obj).then(res => {
+			    	if(res.result.medicalAdditionalInfo&&!empty(res.result.medicalAdditionalInfo.pastHistory)){
+			    		var pastHistory = res.result.medicalAdditionalInfo.pastHistory;
+			    		var diseaseList = pastHistory.diseaseList;
+				    	var troublelist = vm.troublelist;
+				    	for(var i = 0; i < 12; i++) {
+							this.listarr.push(false)
+							this.startTimearr.push({
+								time: ''
+							})
+						}
+				    	troublelist.forEach(function(str,index,arr){
+				    		diseaseList.forEach(function(item,inde,arr2){
+								if(item.name==str){
+									vm.listarr[index]=true;
+									vm.startTimearr[index].time=item.time;
+								}
+							})
+				    	})
+			    	}else{
+			    		for(var i = 0; i < 12; i++) {
+							this.listarr.push(false)
+							this.startTimearr.push({
+								time: ''
+							})
+						}
+			    	}
+			    	
+		      	});
+		  	}else{
+		  		for(var i = 0; i < 12; i++) {
+					this.listarr.push(false)
+					this.startTimearr.push({
+						time: ''
+					})
+				}
+		  	}
 		},
 		mounted() {
 
@@ -147,10 +190,12 @@
 	#coat {
 		overflow: hidden;
 	}
-	
+	#coat /deep/ .head{
+		/*top: 1rem !important;*/
+	}
 	.main {
 		display: flex;
-		margin-top: 0.7rem;
+		margin-top: 0.5rem;
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;
@@ -158,7 +203,7 @@
 		.histitle {
 			font-size: 0.36rem;
 			text-align: center;
-			margin-bottom: 0.5rem;
+			margin-bottom: 0.2rem;
 			width: 100%;
 		}
 		.detail {
@@ -171,7 +216,7 @@
 		}
 		.item {
 			height: 0.9rem;
-			width: 40vw;
+			width: 40%;
 			display: flex;
 			align-items: center;
 			span {
@@ -191,9 +236,11 @@
 	}
 	
 	.next {
-		margin-left: 37%;
-		position: absolute;
-		bottom: 0.6rem;
+		    position: absolute;
+    bottom: 0.6rem;
+    left: 200px;
+    right: 0;
+    margin: auto;
 	}
 	
 	.manu {

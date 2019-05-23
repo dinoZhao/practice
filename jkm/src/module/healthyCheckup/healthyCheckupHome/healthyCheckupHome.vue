@@ -1,34 +1,66 @@
 <template>
 	<div class="screeninghome">
-		<headline headtxt="体检套餐" none=""></headline>
+	<!--<headTop></headTop>-->
 		<div class="screeninghome-list">
 			<div class="screeninghome-left">
 				<div v-bind:class='["screeninghome-left-item",istaocan?"on":""]' @click="choosetaocan($event.target,'体检套餐')"><span>体检套餐</span></div><div v-bind:class='["screeninghome-left-item",!istaocan?"on":""]' @click="choosetaocan($event.target,'预约记录')"><span>预约记录</span></div>
 			</div><div class="screeninghome-content">
 				<div class="screeninghome-box"  v-if="istaocan">
 					<div class="box-head">
-						<div class="box-item on" @click="choosefuwu($event.target,'')">公卫服务</div><div class="box-item" @click="choosefuwu($event.target)">优选计划</div><div class="box-item" @click="choosefuwu($event.target)">至尊套餐</div>
+						<div class="box-item on" @click="choosefuwu($event,'')" data-type="public">公卫服务</div><div class="box-item" @click="choosefuwu($event)" data-type="preference">优选计划</div>
+						<!--<div class="box-item" @click="choosefuwu($event)">至尊套餐</div>-->
+						<div class="reservation-time-right" @click="turnToAllRecord">
+				  			<img src="../../../assets/record.png" /><span>全部记录</span>
+				  		</div>
 					</div>
 					<div class="service">
-						<span class="service-tag">公卫服务</span>
+						<span class="service-tag" v-if='planType=="优选计划"'>优选计划</span>
+						<span class="service-tag" v-else>公卫服务</span>
 						<div class="service-bottom">
-							<div class="service-item"><img src="../../../assets/healthy-condition.png"/><span>健康状态评估</span></div><div class="service-item">
+							<!--<div class="service-item"><img src="../../../assets/healthy-condition.png"/><span>健康状态评估</span></div>
+							<div class="service-item">
 								<img src="../../../assets/body.png"/><span>体格检查</span></div><div class="service-item">
 								<img src="../../../assets/check.png"/><span>辅助检查</span></div><div class="service-item">
-								<img src="../../../assets/health-education.png"/><span>健康指导</span></div>
+								<img src="../../../assets/health-education.png"/><span>健康指导</span></div>-->
+								<div class="service-item-long" v-if='planType!="优选计划"'>
+									提供基础检查，建立健康档案，促进健康意识，提升健康素质。
+								</div>
+								<div class="service-item-long" v-if='planType=="优选计划"'>
+									通过医学手段和方法对受检者进行身体检查,了解受检者健康状况、早期发现疾病线索和健康隐患的诊疗。
+								</div>
 						</div>
 					</div>
 					<div class="service">
 						<span class="service-tag">体检项目</span>
 						<div class="service-bottom">
-							<div class="service-item"><img src="../../../assets/ECG.png"/><span>心电</span></div><div class="service-item">
-								<img src="../../../assets/blood-pressure.png"/><span>血压</span></div><div class="service-item">
-								<img src="../../../assets/blood-sugar.png"/><span>血糖</span></div><div class="service-item">
-								<img src="../../../assets/B-super.png"/><span>B超</span></div><div class="service-item">
-								<img src="../../../assets/BMI.png"/><span>BMI</span></div><div class="service-item">
-								<img src="../../../assets/urine-routine.png"/><span>尿常规</span></div><div class="service-item">
-								<img src="../../../assets/blood-fat.png"/><span>血脂</span></div>
+						<div class="service-item">
+							<img src="../../../assets/ECG.png" /><span>心电</span>
 						</div>
+						<div class="service-item">
+							<img src="../../../assets/blood-pressure.png" /><span>血压</span>
+						</div>
+						<div class="service-item">
+							<img src="../../../assets/blood-sugar.png" /><span>血糖</span>
+						</div>
+						<div class="service-item">
+							<img src="../../../assets/ox.png" style="height: 0.43rem;"/><span>血氧</span>
+						</div>
+						<div class="service-item">
+							<img src="../../../assets/tempture.png" style="height: 0.43rem;"/><span>体温</span>
+						</div>
+						<!--<div class="service-item" v-if='planType=="优选计划"'>
+							<img src="../../../assets/B-super.png" /><span>B超</span>
+						</div>-->
+						<div class="service-item">
+							<img src="../../../assets/BMI.png" /><span>BMI</span>
+						</div>
+						<div class="service-item" v-if='planType=="优选计划"'>
+							<img src="../../../assets/urine-routine.png" /><span>尿常规</span>
+						</div>
+						<div class="service-item" v-if='planType=="优选计划"'>
+							<img src="../../../assets/blood-fat.png" /><span>血脂</span>
+						</div>
+                    </div>
 					</div>
 				</div>
 				<div class="screeninghome-recod"  v-if="!istaocan">
@@ -52,13 +84,13 @@
 				  				<template v-for="(item,index) in result">
 				  					<li class="content-item">
 				  						<template v-for="(str,ind) in item.details">
-				  							<div class="item-text item-one done" v-if="str.status=='Success'">
+				  							<div class="item-text item-one done" v-if="str.status=='Finish'">
 							  						<div class="item-left">
 								  						<div class="item-time">
 								  							<span class="">{{item.startTime|tim}}</span>
 								  						</div>
 								  					</div><div class="item-right">
-								  						<div class="patient"><span class="name">{{str.name}}</span><span class="sex">{{str.gender}}</span><span class="age">{{str.pAge}}岁</span></div><div class="experts">
+								  						<div class="patient"><span class="name">{{str.name}}</span><span class="sex" v-if="str.gender=='1'">男</span><span class="sex" v-if="str.gender=='0'">女</span><span class="age" v-if="str.pAge!='null'&&str.pAge">{{str.pAge}}岁</span></div><div class="experts">
 								  							<span>项目</span><span class="experts-name">{{str.setMeal}}</span>
 								  						</div><div class="status">
 								  							<span>状态</span><span class="status-text">已完成</span>
@@ -66,7 +98,7 @@
 								  						<div class="right-line"></div>
 								  					</div>
 							  					</div>
-							  					<div class="item-text item-one unfinished" v-else-if="str.status=='InReview'">
+							  					<div class="item-text item-one unfinished" v-else-if="str.status=='Success'">
 							  						<div class="item-left">
 								  						<div class="item-time current" v-if="start<item.startTime&&item.startTime<intertime">
 								  							<span class="">{{item.startTime|tim}}</span>
@@ -75,10 +107,10 @@
 								  							<span class="">{{item.startTime|tim}}</span>
 								  						</div>
 								  					</div><div class="item-right">
-								  						<div class="patient"><span class="name">{{str.name}}</span><span class="sex">{{str.gender}}</span><span class="age">{{str.pAge}}岁</span></div><div class="experts">
+								  						<div class="patient"><span class="name">{{str.name}}</span><span class="sex">{{str.gender}}</span><span class="age" v-if="str.pAge!='null'">{{str.pAge}}岁</span></div><div class="experts">
 								  							<span>项目</span><span class="experts-name">{{str.setMeal}}</span>
 								  						</div><div class="status">
-								  							<span>状态</span><span class="status-text">未完成</span>
+								  							<span>状态</span><span class="status-text alert" >未完成</span>
 								  						</div>
 								  						<div class="right-line current" v-if="start<item.startTime&&item.startTime<intertime"></div>
 								  						<div class="right-line" v-else></div>
@@ -90,10 +122,10 @@
 								  							<span class="">{{item.startTime|tim}}</span>
 								  						</div>
 								  					</div><div class="item-right">
-								  						<div class="patient"><span class="name">{{str.name}}</span><span class="sex">{{str.gender}}</span><span class="age">{{str.pAge}}岁</span></div><div class="experts">
+								  						<div class="patient"><span class="name">{{str.name}}</span><span class="sex">{{str.gender}}</span><span class="age" v-if="str.pAge!='null'">{{str.pAge}}岁</span></div><div class="experts">
 								  							<span>项目</span><span class="experts-name">{{str.setMeal}}</span>
 								  						</div><div class="status">
-								  							<span>状态</span><span class="status-text">已取消</span>
+								  							<span>状态</span><span class="status-text cancel">已取消</span>
 								  						</div>
 								  						<div class="right-line"></div>
 								  					</div>
@@ -104,7 +136,7 @@
 								  							<span class="">{{item.startTime|tim}}</span>
 								  						</div>
 								  					</div><div class="item-right">
-								  						<div class="patient"><span class="name">{{str.name}}</span><span class="sex">{{str.gender}}</span><span class="age">{{str.pAge}}岁</span></div><div class="experts">
+								  						<div class="patient"><span class="name">{{str.name}}</span><span class="sex">{{str.gender}}</span><span class="age" v-if="str.pAge!='null'">{{str.pAge}}岁</span></div><div class="experts">
 								  							<span>项目</span><span class="experts-name">{{str.setMeal}}</span>
 								  						</div><div class="status">
 								  							<span>状态</span><span class="status-text">已取消</span>
@@ -121,12 +153,13 @@
 				</div>
 			</div>
 		</div>
-		<div class="screeninghome-btn" @click="startDetection" v-if="istaocan"><div>开始检测</div></div>
+		<img src="../../../assets/desire-record.png" class="desire-record" @click="choosetaocan($event.target,'预约记录')"/>
+		<div class="screeninghome-btn"  v-if="istaocan"><div class="cliect" @click="startDetection">开始检测</div></div>
 	</div>
 </template>
 <script>
 	import { getAppointmentRecord, cancelAttention, createMedicalRecord } from 'API/requst'
-	import headline from 'components/headline/headline.vue';
+	import headTop from 'components/common/headTop.vue';
 	import { getURLParameter, dateFormat, GetAgeByIdNum } from 'utils/util'
 	import $ from 'jquery'
 	export default {
@@ -140,7 +173,9 @@
 		      timenum:'',
 		      intertime:'',
 		      thirdUniqueId:'',
-		      istaocan:true
+		      planType:'公卫服务',
+		      istaocan:true,
+		      padcode:''
 			}
 		},
 		methods: {
@@ -149,12 +184,14 @@
 				$('.screeninghome-left-item').removeClass('on');
 				$(elem).parents('.screeninghome-left-item').addClass('on');
 				$(elem).addClass('on');
-				vm.istaocan = !vm.istaocan;
+				vm.istaocan = false;
 			},
 			choosefuwu:function(elem){
 				var vm = this;
+				vm.planType = elem.target.innerText
 				$('.box-item').removeClass('on');
-				$(elem).addClass('on');
+				$(elem.target).addClass('on');
+				console.log(vm.planType)
 			},
 			clickitem:function(elem,num){
 		  		var vm = this;
@@ -165,34 +202,58 @@
 		  		$(elem).addClass('on');
 		  		vm.getRecord(timnum,_timnum);
 		  	},
+		  	initialize:function(){
+		  		var vm = this;
+				setTimeout(function () {
+					var _height = document.body.clientHeight-$('#head').height()-$('.reservation-time').height()-30;
+					$('.content-list').css('max-height',_height+'px');
+				},500)
+		  	},
 		  	getRecord:function(start,end){
 		  		var vm = this;
 		  		var obj = {
 		  			'thirdUniqueId':vm.thirdUniqueId,
-		  			'startTime':start,'endTime':end
+		  			'startTime':start,'endTime':end,
+		  			'padDeviceCode':sessionStorage.getItem("padcode")||sessionStorage.getItem("padCode")
 		  		}
 		  		getAppointmentRecord(obj).then(data=>{
-		  			vm.result = data.result;
 		  			
+		  			data.result.map(function(item,index){
+		  				item.details.map(function(SubItem,SubIndex){
+		  					SubItem.pAge = GetAgeByIdNum(SubItem.idNumber)
+		  				})
+		  			})
+		  			vm.result = data.result;
+		  			console.log(vm.result);
 			    }).catch(err=>{
 			    	vm.alertDefault({
-			    		text:err.data.resultMessage
+			    		text:err.data.resultMessage?'请先读取身份证读取':'',
+			    		rowButton: false,
+						leftButtonText: "取消",
+						rightButtonText: "确定"
 			    	})
 			    })
 		  	},
 		  	startDetection() {
 				var vm = this;
-				let personId = window.location.search.split('=')[1];
+				let personId = getURLParameter('personId');
 				let params = {
 					"personId": personId,
-					"padDeviceCode": "P1",
-					"type": "公卫服务"
+					"padDeviceCode":vm.padcode||sessionStorage.getItem('padcode'),
+					"type": vm.planType
 				}
+				console.log(vm.planType==="优选计划"?'preference':'public');
+				var planType = vm.planType==="优选计划"?'preference':'public';
 				createMedicalRecord(params).then(data => {
 					console.log(data.recordId);
 					sessionStorage.setItem("medicalRecordId", data.recordId)
-					window.location.href = "../physical/result.html?recordId=" + data.recordId + '&personId=' + personId;
-				})
+					window.location.href = "../physical/result.html?recordId=" + data.recordId + '&personId=' + personId+'&planType='+planType;
+				}).catch(err=>{
+			    	vm.alertDefault({
+			    		text:err.data.resultMessage?'患者未登记，请先进行"身份读取"':'',
+						rowButton: true
+			    	})
+			    })
 
 			},
 			turnToAllRecord() {
@@ -200,13 +261,19 @@
 			}
 		},
 		components: {
-			headline
+			headTop
 		},
 		created() {
 			var vm = this;
+			//获取personId并存入sessionStorge--head
+			var personId = getURLParameter('personId');
+			if(personId){
+				sessionStorage.setItem('personId',personId)
+			}
+			//获取personId并存入sessionStorge--end
 			var doctorMsg = sessionStorage.getItem('doctorMsg');
 		  	var _doctorMsg = JSON.parse(doctorMsg);
-		  	vm.thirdUniqueId = _doctorMsg.doctorId||417314456;
+		  	vm.thirdUniqueId = _doctorMsg.doctorId;
 			var arrlist = [];
 		  	var arr = [];
 		  	var myDate = new Date();
@@ -340,6 +407,18 @@
 		  	vm.start = newdate;
 		  	vm.intertime = newdate + 3600000;
 		  	vm.getRecord(vm.timenum,(vm.timenum+86400000));
+		  	vm.initialize();
+		  	//获取地址栏参数--head
+		  	let tabIndex;
+		  	tabIndex = getURLParameter('tabIndex');
+		  	vm.istaocan = tabIndex==='check'?true:false;
+		  	//获取地址栏参数--end
+		  	try {
+				var padcode = window.android.getPadCode();
+		  		vm.padcode = padcode;
+			} catch(err) {
+				console.log(err);
+			}
 		},
 		mounted() {
 
@@ -347,25 +426,32 @@
 	}
 </script>
 <style scoped>
+	body {
+  overflow: hidden;
+}
 	.screeninghome{
 		height: 100%;
 		font-size: 18px;
 	}
 	.screeninghome-list{
 		height: calc(100% - 80px);
+    padding-left: 230px;
 	}
 	.screeninghome-list>div{
 		display: inline-block;
 		vertical-align: top;
+    box-sizing: border-box;
 	}
 	.screeninghome-left{
-		margin-top: 80px;
+/*		margin-top: 80px;*/
 		display: inline-block;
 		width: 1.4rem;
-		height: 100%;
+		max-width: 10%;
+		height: 102%;
 		border-right: 1px solid #eee;
 		box-sizing: border-box;
 		color:#3c9bff ;
+		display: none !important;
 	}
 	.screeninghome-left>div{
 		width: 100%;
@@ -388,25 +474,31 @@
 	.screeninghome-content{
 		display: inline-block;
 		width: 90%;
-	    border-left: 1px solid #eee;
+	    /*border-left: 1px solid #eee;*/
 	}
 	.box-head{
-		padding:23px 15px 0 15px;
+		padding:0px 15px 0 0.25rem;
 		border-bottom: 1px solid #eee;
+	}
+	.box-head>.reservation-time-right{
+		float: right;
+		margin-right: 0;
+		padding-right: 0;
 	}
 	.box-head>div{
 		display: inline-block;
-		font-size: 0.34rem;
-		line-height: 50px;
+		font-size: 0.36rem;
+		line-height: 35px;
 		margin-right: 15px;
-        padding: 0 5px 5px 5px;
+        padding: 0.2rem 0.2rem 0.15rem 0.2rem;
 	}
 	.box-item.on{
-		border-bottom: 2px solid #3c9bff;
+		border-bottom: 2.5px solid #3c9bff;
 		color:#3c9bff;
 	}
 	.service{
-		padding: 0.65rem 0.35rem 0.65rem 0.35rem;
+		/*padding: 0.15rem 0.35rem 0.35rem 0.35rem;*/
+		padding: 0.15rem 0.35rem 0.35rem 0.35rem;
 	}
 	.service>span{
 		display: inline-block;
@@ -414,7 +506,7 @@
 	    color: #3c9bff;
 	    padding: 4px 10px;
 	    border-radius: 25px;
-	    font-size: 0.32rem;
+	    font-size: 0.36rem;
 	    margin: .15rem  0;
 	}
 	.service-bottom{
@@ -423,36 +515,43 @@
 	.service-bottom>div{
 		display: inline-block;
 		text-align: center;
+		margin-bottom: 0.18rem;
 		/*margin-right: 4%;*/
-		font-size: 0.32rem;
+		font-size: 0.30rem;
 		width: 13.35%;
 	}
+	.service-bottom>.service-item-long{
+		font-size: 0.30rem;
+		width: 89% !important;
+		text-align: left;
+	}
 	.service-item img{
-		width: auto;
-    	height: 40px;
+		width: 0.6rem;
+    	height: 0.6rem;
 	}
 	.service-item span{
 		display: block;
 	}
 	.screeninghome-btn{
-		position: fixed;
-	    width: 100%;
-	    left: 0;
-	    bottom: 20px;
-	    text-align: center;
+	position: fixed;
+    width: calc(100% - 240px);
+    margin-left: 240px;
+    /*left: 140px;*/
+    bottom: 40px;
+    text-align: center;
 	}
 	.screeninghome-btn>div{
 		display: inline-block;
 		background: #3c9bff;
-	    color: #fff;
-	    width: 26%;
-	    text-align: center;
-	    font-size: .48rem;
-	    line-height: 1rem;
-	    border-radius: 12px;
+    color: #fff;
+    width: 26%;
+    text-align: center;
+    font-size: .48rem;
+    line-height: 1rem;
+    border-radius: 12px;
 	}
 	.screeninghome .reservation-time {
-	    padding: 0 10px 0 20px;
+	    padding: 0 0px 0 0px;
 	    border-bottom: 1px solid #eee;
 	    padding-top: 20px;
 	}
@@ -514,13 +613,15 @@
 	    font-size: 1.5vw;
 	}
 	.screeninghome .content-left {
-	    padding: 0 10px 0 20px;
+	    padding: 0 10px 0 0px;
 	    padding-top: 20px;
 	    vertical-align: top;
 	    color: #999;
 	}
 	.screeninghome .content-list {
 	    width: 90%;
+	    overflow: auto;
+	    padding-bottom: 50px;
 	}
 	.screeninghome li.content-item {
 	    font-size: 1.5vw;
@@ -552,13 +653,18 @@
 	}
 	.screeninghome .item-right>div {
 	    display: inline-block;
-	    width: 22%;
+	    width: 30%;
 	    line-height: 40px;
 	    padding: 5px 0;
 	    height: 40px;
 	}
-	.screeninghome .patient {
+	.screeninghome .item-right .patient {
 	    margin-left: 2%;
+	    width: 33%;
+	}
+	.screeninghome .item-right .experts {
+	    margin-left: 2%;
+	    width: 33%;
 	}
 	.screeninghome .item-right .right-line {
 	    position: absolute;
@@ -582,5 +688,18 @@
 	}
 	.screeninghome .item-text.cancel .status-text, .reservation .item-text.unfinished .status-text {
 	    color: #d43c33;
+	}
+	.cancel{
+		color: #fc9452;
+	}
+	.alert{
+		color: #da5850;
+	}
+	.desire-record{
+		display: block;
+		width: 1.5rem;
+		position: fixed;
+		right: 1%;
+		bottom:2%;
 	}
 </style>

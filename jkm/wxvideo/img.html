@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="author" content="网易金融，网易理财，富聪金融">
+<meta name="keywords" content=" 网易金融，网易理财，富聪金融 ">
+        <link rel="shortcut  icon" type="image/x-icon" href="./images/app_ico.png" media="screen"  />
+<meta name="description" content="富聪金融是网易集团全新打造的互联网金融信息服务平台，致力于“助您掌握财富”和传统金融机构服务在线客户的好帮手。富聪金融依托网易集团与创始管理团队的专业资源优势，将传统金融业务与互联网技术紧密结合，在为客户提供理财、信贷、支付等综合金融信息服务的同时，通过改善客户获取金融产品与股权/债权基础资产的信息途径，帮助客户优化资产配置、提升资金收益、规避投资风险。">
+<title>富聪金融</title>
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<link rel="stylesheet" href="../css/reset.css" />
+<link rel="stylesheet" href="../css/pc.css" />
+<link rel="stylesheet" href="../css/animate.css" />
+<style>
+	.banner{
+		text-align: center;
+	}
+	img{
+		width: 80%;
+	}
+</style>
+</head>
+
+<body>
+<div class="banner">
+	<img src="" class="banner-img"/>
+</div>
+</body>
+<script>
+	$(function(){
+		var imgurl = sessionStorage.getItem('imgurl');
+		$('.banner-img').attr('src',imgurl);
+		function getUrlParam(name){
+			var reg = new RegExp("(^|&)"+name+"=([^&]*)(&|$)"); 
+			var r =  window.location.search.substr(1).match(reg);
+			var strValue = "";
+			if (r!=null){
+			 strValue= unescape(r[2]);
+			}
+			return strValue;
+		};
+	})
+</script>
+</html>

@@ -34,7 +34,8 @@
 				rightButtonCallback: null,
 				rightTextColor: '#3c9bff',
 				
-				isShow: false
+				isShow: false,
+				isShowMenu:true,		//是否展示原生的菜单,show不展示
 			}
 		},
 		
@@ -56,13 +57,18 @@
                     this.leftTextColor = params.leftTextColor || this.leftTextColor
                     this.rightButtonText = params.rightButtonText || this.rightButtonText
                     this.rightButtonCallback = params.rightButtonCallback || null
-                    this.rightTextColor = params.rightTextColor || this.rightTextColor
+										this.rightTextColor = params.rightTextColor || this.rightTextColor
+										params.isShowMenu=='show'?this.isShowMenu = false:this.isShowMenu=true
                 }
 				
 				this.isShow = true;
+				//window.android?window.android.hideLeftLayout():"";
 			},
 			
 			close (e) {
+				if(this.isShowMenu){
+					//window.android?window.android.showLeftLayout():""
+				}
 				let targetNodeId = e.target.id
 				this.isShow = (targetNodeId === 'alert-footer' || targetNodeId === 'alert-button-left' || targetNodeId === 'alert-button-right') ? false : this.isModal
 				switch (targetNodeId) {
@@ -85,8 +91,9 @@
 				this.isShow = false
 			}
 			
-		}
-		
+		},
+		created() {
+		},
 	}
 </script>
 
@@ -97,7 +104,7 @@
 		height: 100%;
 		top: 0;
 		left: 0;
-        z-index: 11;
+    z-index: 11;
 	}
 	#alert-win .alert-shadow{
 		position: fixed;
@@ -121,10 +128,11 @@
 	.alert-title, #alert-footer{
 		line-height: 1.6;
 		text-align: center;
-		font-size: 0.5rem;
+		font-size: 0.44rem;
 	}
 	.alert-title{
 		border-bottom: 1px solid #ddd;
+		line-height: 2.4;
 	}
 	.alert-text{
 		text-align: center;
@@ -136,8 +144,10 @@
 		line-height: .4rem;
 	}
 	#alert-footer{
-		color: #d43c33;
+		color: #3c9bff;
 		border-top: 1px solid #ddd;
+		height: 1.06rem;
+		line-height: 1.06rem;
 	}
 	.alert-button-group{
 		border-top: 1px solid #ddd;

@@ -1,0 +1,141 @@
+html,body,#app{
+	height: 100%;
+}
+.assistClinical{
+    height: 96%;
+}
+.video-head-right{
+	text-align: right;
+}
+.video-head-right .video-head-item.operation{
+	width: 28%;
+}
+.video-head-right .video-head-item{
+	width: 14%;
+}
+.assistClinical{
+	padding: 0 5vw;
+}
+.assistClinical>div {
+    display: inline-block;
+    vertical-align: top;
+}
+.assistClinical-left{
+	width: 25%;
+	height: 100%;
+	border-left: 1px solid #eee;
+	border-right: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+}
+.assist-left-bottom{
+	max-height:86vh;
+	overflow: auto;
+}
+.assist-left-head{
+	background: #fafafa;
+	padding: 10px 10px;
+}
+.assist-left-head img{
+	margin-left: 10px;
+}
+.assist-item-head>div{
+	display: inline-block;
+	width: 50%;
+	vertical-align: middle;
+}
+.assist-left-head input{
+    width: 83%;
+    height: 35px;
+    border-radius: 5px;
+    outline: none;
+    border: 0;
+    text-indent: 5px;
+}
+.assist-item{
+	padding: 10px 5px;
+    font-size: 14px;
+}
+.assist-list .assist-item.on{
+	background: #f5faff;
+}
+.assist-item-bottom{
+	margin-top: 5px;
+    color: #999;
+}
+.assistClinical-right{
+    width: 73%;
+    padding: 0 0 0 1%;
+}
+.right-doctor{
+	padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    color: #666;
+}
+.right-doctor>div {
+    display: inline-block;
+    width: 20%;
+}
+.right-doctor>div:nth-child(1),.right-doctor>div:nth-child(2),.right-doctor>div:nth-child(3){
+	width: 15%;
+}
+.right-doctor>div:nth-child(4),.right-doctor>div:nth-child(5){
+	width: 27.5%;
+}
+.right-doctor-one {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    color: #666;
+}
+.right-doctor-one>div {
+    display: inline-block;
+    width: 25%;
+}
+.right-doctor-two{
+	padding: 10px 0;
+	color: #666;
+}
+.right-doctor-two>div {
+    display: inline-block;
+    width: 20%;
+}
+.ecg-banner,.ecg-banner img{
+	width: 100%;
+    height: 53vh;
+}
+.assistClinical-btn{
+    text-align: center;
+}
+.assistClinical-btn-text{
+	display: inline-block;
+    width: 40%;
+    text-align: center;
+    background: #3C9BFF;
+    color: #fff;
+    line-height: 50px;
+    font-size: 18px;
+    border-radius: 10px;
+}
+.diagnose-right textarea{
+	padding-top: 0;
+}
+.assist-list>li:nth-child(odd){
+	background: #fff;
+}
+.assist-list>li:nth-child(even){
+	background: #fbfbfb;
+}
+.assist-item.nocheck .assist-item-head{
+	font-weight: bold;
+}
+.right-doctor span{
+	margin: 0 10px;
+	color: #333;
+}
+.right-doctor-one span,.right-doctor-two span{
+	margin-left: 3px;
+	color: #333;
+}
+.assist-item-time img{
+	margin-left: 5px;
+    vertical-align: middle;
+}

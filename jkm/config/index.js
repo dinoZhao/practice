@@ -20,7 +20,7 @@ module.exports = {
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 8081, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
-    autoOpenBrowser: true,
+    autoOpenBrowser: false,
     openPage: 'main.html',
     errorOverlay: true,
     notifyOnErrors: true,
@@ -42,8 +42,8 @@ module.exports = {
     cssSourceMap: true,
 
     //开发指定目录(为保证compile速度，目录最多设置5个, list为空则默认compile所有模块)
-    //devDirectoryList: ['remoteclinic/reservation','remoteclinic/experts','remoteclinic/record','rapidetection/rapidhome','rapidetection/startdetection']
-    devDirectoryList: []
+		devDirectoryList: ['remoteclinic/reservation','remoteclinic/record','bookbuild/personal','remoteclinic/affirmexpert','user/login']
+   //devDirectoryList: []
   },
 
   build: {

@@ -76,7 +76,6 @@
 		}
 		.detail{
 			position: relative;
-			left: -9%;
 			.item{
 				display: flex;
 				line-height: 0.76rem;

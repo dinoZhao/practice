@@ -1,13 +1,16 @@
 <template>
 	<div class="ecgfur">
 		<div class="process">
+		<ignore  :preindex="3"></ignore>
 			<div class="express">
+
 				<div class="below">
 					<div>①安装针头，清洁手指</div>
 					<div>②使用采血针采取血样</div>
                     <div>③使用试纸吸取血样后，
-                    	   &nbsp&nbsp&nbsp 将试纸插入血糖仪</div>
+                    	   &nbsp;&nbsp;&nbsp; 将试纸插入血糖仪</div>
 				</div>
+				<manu  :type='0' :manu='3'></manu>
 			</div>
 
 			<div class="box">
@@ -32,23 +35,29 @@
 </template>
 
 <script>
+	import ignore from './ignore.vue'
+	import manu from './manu.vue'
 	var interval;
 	export default {
         inject: ['getresult'],		
 		props: ['detact'],
+		components:{
+			manu,ignore
+		},
         activated(){
         	var self=this
         	if(this.detact['Glu']){
-					this.$emit('promote',3)
+					this.$emit('promote',3,1)
 				}else{
 					interval = setInterval(function() {
 						self.getresult()
 						if(self.detact['Glu']) {
 							clearInterval(interval)
-							self.$emit('promote',3)
+							self.$emit('promote',3,1)
 						}
 					}, 2000)
 				}
+		
        },
        deactivated() {
 			clearInterval(interval)
@@ -61,13 +70,16 @@
 		box-sizing: border-box;
 		.process {
 			height: 8rem;
-			padding: 0.3rem 0.7rem 0 0.8rem;
+			padding: 0.3rem 0.7rem 0 0.3rem;
 			display: flex;
 			justify-content: space-between;
+			position:relative;
 			.express {
 				background: url(../../../assets/sugardemo.png) no-repeat center;
 				background-size: contain;
-				width: 100%;
+				width: 98%;
+				position: relative;
+				margin-top: 0.7rem;
 			}
 			.box {
 				width: 4.5rem;
@@ -121,11 +133,16 @@
 				    margin-top: 35%;
 				    font-size: 0.35rem;
 				    width: 4rem;
-				    margin-left: 2rem;
+				    margin-left: 3rem;
 			}
 			img {
 				height: 110%;
 			}
+		}
+		.express /deep/ .manu{
+			position: fixed;
+			bottom: .4rem;
+			font-size: 0.3rem;
 		}
 	}
 	.box{

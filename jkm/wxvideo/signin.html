@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	    <meta name="apple-touch-fullscreen" content="yes">
+	    <meta name="format-detection" content="telephone=no">
+	    <meta name="apple-mobile-web-app-capable" content="yes">
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+	    <meta http-equiv="Expires" content="-1">
+	    <meta http-equiv="pragram" content="no-cache">
+	    <link rel="stylesheet" href="css/style.css"/>
+		<script type="text/javascript" src="libs/jquery.min.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>
+		<title>签到</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			html,body{
+				width: 100%;
+				font-size: 4.2vw;
+			}
+			.signin>p{
+				text-align: center;
+			    margin-top: 10px;
+			}
+			.signin-btn {
+				text-align: center;
+    			margin-top: 20px;
+			}
+			.signin-btn span{
+				display: inline-block;
+			    width: 50%;
+			    background: #3C9BFF;
+			    color: #fff;
+			    line-height: 50px;
+			    border-radius: 10px;
+			    font-size: 5vw;
+			}
+			.doctor{
+				text-align: center;
+    			margin-top: 45%;
+			}
+			.doctor img{
+				border-radius: 50%;
+				margin-bottom: 10px;
+				width: auto;
+   				height: 55px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="signin">
+			<div class="doctor">
+				<img src="images/Bitmap.png" class="doctor-img"/>
+				<P class="doctor-name">夏医生</P>
+			</div>
+			<p>请点击“签到”按钮进行签到</p>
+			<div class="signin-btn"><span>签到</span></div>
+		</div>
+		<script>
+			$(function(){
+				var uuid = getUrlParam('uuid');
+				var doctorId = getUrlParam('doctorId');
+				var origin = window.location.origin;
+			  	switch(origin){
+			  		case'http://localhost':
+			  			var url = 'https://ymmdev.verify.fc18.com.cn';
+			  		case'http://127.0.0.1:8020':
+			  			var url = 'https://ymmdev.verify.fc18.com.cn';
+			  		case'https://ymmdev.verify.fc18.com.cn':
+			  			var url = 'https://ymmdev.verify.fc18.com.cn';
+			  		break;
+			  		case'https://ymmsit.verify.fc18.com.cn':
+			  			var url = 'https://ymmsit.verify.fc18.com.cn';
+			  		break;
+			  		case'https://demoymm.verify.fc18.com.cn':
+			  			var url = 'https://demoymm.verify.fc18.com.cn';
+			  		break;
+			  		case'https://www.fc18.com.cn':
+			  			vm.url = 'https://www.fc18.com.cn';
+			  		break;
+			  		default:var url = 'https://ymmdev.verify.fc18.com.cn';
+			  	}
+				var _url = url+'/ymmopenapi/sgw/v1/integratedMachine/remoteDoctorLoginRequest?uuid='+uuid;
+				var _url3 = url+'/ymmopenapi/sgw/v1/integratedMachine/getClinicAppointment?doctorId='+doctorId
+				$('.signin-btn').on('click',function(e){
+					getAccess();
+				});
+				getdoctor();
+				function getAccess(){
+					$.ajax({
+						method: "get",
+						dataType: "json",
+						url: _url,
+						data:{},
+						beforeSend: function(xhr) {
+							xhr.setRequestHeader("AppId", "50815d32-64e5-4dc7-a5e1-13816ffd196f");
+							xhr.setRequestHeader("AppSecret", "hdOv56nThwaZPfh0zP9x");
+							xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
+						}
+					}).success(function(msg) {
+						window.nativeView.toast('签到成功');
+					}).error(function(xhr) {
+						console.log(xhr);
+					});
+				}
+				function getdoctor(){
+					$.ajax({
+						method: "get",
+						dataType: "json",
+						url: _url3,
+						data:{
+						},
+						beforeSend: function(xhr) {
+							xhr.setRequestHeader("AppId", "50815d32-64e5-4dc7-a5e1-13816ffd196f");
+							xhr.setRequestHeader("AppSecret", "hdOv56nThwaZPfh0zP9x");
+							xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
+						}
+					}).success(function(msg) {
+						var result = msg.result;
+						$('.doctor-img').attr('src',result.nickUrl);
+						$('.doctor-name').text(result.doctorName+' '+result.profession);
+					}).error(function(xhr) {
+						console.log(xhr);
+					});
+				}
+			})
+		</script>
+	</body>
+</html>

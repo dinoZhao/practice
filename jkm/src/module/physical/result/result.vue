@@ -2,6 +2,7 @@
 
 	<div id="coat">
 		<temp v-bind:headtxt=title></temp>
+		<div class="fornative">
 		<div class="content">
 			<div class="left" v-on:click='tab($event)'>
 				<div class="info">
@@ -11,266 +12,237 @@
 							{{personinfo.patientName}}
 						</div>
 						<div class="" style="color: #999;font-size: 0.26rem;">
-							{{personinfo.patientSex==1?"男":'女'}} {{personinfo.patientAge}}岁
+							{{personinfo.patientSex}} {{personinfo.patientAge}}岁
 						</div>
 					</div>
 				</div>
-				<div class="item" v-bind:class="{ on:tablist[0]}">
-					心电
-					<img v-show="status[0]" :src="!status[0]?'':tablist[0]? require('../../../assets/complete_un.png'): require('../../../assets/complete_ed.png')" />
+				<div class="inquire" v-if='rapidchannel' @click="inquire"><img src="../../../assets/all-record.png"/>全部记录</div>
+				<div class="item" v-for="(item, index) in itemlist" v-bind:class="{ on:tablist[index]}">
+					{{item}}
+					<img v-if="tablist[index]&&status[index]" :src='sign2' />
+					<img v-else-if="status[index]&&!tablist[index]" :src='sign1' />
+					<img v-else-if="!status[index]&&ignorelist[index]&&!tablist[index]" :src='sign3' />
+
 				</div>
-				<div class="item" v-bind:class="{ on:tablist[1]}">
-					血压
-					<img  v-show="status[1]" :src="!status[1]?'':tablist[1]? require('../../../assets/complete_un.png'): require('../../../assets/complete_ed.png')" />
+               <div class="item" v-if='rapidchannel' v-for="(item, index) in rapidbackuplist" style="color: #bbb;">
+					{{item}}
 				</div>
-				<div class="item" v-bind:class="{ on:tablist[2]}">
-					血氧
-					<img  v-show="status[2]" :src="!status[2]?'':tablist[2]? require('../../../assets/complete_un.png'): require('../../../assets/complete_ed.png')" />
+				<div class="item" v-if='!rapidchannel&&planType=="preference"' v-for="(item, index) in backuplist" style="color: #bbb;">
+					{{item}}
 				</div>
-				<div class="item" v-bind:class="{ on:tablist[3]}">
-					血糖
-					<img v-show="status[3]" :src="!status[3]?'':tablist[3]? require('../../../assets/complete_un.png'): require('../../../assets/complete_ed.png')" />
-				</div>
-				<div class="item" v-bind:class="{ on:tablist[4]}">
-					体温
-					<img v-show="status[4]" :src="!status[4]?'':tablist[4]? require('../../../assets/complete_un.png'): require('../../../assets/complete_ed.png')" />
-				</div>
-				<div class="create" @click="report">
+				<div class="create" v-if="tabtoggle&&!rapidchannel||rapidchannel&&rapidtoggle">
+					<div @click="report" >
 					查看报告
 				</div>
+				</div>
+				
 			</div>
 			<div class="right">
 				<keep-alive>
-					<component v-on:promote='next' :recordId='recordId' :personId='personId' v-on:nexttab="tab" :detact='detactresult' v-bind:is="mould"></component>
+					<component @liberate='tabtoggle=true' :tabtoggle='tabtoggle' v-on:promote='next' :recordId='recordId' :personId='personId' v-on:nexttab="tab" :detact='detactresult' v-bind:is="mould" :icon="icon" :showFooter='hidshow'></component>
 				</keep-alive>
 			</div>
+		</div>
+				
 		</div>
 	</div>
 
 </template>
 <script>
-	import temp from "components/headline/headline.vue"
-	import btn from "components/stuff/btn.vue"
-	import temperature from './temperature.vue'
-	import tempdemo from './tempdemo.vue'
-	import pressure from './pressure.vue'
-	import pressuredemo from './pressuredemo.vue'
-	import oxygendemo from './oxygendemo.vue'
-	import oxygen from './oxygen.vue'
-	import sugar from './sugar.vue'
-	import sugardemo from './sugardemo.vue'
-	import ecg from './ecg.vue'
-	import ecging from './ecging.vue'
-	import ecgdemo from './ecgdemo.vue'
-	import Vue from "vue"
-	import { getSingleDetectionResult as getresult, readPatientMsg,updatePhysicalExamTime } from "API/requst"
+	//自定义方法
+	import { getSingleDetectionResult as getresult, readPatientMsg, updatePhysicalExamTime } from "API/requst"
 	import { getURLParameter } from "utils/util"
+	import { mixin } from './leadin.js'
 	export default {
-
-		name: 'result',
-		components: {
-			temp,
-			btn,
-			temperature,
-			ecg,
-			ecging,
-			pressure,
-			oxygen,
-			sugar,
-			ecgdemo,
-			pressuredemo,
-			oxygendemo,
-			sugardemo,
-			tempdemo
-		},
+		mixins: [mixin],
 		data() {
 			return {
-				//				mould: "ecg",
-				tablist: [],
-				title: '心电',
-				statuslist: [
-					['ecgdemo', "ecg"],
-					['pressuredemo', "pressure"],
-					['oxygendemo', 'oxygen'],
-					["sugardemo", 'sugar'],
-					['tempdemo', 'temperature']
-				],
-				status: [0, 0, 0, 0, 0],
-				detactresult: {},
-				recordId: '',
-				personId: '',
-				personinfo: ''
-
+				docmHeight: document.documentElement.clientHeight, //默认屏幕高度
+				showHeight: document.documentElement.clientHeight, //实时屏幕高度
+				hidshow: true, //显示或者隐藏footer
+				padcode:'',
+				rapidtoggle:false,//快速检测下，是否展示查看报告
 			}
 		},
 		created() {
-			var tablist = []
-			tablist.length = 5
-			tablist.fill(false)
-			tablist[0] = true
-			this.tablist = tablist
-			this.getresult()
-
-			//		    页面传参
+			var vm = this;
+			//  页面传参
 			var recordId = getURLParameter('recordId')
 			var personId = getURLParameter('personId')
+			sessionStorage.setItem('personId',personId)
 			this.recordId = recordId
 			this.personId = personId
-
+			//初始化数据，获得测量结果以及获得个人信息
+			this.getresult()
 			this.getinfo()
+			try {
+				var padcode = window.android.getPadCode();
+		  		vm.padcode = padcode;
+		  		sessionStorage.setItem('padcode',padcode);
+			} catch(err) {
+				console.log(err);
+			}
 		},
+		//依赖注入，不建议，但是代码清晰度高
 		provide: function() {
 			return {
-				getresult: this.getresult
+				getresult: this.getresult,
+				tab: this.tab,
+				next: this.next
 			}
 		},
 		methods: {
+			//获取检测结果
 			getresult() {
 				var self = this;
 				return getresult({
 					"recordId": self.recordId
-//										"recordId": '1258953856'
 				}).then(function(res) {
 					self.detactresult = res.result
 					return res
 				})
 			},
+			//切换项目tab,
+			//e:将要切换目的dom内的文本，betray:是否为非tab点击触发
 			tab(e, betray) {
-
-				var content;
-				var tablist = []
-				var prelist = this.tablist;
-				tablist.length = 5
-				tablist.fill(false)
-				this.tablist = tablist
-				if(betray) {
-					content = e
+				if(betray !== undefined) {
+					var content = e
+					// console.log(typeof(betray))
+					// console.log(Number.isFinite(betray))
+					if(Number.isFinite(betray)) { //如果是跳过
+						this.$set(this.ignorelist, betray, true)
+						if(betray == this.itemlist.length-1) {//如果是最后一个，即bmi，点了不做跳转
+							return
+						}
+					} else { //如果是保存
+						this.$set(this.ignorelist, betray, false)
+					}
 				} else {
-					content = e.target.innerText.replace(/\s+/g, "")
+					if(!this.tabtoggle && !this.rapidchannel) {//如果不是快速检测且没有测一遍，就不能点
+						return
+					}
+					var content = e.target.innerText.replace(/\s+/g, "")
 				}
-				var itemlist = ["心电", "血压", "血氧", "血糖", "体温"]
-
-				this.title = content;
-				Vue.set(this.tablist, itemlist.findIndex(function(item) {
-					return item == content
-				}), true)
-
-			},
-			next(para) {
-				Vue.set(this.status, para, 1)
-			},
-			report() {
-				var self=this
-				updatePhysicalExamTime({
-					"recordId":this.recordId
-				}).then(function(res){
-					window.location.href = './report.html?recordId=' + self.recordId + '&personId=' + self.personId
-				})
+				var index = this.itemlist.indexOf(content)
+//				var index = this.itemlist.findIndex(function(item) {
+//					return item == content
+//				})
+				//如果点到不可用项目
+					if(this.rapidbackuplist.indexOf(content)>-1) {
+					if(this.rapidchannel){
+						//弹窗
+						this.construction();
+					}else{
+						return
+					}
+				}
+//				if(this.rapidbackuplist.findIndex(function(item) {
+//					return item == content
+//				})>-1) {
+//					if(this.rapidchannel){
+//						//弹窗
+//						this.construction();
+//					}else{
+//						return
+//					}
+//				}
+				//如果没点到tab有效的地方
+				if(index < 0) {
+					return
+				}
 				
+				this.title = content;
+				this.tablist=[false,false,false,false,false,false,false,false]
+//				this.tablist.fill(false, 0, this.itemlist.length)
+				this.$set(this.tablist, index, true)
+
 			},
+			//更改检测状态或方法
+			next(para1, para2) {
+				// console.log(para1, para2)
+				this.$set(this.status, para1, para2)
+			},
+			//生成报告
+			report() {
+				var self = this
+				updatePhysicalExamTime({
+					"recordId": this.recordId,
+					"personId":this.personId
+				}).then(function(res) {
+					var tablist=self.tablist;
+				    var index=tablist.indexOf(true)
+				var status=self.status.join('');
+					window.location.href = './report.html?recordId=' + self.recordId + '&personId=' + self.personId+'&rapidindex='+index+'&status='+status
+				})
+
+			},
+			//个人信息
 			getinfo() {
 				var self = this
 				readPatientMsg({
-					"padDeviceCode": "P1",
+					"padDeviceCode": sessionStorage.getItem('padcode'),
 					"personId": self.personId
 				}).then(function(res) {
 					self.personinfo = res
 				})
+			},
+			inquire(){
+				window.location.href='../screening/allrecord.html?type=ksjc'
 			}
 		},
-
+		watch: {
+			showHeight: function() {
+				if(this.docmHeight > this.showHeight) {
+					this.hidshow = false
+				} else {
+					this.hidshow = true
+				}
+			},
+			status:function(res){
+				if(res.some(function(item){
+					return item===1
+				})){
+					this.rapidtoggle=true
+				}
+			}
+		},
 		computed: {
 			mould: function() {
-				var tabindex = this.tablist.findIndex(function(item) {
-					return item === true
-				})
+				console.log(this.tablist)
+				var tabindex = this.tablist.indexOf(true)
 				var stepindex = this.status[tabindex]
 				return this.statuslist[tabindex][stepindex]
 
 			}
 		},
 		mounted() {
-
+			if(getURLParameter("channel") == 'rapid') {
+				this.rapidchannel = true
+				if(!this.personId){
+					this.alertDefault({
+						text: '患者未登记，请先进行“身份证读取”',
+						rowButton: true,
+					})
+				}
+			}
+			// window.onresize监听页面高度的变化
+			window.onresize = () => {
+				return(() => {
+					if(document.activeElement.tagName === 'INPUT'){
+				        document.activeElement.scrollIntoView({behavior: "smooth"})
+				    }
+					this.showHeight = document.body.clientHeight;
+				})()
+			}
 		}
 	}
 </script>
 <style scoped="scoped" lang="scss">
-	#coat {
-		overflow: hidden;
+	@import "./leadin.scss";
+	.fornative{
 		height: 100%;
 	}
-	
-	.content {
-		width: 100%;
-		display: flex;
-		min-height: 100%;
-		height: 100%;
-		.left {
-			width: 20%;
-			min-height: 100%;
-			border-right: 1px solid #D9D9D9;
-			display: inline-flex;
-			flex-wrap: wrap;
-			align-content: flex-start;
-			height: 100%;
-			overflow: scroll;
-			padding-top:80px;
-			.info {
-				justify-content: center;
-				width: 100%;
-				display: inline-flex;
-				height: 6.77vw;
-				align-items: center;
-				img {
-					width: 0.9rem;
-					height: 0.9rem;
-					margin-right: 10px;
-					border-radius: 0.9rem;
-				}
-				/*margin:0.2rem auto;*/
-				.detail {
-					display: inline-flex;
-					flex-direction: column;
-				}
-			}
-			.item {
-				width: 100%;
-				height: 5.2vw;
-				line-height: 5.2vw;
-				text-align: center;
-				font-size: 0.32rem;
-				position: relative;
-				img {
-					position: absolute;
-					width: 0.44rem;
-					right: 0.15rem;
-					top: 0.25rem;
-				}
-			}
-			.on {
-				background: #3C9BFF;
-				color: #fff;
-			}
-			.create {
-				width: 80%;
-				margin-left: 10%;
-				line-height: 5.2vw;
-				color: #FC9452;
-				border-radius: 10px;
-				border: 2px solid #FC9452;
-				text-align: center;
-				margin-top: 5.2vw;
-				font-size: 0.4rem;
-			}
-		}
-		.right {
-			width: 80%;
-			height: 100%;
-			overflow: scroll;
-			padding-top: 0.7rem;
-		}
-	}
-	/*.ecgfur >>> .box{
-		display: none;
-	}*/
+</style>
+<style type="text/css">
+
 </style>

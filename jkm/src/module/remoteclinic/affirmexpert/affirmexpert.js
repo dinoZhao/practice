@@ -2,8 +2,9 @@
 import Vue from 'vue'
 import affirmexpert from './affirmexpert.vue'
 import 'utils/layout'
-
-/* eslint-disable no-new */
+import Viewer from 'v-viewer'
+import '../../../static/css/viewer.css'
+Vue.use(Viewer);
 new Vue({
   el: '#affirmexpert',
   render: h => h(affirmexpert)

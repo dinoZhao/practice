@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="author" content="网易金融，网易理财，富聪金融">
+<meta name="keywords" content=" 网易金融，网易理财，富聪金融 ">
+<link rel="shortcut  icon" type="image/x-icon" href="./images/app_ico.png" media="screen"  />
+<meta name="description" content="富聪金融是网易集团全新打造的互联网金融信息服务平台，致力于“助您掌握财富”和传统金融机构服务在线客户的好帮手。富聪金融依托网易集团与创始管理团队的专业资源优势，将传统金融业务与互联网技术紧密结合，在为客户提供理财、信贷、支付等综合金融信息服务的同时，通过改善客户获取金融产品与股权/债权基础资产的信息途径，帮助客户优化资产配置、提升资金收益、规避投资风险。">
+<title>预约记录</title>
+<script type="text/javascript" src="libs/jquery.min.js"></script>
+<script type="text/javascript" src="layui/layui.all.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<link rel="stylesheet" href="layui/css/layui.css"/>
+<link rel="stylesheet" href="css/style.css"/>
+<link rel="stylesheet" href="css/appointlist.css"/>
+<style>
+	
+</style>
+</head>
+
+<body>
+<div id="counter-event-example">
+  <product-counter></product-counter>
+</div>
+<script src="js/common.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/vue-router.min.js"></script>
+<script src="js/vue-resource.js"></script>
+<script type="text/template" id="app">
+<div id="app">
+	<div class="video-head">
+    	<div class="video-head-left">
+    		<img src="images/logo.png" /><span class="dot"></span><span>互联网医院</span>
+    	</div><div class="video-head-right">
+    		<div class="video-head-item" @click.stop="gotourl('远程门诊')">远程门诊</div><div class="video-head-item on" @click.stop="gotourl('预约记录')">预约记录</div><div class="video-head-item" @click.stop="gotourl('历史病历')">历史病历</div><div class="video-head-item" @click.stop="gotourl('排班管理')">排班管理</div><div class="video-head-item operation">
+    			<div class="nickUrl"><img v-bind:src="doctordetail.nickUrl?doctordetail.nickUrl:'images/Bitmap.png'" class="d-icon"/><span :class="tagclass"></span></div>
+    			<span class="d-name">{{doctordetail.doctorName}}</span>
+    			<div class="doctor-operate">
+    				<div class="doctor-text" @click.stop="showoplist"><span class="statutex">在线</span><img src="images/ticket_arr.png"/></div>
+    				<div class="doctor-operate-list">
+    					<template v-for="item in statulist">
+    						<div class="operate-item" v-bind:data-code="item.code" @click.stop="changeStatus($event.target,item.code,item.name)">{{item.name}}</div>
+    					</template>
+    				</div>
+    			</div>
+    			<span class="h-line"></span><span class="logout" @click.stop="gotourl('退出')">退出</span>
+    		</div>
+    	</div>
+    </div>
+	<div class="appointlist">
+		<div class="appoint-content">
+			<div class="appointlist-head">{{datetext}}&nbsp;&nbsp;{{week}}</div>
+			<div class="appoint-content-list">
+				<div class="appoint-content-head">
+					<div><span>预约时间</span></div><div>排队号码</div><div>患者姓名</div><div>就诊情况</div><div>状态</div><div class="operation"><span>操作</span></div>
+				</div>
+				<ul class="appoint-list">
+					<template v-for="(item,index) in result">
+						<template v-for="(obj,ind) in item.list">
+							<template v-for="(str,inde) in obj.patientList">
+								<li class="appoint-item">
+									<div class="appoint-item-head">
+										<div>{{obj.startTime|tim}}</div><div><span>{{str.seqNumber>9?str.seqNumber:'0'+str.seqNumber}}/</span>{{str.used>9?str.used:'0'+str.used}}</div><div>{{str.patientName}}</div><div><span v-if="str.status=='Revisiting'||str.status=='Finish'">回诊</span><span v-if="str.status=='Pending'||str.status=='Waiting'||str.status=='Calling'">初诊</span><span v-if="str.status=='Canceled'">已取消</span><span v-if="str.status=='Missed'">已过号</span><span v-if="str.status=='Visiting'">已就诊</span><span v-if="str.status=='Disabled'">已失效</span></div><div><span class="Revisiting" v-if="str.status=='Revisiting'||str.status=='Finish'">待回诊</span><span class="unfinish" v-else-if="str.status=='Pending'||str.status=='Canceled'">未完成</span><span class="unfinish" v-else>未完成</span></div><div class="operation-see" @click="downupbtn($event.target,str.visitingRecordId,str.patientId,str.recordId,str.otherReports)">查看病情 </div>
+									</div>
+									<div class="appoint-item-bottom">
+										<div class="patient-item-describe">
+				    						<p>问题描述</p>
+				    						<div class="describe-text">{{str.symptom}}</div>
+				    					</div>
+				    					<div class="patient-item-report">
+				    						<p>病理报告（<span class="reportnumber"></span>）</p>
+				    						<p class="patient-report-item">
+				    							<img src="images/baogao3.png" /><span>心电图扫描</span>
+				    						</p>
+				    					</div>
+				    					<div class="appoint-diagnose">
+				    						<p>诊断</p>
+				    						<div class="appoint-diagnose-text"></div>
+				    					</div>
+				    					<div class="appoint-pharmacy">
+				    						<p>用药</p>
+				    						<div class="appoint-pharmacy-text">
+				    							
+				    						</div>
+				    					</div>
+				    					<div class="appoint-proposal">
+				    						<p>建议</p>
+				    						<div class="proposal-diagnose-text"></div>
+				    					</div>
+									</div>
+								</li>
+							</template>
+						</template>
+					</template>
+				</ul>
+			</div>
+		</div><div class="appoint-date">
+			<div class="layui-inline" id="test-n1"></div>
+		</div>
+	</div>
+	 <div class="win-img" v-show="isimgsrc" @click.stop="closewinimg">
+	  	<div class="win-img-content">
+	  		<img src="" class="win-img-banner"/>
+	  	</div>
+	  </div>
+</div>
+</script>
+<script>
+var timerecord = null;
+Vue.component('product-counter', {
+   	template:"#app",		
+   	data: function () {
+    	return {
+       		result:{},
+       		url:'https://ymmdev.verify.fc18.com.cn',
+       		btntx:'查看病情',
+       		doctorId:423254276,
+       		isimgsrc:false,
+       		doctordetail:{},
+       		datetext:'',
+       		week:'',
+       		startime:'',
+       		endtime:'',
+       		medications:[],
+       		type:'',
+   			tagclass:'Visiting',
+	       	statulist:[{name:'坐诊中',code:'Visiting'},{name:'离开',code:'Left'},{name:'离线',code:'Suspended'}]
+	    }
+	},
+  	created:function (){
+  		var vm = this;
+  		var myDate = new Date();
+  		var dat = dateFormat(myDate.getTime(),'Y-m-d');
+	  	var origin = window.location.origin;
+	  	var doctorId = getUrlParam('doctorId');
+	  	vm.type = getUrlParam('type');
+	  	if(!empty(doctorId)){
+	  		vm.doctorId = doctorId;
+	  	}
+	  	switch(origin){
+	  		case'http://localhost':
+	  			vm.url = 'https://ymmdev.verify.fc18.com.cn';
+	  		case'http://127.0.0.1:8020':
+	  			vm.url = 'https://ymmdev.verify.fc18.com.cn';
+	  		case'https://ymmdev.verify.fc18.com.cn':
+	  			vm.url = 'https://ymmdev.verify.fc18.com.cn';
+	  		break;
+	  		case'https://ymmsit.verify.fc18.com.cn':
+	  			vm.url = 'https://ymmsit.verify.fc18.com.cn';
+	  		break;
+	  		case'https://demoymm.verify.fc18.com.cn':
+	  			vm.url = 'https://demoymm.verify.fc18.com.cn';
+	  		break;
+	  		case'https://www.fc18.com.cn':
+	  			vm.url = 'https://www.fc18.com.cn';
+	  		break;
+	  		default:vm.url = origin;
+	  	}
+	  	vm.getdoctor();
+	  	vm.getdate(dat);
+//		setTimeout(function(){
+//			vm.initialize();
+//		},500)
+ 	},
+ 	mounted:function(){
+ 		
+	},
+ 	watch:{
+		
+	},
+	methods: {
+		gotourl:function(tex){
+			var vm = this;
+			var _url = 'index.html?doctorId='+vm.doctorId;
+			switch(vm.type){
+				case'video':
+				_url = 'video.html?doctorId='+vm.doctorId;
+				break;
+				case'record':
+				_url = 'record.html?doctorId='+vm.doctorId;
+				break;
+			}
+			if(tex=='远程门诊'){
+				window.location.href = _url;
+			}else if(tex=='预约记录'){
+			}else{
+				window.nativeView.toast('敬请期待');
+			}
+		},
+		getdoctor:function(){
+			var vm = this;
+			doGet(
+				vm.url+'/ymmopenapi/sgw/v1/integratedMachine/getClinicAppointment',
+				{"doctorId": vm.doctorId},
+				null,null,null,true
+			).done(function(res){
+				vm.doctordetail = res.result;
+				vm.schedulingId = res.result.schedulingId;
+			})
+		},
+		getdate:function(datx){
+			var vm = this;
+			vm.datetext = datx.replace(/-/g,'/');
+			var timer = datx+' '+'0:0:0';
+		  	var mydatetwo = new Date(timer);
+		  	var startime = new Date(timer).getTime();
+		  	var year = parseInt(mydatetwo.getFullYear());
+		  	var month = parseInt(mydatetwo.getMonth()+1);
+		  	var day = parseInt(mydatetwo.getDate());
+		  	var week = parseInt(mydatetwo.getDay());
+		  	var intertime = startime+86400000;
+		  	vm.startime = startime;
+		  	vm.endtime = intertime;
+		  	console.log(startime);
+		  	switch(week){
+	  			case 0:
+	  				var wenm = '周日';
+	  			break;
+	  			case 1:
+	  				var wenm = '周一';
+	  			break;
+	  			case 2:
+	  				var wenm = '周二';
+	  			break;
+	  			case 3:
+	  				var wenm = '周三';
+	  			break;
+	  			case 4:
+	  				var wenm = '周四';
+	  			break;
+	  			case 5:
+	  				var wenm = '周五';
+	  			break;
+	  			case 6:
+	  				var wenm = '周六';
+	  			break;
+	  		}
+		  vm.week = wenm;
+		  vm.getRecord(startime,intertime);
+		},
+		downupbtn:function(elem,vid,pid,retext,oturl){
+			var vm = this;
+			var reht = '';var otht = '';var reportnumber = 0;
+			$(elem).toggleClass('on');
+			if($(elem).hasClass('on')){
+				$(elem).text('收起');
+			}else{
+				$(elem).text('查看病情');
+			}
+			if(!empty(retext)){
+				var relsit = JSON.parse(retext);
+				reportnumber+=relsit.length;
+				relsit.forEach(function(item){
+					reht+='<a class="patient-report-item" data-href="'+item.reportUrl+'" target="_blank">'+
+    							'<img src="images/baogao3.png" /><span>'+item.reportTitle+'</span>'+
+    					 '</a>';
+				})
+			}
+			if(!empty(oturl)){
+				var oturllist = oturl.split(',');
+				reportnumber+=oturllist.length;
+				oturllist.forEach(function(item,index,arr){
+					otht += '<p class="patient-report-item" data-url='+item+'>'+
+    							'<img src="images/baogao3.png" /><span>报告'+(index+1)+'</span>'+
+    						'</p>'
+				})
+			}
+			var htm = '<p>病理报告（'+reportnumber+'）</p>'+reht+otht;
+			$(elem).parents('.appoint-item').find('.patient-item-report').html(htm);
+			$(elem).parents('.appoint-item').find('a').on('click',function(e){
+				var url = $(this).attr('data-href');
+				vm.openpdf(url);
+			})
+			$(elem).parents('.appoint-item').find('p.patient-report-item').on('click',function(e){
+				var url = $(this).attr('data-url');
+				vm.openimg(url);
+			})
+			doGet(
+				vm.url+'/ymmopenapi/sgw/v1/integratedMachine/outpatient/viewMedicalRecord',
+				{
+					"visitingRecordId":vid,
+					"personId":pid
+				}
+			).done(function(msg){
+				var recordDto = msg.result;
+				var medications = msg.result.medications;
+				var arr = [];
+				if(!empty(medications)){
+					medications.map(function(item,index){
+						var obj = {}
+						obj.name = item?item.split('|')[0]:'';
+						obj.numb = item?item.split('|')[1]:'';
+						obj.dose = item?item.split('|')[2]:'';
+						arr.push(obj);
+					})	
+					var ht = '';
+					arr.forEach(function(item){
+						ht+='<div><p>药品名称：<span>'+item.name+'</span></p><p>服用次数：<span>'+item.dose+'</span></p><p>用药剂量：<span>'+item.numb+'</span></p></div>';
+					})
+					$(elem).parents('.appoint-item').find('.appoint-pharmacy-text').html(ht);
+				}
+				$(elem).parents('.appoint-item').find('.appoint-diagnose-text').text(recordDto.conclusionDesc);
+				$(elem).parents('.appoint-item').find('.proposal-diagnose-text').text(recordDto.patientCaseStatement);
+			}).fail(function(){
+//				$(elem).parents('.appoint-item').find('.appoint-diagnose').hide();
+//				$(elem).parents('.appoint-item').find('.appoint-pharmacy').hide();
+//				$(elem).parents('.appoint-item').find('.appoint-proposal').hide();
+			})
+			$(elem).parents('.appoint-item').find('.appoint-item-bottom').slideToggle();
+		},
+		getmedical:function(pid,vid){
+			var vm = this;
+			doGet(
+				vm.url+'/ymmopenapi/sgw/v1/integratedMachine/outpatient/viewMedicalRecord',
+				{
+					"visitingRecordId":vid,
+					"personId":pid
+				}
+			).done(function(msg){
+				var recordDto = msg.result;
+				var medications = msg.result.medications;
+				var arr = [];
+				medicine.map(function(item,index){
+					var obj = {}
+					obj.name = item?item.split('|')[0]:'';
+					obj.numb = item?item.split('|')[1]:'';
+					obj.dose = item?item.split('|')[2]:'';
+					arr.push(obj);
+				})	
+				vm.medications = arr;
+			})
+		},
+		getRecord:function(start,endt){
+			var vm = this;
+			clearInterval(timerecord);
+			doGet(
+				vm.url+'/ymmopenapi/sgw/v1/integratedMachine/outpatient/getDoctorOutpatientRecord',
+				{
+					'doctorId':vm.doctorId,
+					'startTime':start,
+					'endTime':endt
+				}
+			).done(function(msg){
+				vm.result = msg.result;
+				vm.getRecordtwo();
+			})
+		},
+		getRecordtwo:function(){
+			var vm = this;
+			timerecord=setInterval(function(){
+				vm.getRecord(vm.startime,vm.endtime);
+			},2000)
+		},
+		closewinimg:function(){
+			var vm = this;
+			vm.isimgsrc = false;
+		},
+		openpdf:function(url){
+			var vm = this;
+			console.log('aaa');
+			if(!empty(url)){
+				window.open(url);
+			}else{
+				window.nativeView.toast('报告为空');
+			}
+		},
+		openimg:function(img){
+			var vm = this;
+			vm.isimgsrc = true;
+			$('.win-img-banner').attr('src',img);
+// 				sessionStorage.setItem('imgurl',img);
+// 				window.open('img.html');
+		},
+		showoplist:function(){
+			var vm = this;
+			$('.doctor-operate-list').slideDown();
+		},
+		changeStatus:function(elem,code,tex){
+			var vm = this;
+			$('.operate-item').removeClass('on');
+			$(elem).addClass('on');
+			$('.statutex').text(tex);
+			$('.doctor-operate-list').slideUp();
+			vm.tagclass = code;
+			var statustext = '';
+			switch(code){
+				case 'Visiting':
+				statustext = 'Visiting';
+				break;
+				case 'Suspended':
+				statustext = 'Suspended';
+				break;
+				case 'Left':
+				statustext = 'Left';
+				break;
+			}
+			vm.updateStatus(statustext);
+		},
+		initialize:function(){
+			var vm = this;
+			layui.use('laydate', function(){
+  				var laydate = layui.laydate;
+  				laydate.render({
+				    elem: '#test-n1',
+				    position: 'static',
+				    change: function(value, date, endDate){
+					    console.log(value); //得到日期生成的值，如：2017-08-18
+					    console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+					    console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+					},
+				    mark: {
+				      '2019-4-14': '<b>14</b><b>15</b>'
+				    }
+			  	});
+			})
+		},
+		updateStatus:function(tex){
+		var vm = this;
+		var obj = {
+			"schedulingId": vm.schedulingId,
+			"doctorId": vm.doctorId,
+			"status": tex
+		}
+		doPost(
+			vm.url+'/ymmopenapi/sgw/v1/integratedMachine/outpatient/updateSchedulingStatus',
+			JSON.stringify(obj),
+			null,null,null,true
+		).done(function(msg){
+		})
+	}
+	}
+})
+	
+new Vue({
+  el: '#counter-event-example'
+  
+})
+Vue.filter('tim', function(input) {
+	if(input) {
+		return dateFormat(parseInt(input), 'G:i');
+	}
+})
+</script>
+</body>
+</html>

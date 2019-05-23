@@ -89,7 +89,8 @@ export default {
     medicalHistory:{},
     familyHistory:{},
     personId:'',
-      comindex:0
+    comindex:0,
+    padcode:''
     }
   },
   methods:{
@@ -150,12 +151,17 @@ export default {
   },
   created () {
   	var vm = this;
-
+		try {
+			var padcode = window.android.getPadCode();
+	  	vm.padcode = padcode;
+		} catch(err) {
+			console.log(err);
+		}
   },
   mounted(){
   	var vm = this;
   	  let params = {
-  		deviceId:'P1',
+  		deviceId:vm.padcode||sessionStorage.getItem('padcode'),
   		serialNo:'00000',
   		hospitalCode:'FuCongKJXZ'
   	}

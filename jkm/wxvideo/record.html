@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>远程门诊</title>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <!--<link href='./css/bootstrap.css' rel="stylesheet">-->
+  <link href='./css/style.css' rel='stylesheet'>
+  <link href='./css/record.css' rel='stylesheet'>
+  <!--<link rel="stylesheet" href="./css/pure-min.css">
+  <link rel="stylesheet" href="./css/baby-blue.css">-->
+  <style>
+      #remote-video-wrap div{max-width:1000px;display: inline-block;padding:0px;max-height: 100px;}
+  </style>
+</head>
+<body>
+<div id="counter-event-example">
+  <product-counter></product-counter>
+</div>
+<!-- jquery Demo用到，WebRTCAPI不依赖 -->
+<script src="./libs/jquery.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/vue-router.min.js"></script>
+<script src="js/vue-resource.js"></script>
+<!-- demo 部分 -->
+<script src="https://sqimg.qq.com/expert_qq/webrtc/3.0/WebRTCAPI.min.js"></script>
+
+<script type="text/template" id="app">
+<div id="app">
+	<!-- 登录  -->
+  <!--<div id="input-container" class="container" style="display: none;">
+    <div class="login-box">
+      <div class="form-group">
+        <div class="hide">
+          <label for="sdkappid">SDKAPPID:&nbsp;</label>
+          <input class="form-control" id="sdkappid" type="text" value="1400037025" />
+        </div>
+          <label for="userId">用户名:</label>
+          <input class="form-control" id="userId" type="text" v-bind:value="useId">
+          <label for="room-number">房间号:</label>
+          <input class="form-control" id="roomid" type="text" v-bind:value="roomid">
+      </div>
+      <button class="btn btn-default" type="button">我要视频通话</button>
+      <br />
+      <p>注意：如果房间已经存在，则加入房间</p>
+    </div>
+  </div>-->
+  <!-- 登录  -->
+
+  <!-- RTC  -->
+  <div id="video-section">
+    <!--<p>当前房间号：<span id="c_roomid"></span>  当前用户： <span id="c_userid"></span></p>
+    <button class="btn btn-default" type="button" onclick="quitRTC()">退房</button>
+    <button class="btn btn-default" type="button" onclick="stopRTC()">停止推流</button>
+    <button class="btn btn-default" type="button" onclick="startRTC()">开始推流</button>-->
+    <div class="video-head">
+    	<div class="video-head-left">
+    		<img src="images/logo.png" /><span class="dot"></span><span>互联网医院</span>
+    	</div><div class="video-head-right">
+    		<div class="video-head-item on" @click.stop="gotourl('远程门诊')">远程门诊</div><div class="video-head-item" @click.stop="gotourl('预约记录')">预约记录</div><div class="video-head-item" @click.stop="gotourl('历史病历')">历史病历</div><div class="video-head-item" @click.stop="gotourl('排班管理')">排班管理</div><div class="video-head-item operation">
+    			<div class="nickUrl"><img v-bind:src="result.nickUrl?result.nickUrl:'images/Bitmap.png'" class="d-icon"/><span :class="tagclass"></span></div>
+    			<span class="d-name">{{result.doctorName}}</span>
+    			<div class="doctor-operate">
+    				<div class="doctor-text" @click.stop="showoplist"><span class="statutex">在线</span><img src="images/ticket_arr.png"/></div>
+    				<div class="doctor-operate-list">
+    					<template v-for="item in statulist">
+    						<div class="operate-item" v-bind:data-code="item.code" @click.stop="changeStatus($event.target,item.code,item.name)">{{item.name}}</div>
+    					</template>
+    				</div>
+    			</div>
+    			<span class="h-line"></span><span class="logout" @click.stop="gotourl('退出')">退出</span>
+    		</div>
+    	</div>
+    </div>
+    <div class="video-btoom" id="video-btoom">
+    	<div class="video-btoom-left">
+    		<!--<div class="title"><span>视频操作</span></div>
+			<div class="video-operation">
+	        	<div class="suspend" @click="stopvideo($event.target)"><img v-bind:src="stopimg"/><span>{{stoptext}}</span></div><div class="hangUp" @click="hangUpclick"><img src="images/guaduan.png"/><span>挂断</span></div>
+	        </div>-->
+	        <div class="title" v-if="patientdetail.patientName"><span>{{patientdetail.patientName}}</span></div>
+	        <div class="diagnose">
+	        	<div class="diagnose-left">
+	        		<img src="images/zhenduan.png" />
+	        		<span>诊断</span>
+	        	</div>
+	        	<div class="diagnose-right">
+	        		<textarea placeholder="请填写给病人的诊断结果" class="diagnose-text" @input="diagnoseinput" v-model="casedetail.conclusionDesc"></textarea>
+	        	</div>
+	        </div>
+	        <div class="pharmacy">
+	        	<div class="pharmacy-left">
+	        		<img src="images/yaowan.png" />
+	        		<span>用药</span>
+	        	</div>
+	        	<div class="pharmacy-right">
+	        		<div class="pharmacy-right-head" v-for="item in pharmacyList">
+	        			<div class="pharmacy-head-left">
+	        				<span>药品名称</span>
+	        				<input type="text" placeholder="请输入" class="pharmacy-name"/>
+	        			</div><div class="pharmacy-head-center">
+	        				<span>服用次数</span><input type="tel" class="daynum"/><span>日</span><input type="tel" class="frequency"/><span>次</span>
+	        			</div><div class="pharmacy-head-right">
+	        				<span>用药剂量</span><input type="text" class="dosage" placeholder="请填写用药剂量"/>
+	        			</div>
+	        		</div>
+	        		<div class="pharmacy-right-bottom">
+	        			<div class="pharmacy-btn" @click.stop="addpharmacy"><img src='images/tianjia.png'/><span>继续添加</span></div>
+	        		</div>
+	        	</div>
+	        </div>
+	        <div class="suggest">
+	        	<div class="suggest-left">
+	        		<img src="images/danju-zhengquecopy.png" />
+	        		<span>建议</span>
+	        	</div>
+	        	<div class="suggest-right">
+	        		<textarea placeholder="请填写给病人的诊断结果" class="suggest-text" @input="suggestinput" v-model="casedetail.patientCaseStatement"></textarea>
+	        	</div>
+	        </div>
+	        <div class="submit">
+	        	<div class="submit-btn" @click.stop="submitmes">提交病历</div>
+	        </div>
+    	</div><div class="video-btoom-right">
+    		<template>
+    				<div class="operation-box" v-if="!isvisiting&&callingAppointment.length>0">
+		    			<div class="operation-btn" @click.stop="admissions(patientdetail.clinicAppointmentId,patientdetail.visitingRecordId)"><img src="images/jiaohao2.png"/><span>叫号</span></div>
+		    			<p class="operation-hint-one" v-if="isshowhint&&isshwo">当前患者无应答，请叫号下一位患者</p>
+		    			<p class="operation-hint-two" v-if="!isshowhint&&isshwo">呼叫中…{{lasttimer}}秒</p>
+		    		</div>
+		    		<div class="operation-box box-two" v-if="isvisiting||!callingAppointment.length>0">
+		    			<div class="operation-btn"><img src="images/jiaohao1.png"/><span>叫号</span></div>
+		    			<p class="operation-hint" v-if="callingAppointment.length>0">已接通</p>
+		    		</div>
+		    		<div class="operation-box nopeople" v-if="!callingAppointment.length>0">
+		    			<img src="images/nopeople.png" />
+		    			<p>当前暂无候诊患者</p>
+		    		</div>
+    		</template>
+    		<div class="btoom-right-head" v-if="callingAppointment.length>0">
+    			<div class="message">
+    				<div class="message-num"><span>{{patientdetail.seqNumber>9?patientdetail.seqNumber:'0'+patientdetail.seqNumber}}/</span>{{result.used>9?result.used:'0'+result.used}}</div><div class="message-name">
+    					<img class="head-icon" v-bind:src="patientdetail.patientHeadUrl?patientdetail.patientHeadUrl:'images/headUrl.png'" /><p><span>{{patientdetail.patientName}}</span><img src="images/chuzhen.png" class="tag" v-if="patientdetail.revisitingCount&&patientdetail.revisitingCount<=1"/><img src="images/huizhen.png" class="tag" v-else/></p>
+    				</div><div class="message-tag"><img src="images/dangqian.png" class=""/></div>
+    			</div>
+    			<div class="issue">
+    				<div class="issue-head">问题描述</div>
+    				<div class="issue-content">{{patientdetail.symptom}}</div>
+    			</div>
+    			<div class="report">
+    				<div class="issue-head">病理报告({{lengthnum}})</div>
+    				<ul class="report-list">
+    					<li class="report-item" v-for="obj in patientdetail.examReports">
+    						<a class="" v-bind:data-href="obj.reportUrl" @click.stop="openpdf(obj.reportUrl)">
+    							<div class="report-item-left"><img src="images/baogao1.png" class="pdf-icon"/><span>{{obj.reportTitle}}</span><img src="images/icon-test copy.png" class="tag"/></div><div class="report-item-right"><span>查看</span></div>
+    						</a>
+    					</li>
+    					<li class="report-item" v-for="(im,ind) in patientdetail.otherReports" @click.stop="openimg(im)">
+    						<div class="report-item-left"><img src="images/baogao1.png" class="pdf-icon"/><span>报告{{ind+1}}</span><img src="images/icon-test copy.png" class="tag"/></div><div class="report-item-right"><span>查看</span></div>
+    					</li>
+    				</ul>
+    			</div>
+    		</div>
+    		<div class="btoom-right-bottom">
+    			<ul class="right-bottom" v-if="appointments">
+    				<template v-for="(item,index) in appointments">
+    					<li class="right-bottom-item" v-if="index==1">
+	    					<div class="message">
+			    				<div class="message-num"><span>{{item.seqNumber>9?item.seqNumber:'0'+item.seqNumber}}/</span>{{result.used>9?result.used:'0'+result.used}}</div><div class="message-name">
+			    					<p><span>{{item.patientName}}</span><img src="images/chuzhen.png" class="tag" v-if="item.revisitingCount&&item.revisitingCount<=1"/><img src="images/huizhen.png" class="tag" v-else/></p>
+			    				</div><div class="message-tag"><img src="images/xiayiwei.png" class=""/><span class="triangle on" @click.stop="updown($event.target)"></span></div>
+			    			</div>
+			    			<div class="updown">
+			    				<div class="issue">
+				    				<div class="issue-head">问题描述</div>
+				    				<div class="issue-content" v-if="item.symptom">{{item.symptom}}</div>
+				    			</div>
+				    			<div class="report">
+				    				<div class="issue-head">病理报告({{item.examReports.length+item.otherReports.length}})</div>
+				    				<ul class="report-list">
+				    					<li class="report-item" v-for="obj in item.examReports">
+				    						<a class="" v-bind:data-href="obj.reportUrl" @click.stop="openpdf(obj.reportUrl)">
+				    							<div class="report-item-left"><img src="images/baogao1.png" class="pdf-icon"/><span>{{obj.reportTitle}}</span></div><div class="report-item-right"><span>查看</span></div>
+				    						</a>
+				    					</li>
+				    					<li class="report-item" v-for="(im,ind) in item.otherReports" @click.stop="openimg(im)">
+				    						<div class="report-item-left"><img src="images/baogao1.png" class="pdf-icon"/><span>报告{{ind+1}}</span></div><div class="report-item-right"><span>查看</span></div>
+				    					</li>
+				    				</ul>
+				    			</div>
+			    			</div>
+	    				</li>
+	    				<li class="right-bottom-item" v-if="index!=0&&index!=1">
+	    					<div class="message">
+			    				<div class="message-num"><span>{{item.seqNumber>9?item.seqNumber:'0'+item.seqNumber}}/</span>{{result.used>9?result.used:'0'+result.used}}</div><div class="message-name">
+			    					<p><span>{{item.patientName}}</span><img src="images/chuzhen.png" class="tag" v-if="item.revisitingCount&&item.revisitingCount<=1"/><img src="images/huizhen.png" class="tag" v-else/></p>
+			    				</div><div class="message-tag"><img src="images/fczhen.png" class="" style="visibility: hidden;"/><span class="triangle" @click.stop="updown($event.target)"></span></div>
+			    			</div>
+			    			<div class="updown" style="display: none;">
+			    				<div class="issue">
+				    				<div class="issue-head">问题描述</div>
+				    				<div class="issue-content" v-if="item.symptom">{{item.symptom}}</div>
+				    			</div>
+				    			<div class="report">
+				    				<div class="issue-head">病理报告({{item.examReports.length+item.otherReports.length}})</div>
+				    				<ul class="report-list">
+				    					<li class="report-item" v-for="obj in item.examReports">
+				    						<a class="" v-bind:data-href="obj.reportUrl" @click.stop="openpdf(obj.reportUrl)">
+				    							<div class="report-item-left"><img src="images/baogao1.png" class="pdf-icon"/><span>{{obj.reportTitle}}</span></div><div class="report-item-right"><span>查看</span></div>
+				    						</a>
+				    					</li>
+				    					<li class="report-item" v-for="(im,ind) in item.otherReports" @click.stop="openimg(im)">
+				    						<div class="report-item-left"><img src="images/baogao1.png" class="pdf-icon"/><span>报告{{ind+1}}</span></div><div class="report-item-right"><span>查看</span></div>
+				    					</li>
+				    				</ul>
+				    			</div>
+			    			</div>
+	    				</li>
+    				</template>
+    			</ul>
+    		</div>
+    	</div>
+    </div>
+    <!--<div class="patientList" id="patientList" style="display: none;">
+    	<div class="patientList-head">候诊患者</div>
+    	<div class="patientList-content">
+    		<ul class="patient-list">
+    			<template v-for="(item,index) in callingAppointment">
+	    			<li class="patient-item" v-if="index==0">
+	    				<div class="patient-item-left">
+	    					<span>{{item.seqNumber>9?item.seqNumber:'0'+item.seqNumber}}</span>/{{result.used>9?result.used:'0'+result.used}}
+	    				</div><div class="patient-item-right">
+	    					<div class="patient-item-name"><span style="min-width:60px;display: inline-block;">{{item.patientName}}</span><span v-if="item.status=='Pending'||item.status=='Waiting'||item.status=='Calling'">初诊</span><span v-if="item.status=='Revisiting'" style="color: #EB5454 ;">回诊</span></div>
+	    					<div class="patient-item-describe">
+	    						<p>问题描述</p>
+	    						<div class="describe-text">{{item.symptom}}</div>
+	    					</div>
+	    					<div class="patient-item-report">
+	    						<p>病理报告（{{item.examReports.length+item.otherReports.length}}）</p>
+	    						<a class="patient-report-item" v-for="obj in item.examReports" v-bind:data-href="obj.reportUrl" @click.stop="openpdf(obj.reportUrl)">
+	    							<img src="images/baogao3.png" /><span>{{obj.reportTitle}}</span>
+	    						</a>
+	    						<p class="patient-report-item" v-for="(im,ind) in item.otherReports" @click.stop="openimg(im)">
+	    							<img src="images/baogao3.png" /><span>报告{{ind+1}}</span>
+	    						</p>
+	    					</div>
+	    					<div class="patient-item-bottom">
+	    						<div class="patient-bottom-btn" v-bind:data-code="item.clinicAppointmentId" @click.stop="admissions(item.clinicAppointmentId)">接诊</div>
+	    					</div>
+	    				</div>
+	    			</li>
+					</template>
+					<template v-for="(item,index) in appointments">
+	    			<li class="patient-item">
+	    				<div class="patient-item-left">
+	    					<span>{{item.seqNumber>9?item.seqNumber:'0'+item.seqNumber}}</span>/{{result.used>9?result.used:'0'+result.used}}
+	    				</div><div class="patient-item-right">
+	    					<div class="patient-item-name"><span style="min-width:60px;display: inline-block;">{{item.patientName}}</span><span v-if="item.status=='Pending'||item.status=='Waiting'||item.status=='Calling'">初诊</span><span v-if="item.status=='Waiting'">候诊</span><span v-if="item.status=='Revisiting'" style="color: #EB5454 ;">回诊</span><span class="patient-item-btn" @click.stop="upsynopsis($event.target)">查看病情</span></div>
+	    					<div class="patient-synopsis">{{item.symptom}}</div>
+	    					<div class="patient-item-describe" style="display: none;">
+	    						<p>问题描述</p>
+	    						<div class="describe-text">{{item.symptom}}</div>
+	    					</div>
+	    					<div class="patient-item-report" style="display: none;">
+	    						<p>病理报告（{{item.examReports.length+item.otherReports.length}}）</p>
+	    						<a class="patient-report-item" v-for="obj in item.examReports" v-bind:data-href="obj.reportUrl" @click.stop="openpdf(obj.reportUrl)">
+	    							<img src="images/baogao3.png" /><span>{{obj.reportTitle}}</span>
+	    						</a>
+	    						<p class="patient-report-item" v-for="(im,ind) in item.otherReports" @click.stop="openimg(im)">
+	    							<img src="images/baogao3.png" /><span>报告{{ind+1}}</span>
+	    						</p>
+	    					</div>
+	    				</div>
+	    			</li>
+    			</template>
+    		</ul>
+    	</div>
+    </div>-->
+  </div>
+  <!-- RTC  -->
+  <div class="win-img" v-show="isimgsrc" @click.stop="closewinimg">
+  	<div class="win-img-content">
+  		<img src="" class="win-img-banner"/>
+  	</div>
+  </div>
+</div>
+</script>
+<script>
+	var timer = null;var timerGetphoneCode = null;var istimout = true;var issubmit = false;
+Vue.component('product-counter', {
+   template:"#app",		
+		data: function () {
+		    return {
+	       	result:{},
+	       	url:'https://ymmsit.verify.fc18.com.cn',
+	       	doctorId:423254276,
+	       	appointments:[],
+	       	patientdetail:{},
+	       	pharmacyList:[{}],
+	       	clinicAppointmentId:'',
+	       	personId:'',
+	       	visitingRecordId:'',
+	       	symptom:'',
+	       	diagnosis:'',
+	       	advise:'',
+	       	medications:'',
+	       	roomid:'',
+	       	schedulingId:'',
+	       	stopimg:'images/zanting.png',
+	       	stoptext:'暂停',
+	       	useId:'Web_trtc_04',
+	       	isimgsrc:false,
+	       	lasttimer:30,
+	       	isshowhint:false,
+	       	isshwo:false,
+	       	isvisiting:false,
+	       	lengthnum:0,
+	       	callingAppointment:[],
+	       	tagclass:'Visiting',
+	       	casedetail:{"patientCaseStatement":'',"conclusionDesc":''},
+	       	statulist:[{name:'坐诊中',code:'Visiting'},{name:'离开',code:'Left'},{name:'离线',code:'Suspended'}]
+		    }
+		},
+	  created:function (){
+	  	var vm = this;
+	  	var origin = window.location.origin;
+	  	var doctorId = getUrlParam('doctorId');
+	  	if(!empty(doctorId)){
+	  		vm.doctorId = doctorId;
+	  	}
+	  	switch(origin){
+	  		case'http://localhost':
+	  			vm.url = 'https://ymmdev.verify.fc18.com.cn';
+	  			break;
+	  		case'http://127.0.0.1:8020':
+	  			vm.url = 'https://ymmdev.verify.fc18.com.cn';
+	  			break;
+	  		case'https://ymmdev.verify.fc18.com.cn':
+	  			vm.url = 'https://ymmdev.verify.fc18.com.cn';
+	  		break;
+	  		case'https://ymmsit.verify.fc18.com.cn':
+	  			vm.url = 'https://ymmsit.verify.fc18.com.cn';
+	  		break;
+	  		case'https://demoymm.verify.fc18.com.cn':
+	  			vm.url = 'https://demoymm.verify.fc18.com.cn';
+	  		break;
+	  		case'https://www.fc18.com.cn':
+	  			vm.url = 'https://www.fc18.com.cn';
+	  		break;
+	  		default:vm.url = origin;
+	  	}
+	    vm.getClinicAppointment();
+	 	},
+	 	mounted:function(){
+	 		
+		},
+	 	watch:{
+			
+  	},
+  	methods: {
+ 			getClinicAppointment:function(){
+ 				var vm = this;
+ 				doGet(
+					vm.url+'/ymmopenapi/sgw/v1/integratedMachine/getClinicAppointment',
+					{"doctorId": vm.doctorId},
+					null,null,null,true
+				).done(function(res){
+					//var res = {"resultCode":"success","resultMessage":"处理成功","result":{"doctorId":423254276,"doctorName":"张献玲","organization":"上海市第十人民医院","department":"心血管内科门诊","profession":"主任医师","description":"高血压、冠心病、心律失常、心衰等各种心血管疾病","nickUrl":"https://ymmsit.verify.fc18.com.cn/att/ymm/doctors/410925960.jpg","schedulingId":437926408,"startTime":1554854400000,"endTime":1554904800000,"total":20,"used":2,"appointments":[{"clinicAppointmentId":438265864,"appointmentCreatedTime":1554877618000,"seqNumber":2,"symptom":"","recordId":"","otherReports":"","status":"Revisiting","statusDate":1554877669000,"videoRoomId":"438265864","videoStatus":"Active","patientId":"mcs841aad51bbba48e9a6a0e0f7aea43eac","patientName":"金易","patientGender":"1","patientAge":36,"patientHeadUrl":"","visitingRecordId":"","examReports":[{"content":"血压偏高，血糖偏高，BMI偏高，尿常规异常，血脂异常","recordId":"629803364","reportTitle":"快速检测2019041222","reportUrl":"https://sit.verify.fc18.com.cn/att/cTnICheckList/PeopleHospital_1551947203321_cTnI_result_i0dz82spjfesp17f.pdf"}],"otherReports":["https://sit.verify.fc18.com.cn/att/FC-GD-_-1548352314484.jpg"]}]}};
+					//var res = {"resultCode":"success","resultMessage":"处理成功","result":{"doctorId":423254276,"doctorName":"张献玲","organization":"上海市第十人民医院","department":"心血管内科门诊","profession":"主任医师","description":"高血压、冠心病、心律失常、心衰等各种心血管疾病","nickUrl":"https://ymmsit.verify.fc18.com.cn/att/ymm/doctors/410925960.jpg","schedulingId":437926408,"startTime":1554854400000,"endTime":1554904800000,"total":20,"used":2,"appointments":[{"clinicAppointmentId":438265864,"appointmentCreatedTime":1554877618000,"seqNumber":2,"symptom":"","recordId":"","otherReports":"","status":"Revisiting","statusDate":1554877669000,"videoRoomId":"438265864","videoStatus":"Active","patientId":"mcs841aad51bbba48e9a6a0e0f7aea43eac","patientName":"金易2","patientGender":"1","patientAge":36,"patientHeadUrl":"","visitingRecordId":"","examReports":[{"content":"血压偏高，血糖偏高，BMI偏高，尿常规异常，血脂异常","recordId":"629803364","reportTitle":"快速检测2019041222","reportUrl":"https://sit.verify.fc18.com.cn/att/cTnICheckList/PeopleHospital_1551947203321_cTnI_result_i0dz82spjfesp17f.pdf"}],"otherReports":""}]}};
+					vm.result = res.result;
+					vm.schedulingId = res.result.schedulingId;
+					if(!empty(res.result.appointments)){
+						var appointments = res.result.appointments;
+						appointments.forEach(function(item){
+							item.examReports = !empty(item.examReports)?item.examReports:[];
+							item.otherReports = !empty(item.otherReports)?item.otherReports.split(','):[];
+						})
+						vm.appointments = appointments;
+					}else{
+						vm.appointments = [];
+					}
+					if(!empty(res.result.callingAppointment)){
+						var callingAppointment = [];
+						callingAppointment.push(res.result.callingAppointment);
+						callingAppointment.forEach(function(item){
+							item.examReports = !empty(item.examReports)?item.examReports:[];
+							item.otherReports = !empty(item.otherReports)?item.otherReports.split(','):[];
+						})
+						vm.callingAppointment = callingAppointment;
+						vm.patientdetail = callingAppointment[0];
+						vm.personId = vm.patientdetail.patientId;
+						vm.symptom = vm.patientdetail.symptom;
+						vm.visitingRecordId = vm.patientdetail.visitingRecordId;
+						vm.lengthnum = vm.patientdetail.examReports.length+vm.patientdetail.otherReports.length;
+						sessionStorage.setItem('clinicAppointmentId',vm.patientdetail.clinicAppointmentId);
+					}else{
+						vm.patientdetail ={};
+						vm.callingAppointment = [];
+					}
+					vm.initialize();
+					vm.updatemes();
+				})
+ 			},
+ 			initialize:function(){
+	  		var vm = this;
+	  		setTimeout(function(){
+		    	var _height = document.body.clientHeight-$('.operation-box').outerHeight()-$('.btoom-right-head').outerHeight()-90;
+					$('.btoom-right-bottom').css('max-height',_height+'px');
+					$('.btoom-right-bottom').css('overflow','auto');
+		    },500)
+	  	},
+	  	getphoneCode:function() {
+	  		var vm = this;
+				var lasttimer = vm.lasttimer;
+				clearInterval(timerGetphoneCode);
+				timerGetphoneCode = setInterval(function() {
+					if(lasttimer > 1) {
+						lasttimer--;
+						vm.lasttimer = lasttimer;
+					} else {
+						vm.lasttimer = 30;
+						vm.isshowhint = true;
+						clearInterval(timerGetphoneCode);
+					}
+				}, 1000);
+			},
+ 			updatemes:function(){
+ 				var vm = this;
+ 				clearInterval(timer);
+ 				doGet(
+					vm.url+'/ymmopenapi/sgw/v1/integratedMachine/getClinicAppointment',
+					{"doctorId": vm.doctorId},
+					null,null,null,true
+				).done(function(res){
+					//var res = {"resultCode":"success","resultMessage":"处理成功","result":{"doctorId":423254276,"doctorName":"张献玲","organization":"上海市第十人民医院","department":"心血管内科门诊","profession":"主任医师","description":"高血压、冠心病、心律失常、心衰等各种心血管疾病","nickUrl":"https://ymmsit.verify.fc18.com.cn/att/ymm/doctors/410925960.jpg","schedulingId":437926408,"startTime":1554854400000,"endTime":1554904800000,"total":20,"used":2,"appointments":[{"clinicAppointmentId":438970232,"appointmentCreatedTime":1554877618000,"seqNumber":2,"symptom":"","recordId":"","otherReports":"","status":"Revisiting","statusDate":1554877669000,"videoRoomId":"438265864","videoStatus":"Active","patientId":"mcs841aad51bbba48e9a6a0e0f7aea43eac","patientName":"金易","patientGender":"1","patientAge":36,"patientHeadUrl":"","visitingRecordId":""}]}};
+					vm.result = res.result;
+					istimout = true;
+					if(!empty(res.result.appointments)){
+						var appointments = res.result.appointments;
+						appointments.forEach(function(item){
+							item.examReports = !empty(item.examReports)?item.examReports:[];
+							item.otherReports = !empty(item.otherReports)?item.otherReports.split(','):[];
+						})
+						vm.appointments = appointments;
+					}else{
+						vm.appointments = [];
+					}
+					if(!empty(res.result.callingAppointment)){
+						var callingAppointment = [];
+						callingAppointment.push(res.result.callingAppointment);
+						callingAppointment.forEach(function(item){
+							item.examReports = !empty(item.examReports)?item.examReports:[];
+							item.otherReports = !empty(item.otherReports)?item.otherReports.split(','):[];
+						})
+						vm.callingAppointment = callingAppointment;
+						vm.patientdetail = callingAppointment[0];
+						vm.personId = vm.patientdetail.patientId;
+						vm.symptom = vm.patientdetail.symptom;
+						vm.visitingRecordId = vm.patientdetail.visitingRecordId;
+						vm.lengthnum = vm.patientdetail.examReports.length+vm.patientdetail.otherReports.length;
+						var _clinicAppointmentId = sessionStorage.getItem('clinicAppointmentId');
+						//根据状态显示视频
+						if(vm.patientdetail.status=='Visiting'||vm.patientdetail.status=='Paused'){
+							vm.lasttimer = 30;
+							clearInterval(timerGetphoneCode);
+							vm.isvisiting=true;
+							istimout = false;
+						}else if(vm.patientdetail.status=='Missed'){
+							vm.lasttimer = 30;
+							clearInterval(timerGetphoneCode);
+							vm.isshowhint=true;
+							vm.casedetail = {"patientCaseStatement":'',"conclusionDesc":''};
+							vm.emptydrug();
+						}else{
+							vm.isvisiting=false;
+						}
+						if(!empty(_clinicAppointmentId)){
+							if(_clinicAppointmentId!=vm.patientdetail.clinicAppointmentId){
+								vm.lasttimer = 30;
+								clearInterval(timerGetphoneCode);
+								vm.isshowhint=true;
+								vm.casedetail = {"patientCaseStatement":'',"conclusionDesc":''};
+								vm.emptydrug();
+							}
+						}else{
+							sessionStorage.setItem('clinicAppointmentId',vm.patientdetail.clinicAppointmentId);
+						}
+					}else{
+						vm.patientdetail ={};
+						vm.callingAppointment = [];
+						vm.lasttimer = 30;
+						vm.isvisiting=false;//是否是通话中
+						vm.isshwo = false;//是否显示倒计时
+						vm.casedetail = {"patientCaseStatement":'',"conclusionDesc":''};
+						vm.emptydrug();
+						clearInterval(timerGetphoneCode);
+					}
+					if(istimout||issubmit){
+						vm.poling();
+					}
+				})
+ 			},
+ 			poling:function(){
+		    var vm = this;
+		    timer = setInterval(function(){
+		      vm.updatemes();
+		    },2500)
+		  },
+		  admissions:function(id,vid){
+		  	var vm = this;
+		  	vm.clinicAppointmentId = id;
+		  	sessionStorage.setItem('clinicAppointmentId',id);
+		  	vm.initialize();
+		  	vm.callClinicAppointment(id);//叫号
+		  	if(!empty(vid)){
+		  		vm.getcase(vm.patientdetail.patientId,vid);
+		  	}
+		  },
+		  getcase:function(pid,vid){
+		  	var vm = this;
+		  	var obj={
+		  		"visitingRecordId": vid,
+						"personId": pid
+		  	}
+		  	doGet(
+ 					vm.url+'/ymmopenapi/sgw/v1/integratedMachine/outpatient/viewMedicalRecord',
+					obj,
+					null,null,null,true
+ 				).done(function(msg){
+ 					vm.casedetail = msg.result;
+ 				}).fail(function(xhr){
+ 				})
+		  },
+ 			gotourl:function(tex){
+ 				var vm = this;
+ 				if(tex=='预约记录'){
+ 					window.location.href = 'appointlist.html?doctorId='+vm.doctorId+'&type=record';
+ 				}else if(tex=='远程门诊'){
+ 				}else{
+ 					window.nativeView.toast('敬请期待');
+ 				}
+ 			},
+ 			openpdf:function(url){
+ 				var vm = this;
+ 				if(!empty(url)){
+ 					window.open(url);
+ 				}else{
+ 					window.nativeView.toast('报告为空');
+ 				}
+ 			},
+ 			openimg:function(img){
+ 				var vm = this;
+ 				vm.isimgsrc = true;
+ 				$('.win-img-banner').attr('src',img);
+ 			},
+ 			closewinimg:function(){
+ 				var vm = this;
+ 				vm.isimgsrc = false;
+ 			},
+ 			updown:function(elem){
+ 				var vm = this;
+ 				$(elem).toggleClass('on');
+ 				$(elem).parents('.right-bottom-item').find('.updown').slideToggle();
+ 			},
+ 			upsynopsis:function(elem){
+ 				var vm = this;
+ 				$(elem).toggleClass('on');
+ 				if($(elem).hasClass('on')){
+ 					$(elem).text('收起');
+ 				}else{
+ 					$(elem).text('查看病情');
+ 				}
+ 				$(elem).parents('.patient-item').find('.patient-synopsis').slideToggle(10);
+ 				$(elem).parents('.patient-item').find('.patient-item-describe,.patient-item-report').slideToggle();
+ 			},
+ 			diagnoseinput:function(){
+ 				var vm = this;
+ 				vm.diagnosis = $('.diagnose-text').val();
+ 			},
+ 			suggestinput:function(){
+ 				var vm = this;
+ 				vm.advise = $('.suggest-text').val();
+ 			},
+ 			addpharmacy:function(){
+ 				var vm = this;
+ 				var pharmacyList = vm.pharmacyList;
+ 				pharmacyList.push({});
+ 			},
+ 			stopvideo:function(elem){
+ 				var vm = this;
+ 				$(elem).toggleClass('on');
+ 				if($(elem).hasClass('on')){
+ 					vm.stopimg='images/huifu.png';
+	       	vm.stoptext='恢复';
+	       	stopRTC();
+	       	vm.pauseClinic();//暂停接口
+ 				}else{
+ 					vm.stopimg='images/zanting.png';
+	       	vm.stoptext='暂停';
+	       	startRTC();
+	       	vm.recoverClinic();//恢复
+ 				}
+ 			},
+ 			hangUpclick:function(){
+ 				var vm = this;
+ 				var obj = {
+					"clinicAppointmentId": vm.clinicAppointmentId
+ 				}
+ 				doGet(
+ 					vm.url+'/ymmopenapi/sgw/v1/integratedMachine/quitClinicAppointment',
+					obj,
+					null,null,null,true
+ 				).done(function(msg){
+ 					vm.isshwo=false;
+ 					sessionStorage.removeItem('clinicAppointmentId');
+ 					quitRTC();
+ 				}).fail(function(xhr){
+ 					window.nativeView.toast('挂断失败');
+ 				})
+ 			},
+ 			callClinicAppointment:function(){
+ 				var vm = this;
+				doGet(
+					vm.url + '/ymmopenapi/sgw/v1/integratedMachine/callClinicAppointment',
+					{"clinicAppointmentId": vm.clinicAppointmentId}
+				).done(function(msg){
+					//clearInterval(timer);//去除轮询
+					window.nativeView.toast('已成功叫号');
+					vm.isshwo = true;
+			  	vm.isshowhint = false;//是否显下一位患者示提示
+			  	vm.lasttimer = 30;
+					clearInterval(timerGetphoneCode);
+		  		vm.getphoneCode();//开启倒计时
+		  		issubmit = false;//是否提交病历
+						//push();//创建房间
+				}).fail(function(xhr){
+					window.nativeView.toast('叫号失败');
+				})
+ 			},
+ 			pauseClinic:function(){
+ 				var vm = this;
+ 				doGet(
+					vm.url + '/ymmopenapi/sgw/v1/integratedMachine/pauseClinicAppointment',
+					{"clinicAppointmentId": vm.clinicAppointmentId}
+				).done(function(msg){
+				}).fail(function(xhr){
+				})
+ 			},
+ 			recoverClinic:function(){
+ 				var vm = this;
+ 				doGet(
+					vm.url + '/ymmopenapi/sgw/v1/integratedMachine/recoverClinicAppointment',
+					{"clinicAppointmentId": vm.clinicAppointmentId}
+				).done(function(msg){
+				}).fail(function(xhr){
+				})
+ 			},
+ 			showoplist:function(){
+ 				var vm = this;
+ 					$('.doctor-operate-list').slideDown();
+ 			},
+ 			changeStatus:function(elem,code,tex){
+ 				var vm = this;
+ 				$('.operate-item').removeClass('on');
+ 				$(elem).addClass('on');
+ 				$('.statutex').text(tex);
+ 				$('.doctor-operate-list').slideUp();
+ 				vm.tagclass = code;
+ 				var statustext = '';
+ 				switch(code){
+ 					case 'Visiting':
+ 					statustext = 'Visiting';
+ 					break;
+ 					case 'Suspended':
+ 					statustext = 'Suspended';
+ 					break;
+ 					case 'Left':
+ 					statustext = 'Left';
+ 					break;
+ 				}
+ 				vm.updateStatus(statustext);
+ 			},
+ 			emptydrug:function(){
+ 				var vm = this;
+ 				var elems = $('.pharmacy-right-head');
+				for(var i=0;i<elems.length;i++){
+					var name = $(elems[i]).find('.pharmacy-name').val('');
+					var daynum = $(elems[i]).find('.daynum').val('');
+					var frequency = $(elems[i]).find('.frequency').val('');
+					var dosage = $(elems[i]).find('.dosage').val('');
+				}
+ 			},
+ 			submitmes:function(){
+ 				var vm = this;
+ 				var elems = $('.pharmacy-right-head');
+ 				console.log(elems)
+ 				var arr = [];
+				for(var i=0;i<elems.length;i++){
+					var name = $(elems[i]).find('.pharmacy-name').val();
+					var daynum = $(elems[i]).find('.daynum').val();
+					var frequency = $(elems[i]).find('.frequency').val();
+					var dosage = $(elems[i]).find('.dosage').val();
+					var str = '';
+					if(name!='请选择'){
+						str=name+'|'+dosage+'|'+daynum+'日'+frequency+'次';
+						arr.push(str);
+					}
+				}
+ 				var obj = {
+ 					"doctorId": vm.doctorId,
+					"personId": vm.personId,
+					"diagnosis": vm.diagnosis,
+					"symptom": vm.symptom,
+					"advise": vm.advise,
+					"medications": arr,
+					"clinicAppointmentId": vm.clinicAppointmentId,
+					"visitingRecordId": vm.visitingRecordId
+ 				}
+ 				doPost(
+ 					vm.url+'/ymmopenapi/sgw/v1/integratedMachine/physicalExam/doctorUpdatePhysicalExam',
+					JSON.stringify(obj),
+					null,null,null,true
+ 				).done(function(msg){
+ 					window.nativeView.toast('提交成功');
+ 					vm.getClinicAppointment();
+ 					issubmit = true;
+ 				})
+ 			},
+ 			updateStatus:function(tex){
+ 				var vm = this;
+ 				var obj = {
+ 					"schedulingId": vm.schedulingId,
+					"doctorId": vm.doctorId,
+					"status": tex
+ 				}
+ 				doPost(
+ 					vm.url+'/ymmopenapi/sgw/v1/integratedMachine/outpatient/updateSchedulingStatus',
+					JSON.stringify(obj),
+					null,null,null,true
+ 				).done(function(msg){
+ 				})
+ 			}
+ 		}
+})
+	
+new Vue({
+  el: '#counter-event-example'
+  
+})
+</script>
+<script>
+    var _mtac = {"senseHash":0};
+    (function() {
+        var mta = document.createElement("script");
+        mta.src = "//pingjs.qq.com/h5/stats.js";
+        mta.setAttribute("name", "MTAH5");
+        mta.setAttribute("sid", "500538821");
+        mta.setAttribute("cid", "500538834");
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(mta, s);
+    })();
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics --> <script async src="https://www.googletagmanager.com/gtag/js?id=UA-121844058-1"></script> <script>   window.dataLayer = window.dataLayer || [];   function gtag(){dataLayer.push(arguments);}   gtag('js', new Date());    gtag('config', 'UA-121844058-1'); </script></body>
+</html>

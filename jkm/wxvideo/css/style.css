@@ -1,0 +1,881 @@
+*,p{
+	padding: 0;
+	margin: 0;
+}
+body {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+    color: #00B7FF;
+    text-decoration: none;
+    color: #333;
+}
+.patient-item-report a:hover{
+	color:#F59C31;
+}
+li{
+	list-style: none;
+}
+html{
+	height: 100%;
+}
+body {
+    display: -webkit-flex;
+    -webkit-flex-direction: column;
+    align-content: center;
+    height: 100%;
+}
+.win-shadow {
+    background-color: rgba(0,0,0,.5);
+    z-index: 2;
+}
+.win, .win-shadow {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    top: 0px;
+    bottom: 0;
+}
+.win-box {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    width: 80%;
+    max-width: 480px;
+    background-color: #fff;
+    border: 1px solid #d5d5d5;
+    border-radius: 13px;
+    z-index: 4;
+}
+.win-tit {
+    border-bottom: 1px solid #eee;
+    padding-left: 10px;
+    font-size: 16px;
+}
+.win-tit, .win-bot {
+    line-height: 50px;
+    text-align: center;
+    position: relative;
+    height: 50px;
+}
+.win-cnt {
+    padding: 20px 10px;
+    border-bottom: 1px solid #eee;
+    border-width: 1px 0;
+    color: #666;
+    font-size: 16px;
+}
+.text-center {
+    text-align: center !important;
+}
+#iKnow {
+    font-size: 20px;
+}
+.win-box .btn {
+    padding: 0;
+    color: #3C9BFF;
+    width: 100%;
+    height: 100%;
+    line-height: 53px;
+    border: 0;
+    outline: none;
+    vertical-align: initial;
+}
+#button-container {
+    position: absolute;
+    bottom: 50px;
+    left: 50px;
+    /* display: -webkit-flex; */
+    -webkit-flex-direction: column;
+}
+/*toast*/
+.u-toast {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    padding: 0 0;
+    width: 100%;
+    z-index: 100;
+}
+.u-toast .toast-wrap {
+    color: #fff;
+    padding: 20px;
+    margin-left: -50%;
+    top: -50%;
+    width: 100%;
+    position: relative;
+    text-align: center;
+}
+.u-toast .toast-msg-wrap {
+    display: inline-block;
+    position: relative;
+}
+.u-toast .toast-bg {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #000;
+    border-radius: 10px 10px;
+    opacity: 0.7;
+    position: absolute;
+}
+.u-toast .toast-msg {
+    padding: 20px 20px;
+    height: 100%;
+    position: relative;
+    text-align: center;
+    min-width: 170px;
+}
+/**/
+
+/*新增*/
+.video-head{
+	color: #333;
+	width: 100%;
+	border-bottom: 1px solid #eee;
+	line-height: 60px;
+}
+.video-head>div{
+	display: inline-block;
+	vertical-align: middle;
+}
+.video-head-left{
+	width: 30%;
+	font-size: 22px;
+	color: #4D8FCC;
+}
+.video-head-left img{
+	vertical-align: middle;
+	margin-left: 5vw;
+}
+.video-head-left span{
+	vertical-align: middle;
+}
+.dot{
+	display: inline-block;
+    width: 7px;
+    height: 7px;
+    background: #4D8FCC;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin: 0 15px;
+}
+.video-head-right{
+	width: 70%;
+	font-size: 16px;
+}
+.video-head-right img{
+	width: auto;
+	height: 44px;
+	margin-right: 10px;
+	border-radius: 50%;
+    vertical-align: middle;
+}
+.video-head-item.on{
+	color:#3C9BFF;
+	border-bottom: 3px solid #3C9BFF;
+}
+.video-head-item .d-name{
+    padding-right: 10px;
+}
+.h-line{
+	display: inline-block;
+	width: 1px;
+	background: #eee;
+    margin-right: 10px;
+	height: 100%;
+	height: 20px;
+    vertical-align: middle;
+    margin-left: 7px;
+}
+.logout{
+	margin-right: 5vw;
+}
+.video-head-right>div{
+	display: inline-block;
+	width: 17%;
+	text-align: center;
+	color: #666;
+}
+.video-head-right .operation{
+	width: 31%;
+	text-align: right;
+}
+.triangle{
+	width: 0;
+    height: 0;
+    display: inline-block;
+    border-left: 6px solid transparent;
+    border-top: 9px solid #3C9BFF;
+    border-right: 6px solid transparent;
+    vertical-align: middle;
+}
+.triangle.on{
+	width: 0;
+    height: 0;
+    display: inline-block;
+    border-left: 6px solid transparent;
+    border-bottom: 9px solid #3C9BFF;
+    border-top:0;
+    border-right: 6px solid transparent;
+    vertical-align: middle;
+}
+.video-btoom{
+	width:90%;
+	margin-left: 5%;
+	color: #333;
+}
+.video-btoom>div{
+	display: inline-block;
+	vertical-align: top;
+}
+.video-btoom-left{
+	width:70%;
+	position: relative;
+}
+.video-btoom-right{
+	width: 30%;
+	box-sizing: border-box;
+}
+#remote-video-wrap{
+	width: 100%;
+	height: 21vw;
+	position: relative;
+	background: rgba(0,0,0,1);
+}
+
+#local{
+	width:15vw !important;
+	height: auto;
+	transform: rotate(0deg);
+	position:absolute!important;
+	top:0px!important;
+	right:0!important;
+	z-index: 5;
+}
+.message{
+	padding: 15px 15px;
+}
+.message>div{
+	display: inline-block;
+	vertical-align: middle;
+	width: 25%;
+}
+.message-num{
+	font-size: 1.5vw;
+}
+.message-num span{
+	color: #3C9BFF;
+}
+.message .message-name{
+	width: 45%;
+}
+.message .message-tag{
+	width: 30%;
+}
+.head-icon{
+	width: auto;
+    height: 50px;
+    vertical-align: middle;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+.message-name p{
+	display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+}
+.message-name p>span{
+	display: block;
+}
+.tag{
+	width: auto;
+    height: 17px;
+    vertical-align: middle;
+}
+.message-tag img{
+    width:64%;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+.btoom-right-head .report{
+	margin-top: 10px;
+}
+.issue,.report{
+    border: 1px solid #eee;
+}
+.issue-head{
+	border-bottom: 1px solid #eee;
+    padding: 10px 15px;
+}
+.issue-content{
+	padding: 10px 15px;
+}
+.report-list{
+	outline: none;
+    padding: 0px 15px;
+    max-height: 150px;
+    overflow: auto;
+}
+.report-list>li:last-child{
+	border: #009688;
+}
+.report-item{
+	list-style: none;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
+.report-item a>div,.report-item>div{
+	display: inline-block;
+	width: 40%;
+	vertical-align: middle;
+}
+.report-item .report-item-left{
+    width: 60%;
+}
+.report-item-left>span{
+	margin-right: 10px;
+	vertical-align: middle;
+    max-width: 60%;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 55%;
+}
+.pdf-icon{
+	width: auto;
+    height: 30px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+.report-item-right{
+	text-align: center;
+}
+.report-item-right span{
+    width: 60%;
+    display: inline-block;
+    color: #dea168;
+    border: 1px solid #dea168;
+    line-height: 35px;
+    border-radius: 5px;
+}
+.btoom-right-bottom{
+	margin-top: 20px;
+}
+.btoom-right-bottom .message-name>p span{
+	display: inline-block;
+	margin-right: 10px;
+}
+.right-bottom-item{
+	margin-bottom: 10px;
+	border: 1px solid #eee;
+}
+.btoom-right-bottom .issue-head{
+	border:0;
+}
+.btoom-right-bottom .report{
+	border:0;
+}
+.btoom-right-bottom .issue{
+	border: 0;
+}
+.btoom-right-bottom .message{
+	border: 0;
+}
+.diagnose{
+	margin-top: 20px;
+}
+.diagnose,.suggest{
+	height: 100px;
+	border: 1px solid #eee;
+	margin-bottom: 10px;
+	font-size: 16px;
+}
+.pharmacy{
+	min-height: 100px;
+	border: 1px solid #eee;
+	margin-bottom: 10px;
+}
+.diagnose>div,.pharmacy>div,.suggest>div{
+	display: inline-block;
+	vertical-align: middle;
+}
+.diagnose-left,.pharmacy-left,.suggest-left{
+	width: 7%;
+    text-align: center;
+    color: #3C9BFF;
+}
+.diagnose-left img,.pharmacy-left img,.suggest-left img{
+	width: auto;
+	height: 25px;
+}
+.diagnose-right,.pharmacy-right,.suggest-right{
+	width: 92%;
+	height: 100%;
+}
+.pharmacy-right{
+	border-left: 1px solid #eee;
+	padding-left: 5px;
+}
+.diagnose-right textarea,.suggest-right textarea{
+	width: 100%;
+	height: 95%;
+	border: 0;
+	border-left: 1px solid #eee;
+	padding-left: 5px;
+	padding-top: 5px;
+	font-size: 16px;
+}
+.pharmacy-right-head{
+	padding: 10px 0;
+}
+.pharmacy-right-head input,select.pharmacy-name{
+	height: 40px;
+	line-height: 40px;
+}
+.pharmacy-right-head>div{
+	display: inline-block;
+	width: 33.33%;
+}
+.pharmacy-head-center input{
+	width: 18%;
+}
+.daynum,.frequency,.dosage{
+	margin-left: 5px;
+}
+.daynum,.frequency{
+	margin-right: 5px;
+	text-align: center;
+}
+.dosage,.pharmacy-name{
+	width: 69%;
+}
+.pharmacy-right-bottom{
+	text-align: center;
+    margin-bottom: 10px;
+}
+.pharmacy-btn{
+	display: inline-block;
+    border: 1px solid #3C9BFF;
+    padding: 10px 10px;
+    color:#3C9BFF;
+    border-radius: 5px;
+}
+.pharmacy-btn img{
+	width: auto;
+	height: 20px;
+	margin-right: 10px;
+	vertical-align: middle;
+}
+.pharmacy-btn span{
+	vertical-align: middle;
+}
+.submit{
+	text-align: center;
+}
+.submit-btn{
+	text-align: center;
+    display: inline-block;
+    width: 30%;
+    color: #fff;
+    background: #3C9BFF;
+    line-height: 60px;
+    border-radius: 5px;
+    font-size: 20px;
+}
+/**/
+.patientList{
+	color: #333;
+}
+.patientList-head{
+	width: 90%;
+    margin-left: 5%;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 60px;
+    border-bottom: 1px solid #eee;
+}
+.patientList-content{
+	width: 90%;
+    margin-left: 5%;
+    font-size: 18px;
+}
+.patient-list>li:nth-child(odd){
+	background: #fff;
+}
+.patient-list>li:nth-child(even){
+	background: #f5faff;
+}
+.patient-item{
+	padding: 15px 15px;
+}
+.patient-item>div{
+	display: inline-block;
+	vertical-align: top;
+}
+.patient-item-left{
+    display: inline-block;
+    width: 10%;
+    vertical-align: text-top;
+    text-align: center;
+}
+.patient-item-left>span:nth-child(1){
+	font-size: 22px;
+    color: #3C9BFF;
+}
+.patient-item-right{
+	display: inline-block;
+    width: 90%;
+    vertical-align: top;
+}
+.patient-item-name>span:nth-child(1){
+    margin-right: 10px;
+}
+.patient-item-name>span:nth-child(2){
+    margin-right: 10px;
+    color: #3C9BFF;
+}
+.patient-item-btn{
+	float: right;
+    color: #3C9BFF;
+    margin-right: 4%;
+}
+.patient-item-describe,.patient-item-report{
+	margin-top: 10px;
+}
+.patient-item-describe>p:nth-child(1),.patient-item-report>p:nth-child(1){
+	color: #999;
+    font-size: 16px;
+}
+.describe-text{
+	font-size: 16px;
+}
+.patient-report-item{
+	display: inline-block;
+    font-size: 16px;
+    color: #F59C31;
+    border: 1px solid #F59C31;
+    padding: 10px 25px;
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-right: 10px;
+}
+.patient-report-item img{
+	width: auto;
+	height: 25px;
+	vertical-align: middle;
+    margin-right: 10px;
+}
+.patient-report-item span{
+	vertical-align: middle;
+}
+.patient-synopsis{
+	width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 16px;
+    color: #999;
+}
+.patient-item-bottom{
+	text-align: center;
+}
+.patient-bottom-btn{
+	text-align: center;
+    display: inline-block;
+    width: 25%;
+    color: #fff;
+    background: #3C9BFF;
+    line-height: 60px;
+    border-radius: 5px;
+    margin-top:20px;
+}
+/**/
+.video-operation{
+	width: 35%;
+    position: absolute;
+    top: 16vw;
+    left: 30px;
+}
+.video-operation>div{
+	display: inline-block;
+    width: 45%;
+    text-align: center;
+    padding: 13px 0;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 18px;
+}
+.video-operation>div img{
+	width: auto;
+	height: 40px;
+	margin-right: 10px;
+	vertical-align: middle;
+}
+.video-operation>div span{
+	vertical-align: middle;
+}
+.suspend{
+    background: #3C9BFF;
+    margin-right: 10%;
+}
+.hangUp{
+	background: #F03B44;
+}
+.win-img{
+	position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 10;
+    top: 0;
+    left: 0;
+}
+.win-img-content{
+	width: 80%;
+    margin-left: 10%;
+    margin-top: 3%;
+    height: 95%;
+    background: #fff;
+}
+.win-img-content img{
+	width: 100%;
+	height: 94%;
+}
+video{
+    transform: rotate(90deg) translate(-33%,-23%);
+    width: 21vw;
+}
+@media screen and (min-width:1600px) {
+	video{
+	    transform: rotate(90deg) translate(-40%,-22.9%);
+	    width: 34vw;
+	    object-fit: fill;
+	    height: 62vw;
+	}
+	.video-operation {
+	    width: 35%;
+	    position: absolute;
+	    top: 28vw;
+	    left: 30px;
+	}
+	#remote-video-wrap{
+		height: 35vw;
+	}
+}
+@media screen and (max-width:1300px) {
+	video{
+	    transform: rotate(90deg) translate(-40.1%,-23.6%);
+	    width: 34vw;
+	    object-fit: fill;
+	    height: 61.5vw;
+	}
+	.video-operation {
+	    width: 35%;
+	    position: absolute;
+	    top: 27vw;
+	    left: 30px;
+	}
+	#remote-video-wrap{
+	    height: 35vw;
+	}
+	.video-operation>div img {
+	    width: auto;
+	    height: 30px;
+	    margin-right: 10px;
+	    vertical-align: middle;
+	}
+}
+@media screen and (min-width:1301px) and (max-width: 1599px) {
+	video{
+	    transform: rotate(90deg) translate(-39.8%,-22.7%);
+	    width: 34vw;
+	    object-fit: fill;
+	    height: 62vw;
+	}
+	.video-operation {
+	    width: 35%;
+	    position: absolute;
+	    top: 27vw;
+	    left: 30px;
+	}
+	#remote-video-wrap{
+		height: 35vw;
+	}
+	.video-operation>div img {
+	    width: auto;
+	    height: 30px;
+	    margin-right: 10px;
+	    vertical-align: middle;
+	}
+	#local{
+		width:15vw !important;
+		height: auto;
+		transform: rotate(0deg);
+	}
+}
+/*head状态*/
+.nickUrl{
+	display: inline-block;
+	position: relative;
+}
+.nickUrl>span{
+	display: inline-block;
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+    position: absolute;
+    bottom: 10px;
+    right: 14px;
+}
+.nickUrl span.Visiting{
+	background:#79E62E;
+}
+.nickUrl span.Suspended{
+	background:#CCCCCC;
+}
+.nickUrl span.Left{
+	background:#FC9452;
+}
+.doctor-operate{
+	display: inline-block;
+    font-size: 14px;
+    width: 70px;
+    border: 1px solid #eee;
+    height: 30px;
+    vertical-align: middle;
+    position: relative;
+    background: #FAFAFA;
+}
+.doctor-text{
+	display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    width: 100%;
+    line-height: 30px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.doctor-text span{
+	vertical-align: middle;
+}
+.doctor-text img{
+	width: auto;
+    height: 8px;
+    margin-left: 3px;
+    vertical-align: middle;
+}
+.doctor-operate-list{
+	display: none;
+	width: 100%;
+    background: #fff;
+    border: 1px solid #eee;
+    text-align: center;
+    line-height: 36px;
+    box-shadow:-2px 0px 2px #eee,   /*左边阴影*/ 
+    0px -0px 0px #eee,  /*上边阴影*/ 
+   	2px 0px 2px #eee,  /*右边阴影*/ 
+   	0px 2px 2px #eee;
+    position: absolute;
+    top: 32px;
+    left: 0;
+    border-top: 0;
+    z-index: 4;
+}
+.doctor-operate-list>div{
+	background: #fff;
+	color: #333;
+	margin: 0;
+}
+.doctor-operate-list .operate-item.on{
+	color: #fff;
+	background: #3C9BFF;
+}
+/*叫号*/
+.operation-btn{
+	display: inline-block;
+    width: 80%;
+    margin-left: 10%;
+    background: #3C9BFF;
+    line-height: 60px;
+    color: #fff;
+    text-align: center;
+    border-radius: 40px;
+    margin-top: 20px;
+}
+.box-two .operation-btn{
+	background: #FAFAFA;
+	color: #999;
+}
+.operation-hint{
+	text-align: center;
+	font-size: 18px;
+	padding-top: 10px;
+	color:#3C9BFF;
+}
+.operation-btn img{
+	width: auto;
+    height: 35px;
+    vertical-align: middle;
+}
+.operation-btn span{
+	vertical-align: middle;
+	font-size: 24px;
+	margin-left: 10px;
+}
+.operation-hint-one,.operation-hint-two{
+	color: #EB5454 ;
+	font-size: 18px;
+	text-align: center;
+	padding-top: 10px;
+}
+#nopatient{
+	width: 100%;
+    height: 35vw;
+    background: #f9f9f9;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    text-align: center;
+    font-size: 18px;
+}
+#nopatient img{
+	width: 60%;
+    height: auto;
+    margin-top: 5%;
+}
+#nopatient p{
+    margin-top: 10px;
+}
+.assist-item-name>span{
+	vertical-align: middle;
+}
+.assist-circle{
+	width: 7px;
+    height: 7px;
+    background: #3C9BFF;
+    display: inline-block;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+/**
+ * 
+ */
+.nopeople{
+	text-align: center;
+    color: #666;
+    font-size: 18px;
+}
+.nopeople img{
+	width: auto;
+    height: 45px;
+    margin: 9px 0 5px 0;
+}

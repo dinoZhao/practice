@@ -7,7 +7,7 @@
   		</div>
   	</div>
   	<div class="rapidhome-bottom">
-  		<div class="rapidhome-btn" @click="gotorapid">开始检测</div>
+  		<div class="rapidhome-btn cliect" @click="gotorapid">开始检测</div>
   	</div>
   </div>
 </template>
@@ -26,7 +26,8 @@ export default {
     return {
       itmelist:[{code:'ecg',value:'心电'},{code:'blood',value:'血压'},{code:'glucose',value:'血糖'},{code:'oxygen',value:'血氧'},{code:'animalheat',value:'体温'},{code:'BMI',value:'BMI'},{code:'B超',value:'B超'},{code:'尿常规',value:'尿常规'},{code:'血脂',value:'血脂'},{code:'生化检测',value:'生化检测'},{code:'总胆固醇',value:'总胆固醇'},{code:'尿酸',value:'尿酸'},{code:'糖化血红蛋白',value:'糖化血红蛋白'},{code:'血红蛋白',value:'血红蛋白'}],
       choselist:[],
-      personId:''
+      personId:'',
+      padcode:''
     }
   },
   methods:{
@@ -63,7 +64,7 @@ export default {
   		var vm = this;
   		var crobj = {
   			'personId':vm.personId,
-  			'padDeviceCode':'P1',
+  			'padDeviceCode':vm.padcode||sessionStorage.getItem('padcode'),
   			'type':'fast'
   		}
   		if(!empty(vm.choselist)){
@@ -92,10 +93,20 @@ export default {
     headline,titleline
   },
   created () {
-  	var vm = this;
-  	vm.personId = sessionStorage.getItem('personId')||'mcse358b069e3b24dc881a54c1797372368';
-  	var _url = window.location.origin+'/jkjch5/issue/home/index.html'+','+window.location.href;
+		var vm = this;
+		var personId = getURLParameter('personId');
+		if(personId){
+			sessionStorage.setItem('personId',personId)
+		}
+  	vm.personId = personId||sessionStorage.getItem('personId');
+  	var _url = window.location.origin+'/jkjch5/issue/remoteclinic/reservation.html?index=3'+','+window.location.href;
   	sessionStorage.setItem('historyUrl',_url);
+  	try {
+			var padcode = window.android.getPadCode();
+	  	vm.padcode = padcode;
+		} catch(err) {
+			console.log(err);
+		}
   },
   mounted(){
    

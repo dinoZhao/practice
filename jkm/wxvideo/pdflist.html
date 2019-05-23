@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>心侠-互联网医院-报告批量打印</title>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <!--<link href='./css/bootstrap.css' rel="stylesheet">-->
+  <link href='./css/style.css' rel='stylesheet'>
+  <link href='./css/paflist.css' rel='stylesheet'>
+  <!--<link rel="stylesheet" href="./css/pure-min.css">
+  <link rel="stylesheet" href="./css/baby-blue.css">-->
+  <style>
+      #remote-video-wrap div{max-width:1000px;display: inline-block;padding:0px;max-height: 100px;}
+  </style>
+</head>
+<body>
+<div id="counter-event-example">
+  <product-counter></product-counter>
+</div>
+<!-- jquery Demo用到，WebRTCAPI不依赖 -->
+<script src="./libs/jquery.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/vue-router.min.js"></script>
+<script src="js/vue-resource.js"></script>
+<!-- demo 部分 -->
+<script src="https://sqimg.qq.com/expert_qq/webrtc/3.0/WebRTCAPI.min.js"></script>
+
+<script type="text/template" id="app">
+<div id="app">
+	<div class="pdflist">
+		<div class="pdflist-head"></div>
+		<div class="pdflist-content">
+			<div class="pdflist-top">
+				<div class="top-item">文件名</div><div class="top-item">村医名字</div><div class="top-item">县域</div><div class="top-item">PDF查看</div>
+			</div>
+			<div class="pdflist-bottom">
+				<ul class="bottom-list">
+					<template v-for="(item,index) in pdflist">
+						<li class="bottom-line">
+							<div class="bottom-item" style="text-align: left;text-indent: 15%;">{{item.filename}}</div><div class="bottom-item">{{item.dname}}</div><div class="bottom-item">{{item.address}}</div><div class="bottom-item"><a :href="item.url" target="_blank" style="color: #3C9BFF;">查看</a></div>
+						</li>
+					</template>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+</script>
+<script>
+Vue.component('product-counter', {
+   template:"#app",		
+	data: function () {
+	    return {
+	       	result:{},
+	       	url:'https://ymmsit.verify.fc18.com.cn',
+	       	statulist:[{name:'坐诊中',code:'Visiting'},{name:'离开',code:'Left'},{name:'离线',code:'Suspended'}],
+	       	pdflist:[
+	       		{"filename":"罗然淘3194-血氧-2019-05-12","dname":"姚梓华","address":"云南省曲靖市富源县","url":"https://ymmsit.verify.fc18.com.cn/att/myprofile/avatar/examReport/1557669561817.pdf"},
+	       		{"filename":"路青青2642-体温-2019-05-12","dname":"姚梓华","address":"云南省曲靖市富源县","url":"https://ymmsit.verify.fc18.com.cn/att/myprofile/avatar/examReport/1557669507407.pdf"},
+	       		{"filename":"宋晓峰0793-体温-2019-05-12","dname":"姚梓华","address":"云南省曲靖市富源县","url":"https://ymmsit.verify.fc18.com.cn/att/myprofile/avatar/examReport/1557669467326.pdf"},
+	       		{"filename":"张武奇015X-体温-2019-05-12","dname":"姚梓华","address":"云南省曲靖市富源县","url":"https://ymmsit.verify.fc18.com.cn/att/myprofile/avatar/examReport/1557668980382.pdf"},
+	       		{"filename":"王丽2209-体温-2019-05-12","dname":"姚梓华","address":"云南省曲靖市富源县","url":"https://ymmsit.verify.fc18.com.cn/att/myprofile/avatar/examReport/1557668780121.pdf"},
+	       		{"filename":"郑振伟4634-心电-2019-05-12","dname":"姚梓华","address":"云南省曲靖市富源县","url":"https://ymmsit.verify.fc18.com.cn/att/myprofile/avatar/examReport/1557667132636.pdf"},
+	       		{"filename":"李亮5765-健康检查-2019-05-12","dname":"姚梓华","address":"云南省曲靖市富源县","url":"https://ymmsit.verify.fc18.com.cn/att/myprofile/avatar/examReport/1557661973388.pdf"},
+	       		{"filename":"张武奇015X-心电-2019-05-12","dname":"姚梓华","address":"云南省曲靖市富源县","url":"https://ymmsit.verify.fc18.com.cn/att/myprofile/avatar/examReport/1557668927663.pdf"},
+	       		{"filename":"郑振伟4634-心电-2019-05-12","dname":"姚梓华","address":"云南省曲靖市富源县","url":"https://ymmsit.verify.fc18.com.cn/att/myprofile/avatar/examReport/1557644311461.pdf"},
+	       		{"filename":"陆楚楚1347-心电-2019-05-12","dname":"姚梓华","address":"云南省曲靖市富源县","url":"https://ymmsit.verify.fc18.com.cn/att/myprofile/avatar/examReport/1557643108180.pdf"},
+	       		{"filename":"宋晓峰0793-体温-2019-05-12","dname":"姚梓华","address":"云南省曲靖市富源县","url":"https://ymmsit.verify.fc18.com.cn/att/myprofile/avatar/examReport/1557669016941.pdf"},
+	       		{"filename":"张武奇015X-体温-2019-05-12","dname":"姚梓华","address":"云南省曲靖市富源县","url":"https://ymmsit.verify.fc18.com.cn/att/myprofile/avatar/examReport/1557668913497.pdf"},
+	       		{"filename":"李亮5765-心电-2019-05-12","dname":"姚梓华","address":"云南省曲靖市富源县","url":"https://ymmsit.verify.fc18.com.cn/att/myprofile/avatar/examReport/1557665493826.pdf"},
+	       		{"filename":"郑振伟4634-血压-2019-05-12","dname":"姚梓华","address":"云南省曲靖市富源县","url":"https://ymmsit.verify.fc18.com.cn/att/myprofile/avatar/examReport/1557665411401.pdf"},
+	       		{"filename":"王丽2209-心电-2019-05-12","dname":"姚梓华","address":"云南省曲靖市富源县","url":"https://ymmsit.verify.fc18.com.cn/att/myprofile/avatar/examReport/1557665577943.pdf"},
+	       	]
+	    }
+	},
+	  created:function (){
+	  	var vm = this;
+	  	var origin = window.location.origin;
+	  	var doctorId = getUrlParam('doctorId');
+	  	if(!empty(doctorId)){
+	  		vm.doctorId = doctorId;
+	  	}
+	  	switch(origin){
+	  		case'http://localhost':
+	  			vm.url = 'https://ymmdev.verify.fc18.com.cn';
+	  			break;
+	  		case'http://127.0.0.1:8020':
+	  			vm.url = 'https://ymmdev.verify.fc18.com.cn';
+	  			break;
+	  		case'https://ymmdev.verify.fc18.com.cn':
+	  			vm.url = 'https://ymmdev.verify.fc18.com.cn';
+	  		break;
+	  		case'https://ymmsit.verify.fc18.com.cn':
+	  			vm.url = 'https://ymmsit.verify.fc18.com.cn';
+	  		break;
+	  		case'https://demoymm.verify.fc18.com.cn':
+	  			vm.url = 'https://demoymm.verify.fc18.com.cn';
+	  		break;
+	  		case'https://www.fc18.com.cn':
+	  			vm.url = 'https://www.fc18.com.cn';
+	  		break;
+	  		default:vm.url = origin;
+	  	}
+	 	},
+	 	mounted:function(){
+	 		
+		},
+	 	watch:{
+				
+	  	},
+	  	methods: {
+	 			
+	 	}
+})
+	
+new Vue({
+  el: '#counter-event-example'
+  
+})
+</script>
+<script>
+    var _mtac = {"senseHash":0};
+    (function() {
+        var mta = document.createElement("script");
+        mta.src = "//pingjs.qq.com/h5/stats.js";
+        mta.setAttribute("name", "MTAH5");
+        mta.setAttribute("sid", "500538821");
+        mta.setAttribute("cid", "500538834");
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(mta, s);
+    })();
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics --> <script async src="https://www.googletagmanager.com/gtag/js?id=UA-121844058-1"></script> <script>   window.dataLayer = window.dataLayer || [];   function gtag(){dataLayer.push(arguments);}   gtag('js', new Date());    gtag('config', 'UA-121844058-1'); </script></body>
+</html>

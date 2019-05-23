@@ -2,6 +2,7 @@
 import Vue from 'vue'
 import Allrecord from './Allrecord.vue'
 import { dateFormat } from 'utils/util'
+import '../../../util/layout.js'
 
 /* eslint-disable no-new */
 new Vue({

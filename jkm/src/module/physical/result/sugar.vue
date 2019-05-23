@@ -6,29 +6,38 @@
 			</div>
 			<div style="font-size: 1.1rem; color: #333;">
              {{localdetact.value}}
+			<img class="icon" v-if="localdetact.status&&localdetact.status!='Normal'" :src="localdetact.status=='Lower'?icon[0]:icon[1]"/>
 			</div>
 			<div class="oc">mmol/L</div>
 			<img src="../../../assets/sugar1.png" />
 		</div>
+		<div class="suggest" style="width: calc(100%);margin-top: 0.6rem;">
+			<div v-for="item in localdetact.suggestions">
+				{{item}}
+			</div>
+		</div>
 		<div class="status" @click="toggle($event)">
-		<div style="font-size: 0.4rem;">血糖检测时您的状态：</div>
+		<div style="font-size: 0.3rem;">血糖检测时您的状态：</div>
 		<div class="btn" v-bind:class="{on:status}">空腹</div>
 		<div  class="btn"  v-bind:class="{on:!status}">餐后</div>
 		</div>
 		<div class="save" @click="next">
-			保存
+			确认
 		</div>
+		<queryhis class='queryhis'></queryhis>
 	</div>
 </template>
 
 <script>
 	var interval;
+	import {updateglu} from "API/requst"
+	import queryhis from './queryHis'
 	export default {
-        props: ['detact'],
+        props: ['detact','icon','recordId'],
         inject: ['getresult'],
 		name: 'temperature',
 		components: {
-
+          queryhis
 		},
 		data() {
 			return {
@@ -50,8 +59,22 @@
 			}
 		},
 		next(){
-				this.showtoast('保存成功')
-				this.$emit('nexttab','体温',true)
+			var self=this
+			updateglu({
+				"recordId": this.recordId,
+				"condition": this.status?'Fasting':'AfterMeal'
+			}).then(res=>{
+				self.showtoast('保存成功')
+				self.$emit('nexttab','体温',true)
+				sessionStorage.setItem('sugarstatus',self.status)
+			},err=>{
+				self.alertDefault({
+						text: err.data.resultMessage,
+						rowButton:false,
+					leftButtonText:'取消',
+					rightButtonText: '确定'
+			})
+			})
 			}
 		},
 		created() {
@@ -68,6 +91,8 @@
         	if(self.detact['Glu']){
 //				self.status=self.detact['Glu'].state=="空腹"?true:false	
 				}
+        	self.status=sessionStorage.getItem("sugarstatus")===null?true:sessionStorage.getItem("sugarstatus")==='true'?true:false
+			
 			interval = setInterval(function() {
 				self.getresult()
 				self.localdetact=self.detact["Glu"]||{}
@@ -76,6 +101,7 @@
 				}
 				
 			}, 2000)
+			
 				
         },
 	  deactivated(){
@@ -86,12 +112,11 @@
 
 <style lang="scss" scoped="scoped">
 	.temfur {
-		width: 100%;
-		padding: 0.6rem;
-		position: relative;
-		width: calc(100% - 1.2rem);
+	padding: 0.4rem;
+    position: relative;
+    width: calc(100% - 0.8rem);
 		.dial {
-			height: 31.2vw;
+			height: 18.2vw;
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
@@ -100,6 +125,12 @@
 			box-shadow: 0 10px 24px 10px rgba(48, 127, 226, 0.08);
 			border: 1px solid #d9d9d9;
 			overflow: hidden;
+			&>div:first-child{
+				font-size: 0.32rem !important;
+			} 
+			&>div:nth-child(2){
+				font-size: 0.62rem !important;
+			}
 			.oc {
 				font-size: 0.28rem;
 				background: #3C9BFF;
@@ -120,16 +151,17 @@
 		}
 		.status{
 			float: left;
-			margin-top: 0.6rem;
+			margin-top: 0.3rem;
 			display: flex;
 			line-height: 0.9rem;
+			margin-bottom: 0.6rem;
 			.btn{
 				
 			border-radius: 12px;
-			width: 2.3rem;
+			width: 1.8rem;
 			line-height: 0.9rem;
 			text-align: center;
-			font-size: 0.4rem;
+			font-size: 0.3rem;
 			margin: 0 0.3rem;
 			color: #333;
 			}
@@ -140,14 +172,17 @@
 		}
 		.save {
 			background: #3C9BFF;
-			border-radius: 12px;
+			border-radius: 5px;
 			width: 2.3rem;
 			line-height: 0.9rem;
 			text-align: center;
-			font-size: 0.4rem;
+			font-size: 0.3rem;
 			float: right;
-			margin-top: 0.6rem;
+			margin-top: 0.3rem;
 			color: #fff;
+		}
+		.queryhis{
+			margin-right: 0.2rem;
 		}
 	}
 </style>

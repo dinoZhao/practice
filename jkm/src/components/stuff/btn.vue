@@ -1,5 +1,5 @@
 <template>
-<div id="">
+<div id="" class="cliect">
 	{{fragment}}
 </div>
 </template>
@@ -30,7 +30,7 @@
 		background: #3C9BFF;
 		color: #fff;
 		text-align: center;
-		width: 26%;
+		width: 3rem;
 		text-align: center;
 		font-size: 0.48rem;
 		/*height: 1.4rem;*/

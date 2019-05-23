@@ -1,7 +1,7 @@
 <template>
 	<div id="win-loading" v-show="isloading" @click="closeloading">
 		<div class="loading-content">
-			<img v-bind:src="loading" />
+			<img src="https://www.fc18.com.cn/aiaf/sgw/content/fileResource/5611621212" />
 		</div>
 	</div>
 </template>
@@ -19,6 +19,7 @@
 			closeloading: function() {
 				var vm = this;
 				vm.isloading = false;
+				// window.android?window.android.showLeftLayout():""
 			},
 			show() {
 				var vm = this;
@@ -31,8 +32,10 @@
 				var vm = this;
 				vm.isloading = false;
 			}
-		}
-
+		},
+		// created() {
+		// 	window.android?window.android.hideLeftLayout():""
+		// },
 	}
 </script>
 

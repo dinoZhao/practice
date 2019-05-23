@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="author" content="网易金融，网易理财，富聪金融">
+<meta name="keywords" content=" 网易金融，网易理财，富聪金融 ">
+<link rel="shortcut  icon" type="image/x-icon" href="./images/app_ico.png" media="screen"  />
+<meta name="description" content="富聪金融是网易集团全新打造的互联网金融信息服务平台，致力于“助您掌握财富”和传统金融机构服务在线客户的好帮手。富聪金融依托网易集团与创始管理团队的专业资源优势，将传统金融业务与互联网技术紧密结合，在为客户提供理财、信贷、支付等综合金融信息服务的同时，通过改善客户获取金融产品与股权/债权基础资产的信息途径，帮助客户优化资产配置、提升资金收益、规避投资风险。">
+<title>远程协诊</title>
+<script type="text/javascript" src="libs/jquery.min.js"></script>
+<script type="text/javascript" src="layui/layui.all.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<link rel="stylesheet" href="layui/css/layui.css"/>
+<link rel="stylesheet" href="css/style.css"/>
+<link rel="stylesheet" href="css/assistClinicaltwo.css"/>
+<style>
+	
+</style>
+</head>
+
+<body>
+<div id="counter-event-example">
+  <product-counter></product-counter>
+</div>
+<script src="js/common.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/vue-router.min.js"></script>
+<script src="js/vue-resource.js"></script>
+<script type="text/template" id="app">
+<div id="app">
+	<div class="video-head">
+    	<div class="video-head-left">
+    		<img src="images/logo.png" /><span class="dot"></span><span>互联网医院</span>
+    	</div><div class="video-head-right">
+    		<div class="video-head-item on" @click.stop="gotourl('远程协诊')">远程协诊</div><div class="video-head-item operation">
+    			<div class="nickUrl"><img v-bind:src="doctordetail.nickUrl?doctordetail.nickUrl:'images/Bitmap.png'" class="d-icon"/></div>
+    			<span class="d-name">{{doctordetail.doctorName}}</span>
+    			<span class="h-line"></span><span class="logout" @click.stop="gotourl('退出')">退出</span>
+    		</div>
+    	</div>
+    </div>
+	<div class="assistClinical">
+		<div class="assistClinical-left">
+			<div class="assist-left-head">
+				<input type="text" placeholder="医生/患者" @input="searinput($event.target.value)" class="searinputtext"/><img src="images/search.png" />
+			</div>
+			<div class="assist-left-bottom">
+				<ul class="assist-list">
+					<template v-for="(item,index) in result">
+						<li :class="['assist-item',item.isRead?'check':'nocheck',item.select?'on':'']" @click.stop="getecgdetail(item.id,item.type,true)">
+							<div class="assist-item-head">
+								<div class="assist-item-name">
+									<span class="assist-circle" v-if="!item.isRead"></span><img src="images/right-icon.png" v-if="item.isRead" style="margin-right: 5px;"/><span>检查医生：</span><span>{{item.dName}}</span>
+								</div><div class="assist-item-time">
+									<span>{{item.time}}</span><img src="images/jinji.png" v-if="item.urgent==1"/>
+								</div>
+							</div>
+							<div class="assist-item-bottom">
+								<span>患者：</span><span>{{item.pName}} <span>{{item.pSex=='1'?'男':'女'}}</span> {{item.pAge}}岁</span>
+							</div>
+						</li>
+					</template>
+				</ul>
+			</div>
+		</div><div class="assistClinical-right">
+			<div class="right-doctor">
+				<div class="right-doctor-item">
+					姓名<span>{{detailInfo.pName}}</span>
+				</div><div class="right-doctor-item">
+					性别<span>{{detailInfo.pSex=='1'?'男':'女'}}</span>
+				</div><div class="right-doctor-item">
+					年龄<span>{{detailInfo.pAge}}岁</span>
+				</div><div class="right-doctor-item">
+					检查医生<span>{{detailInfo.dName}}</span>{{detailInfo.dPhone}}
+				</div><div class="right-doctor-item">
+					检查日期<span>{{detailInfo.time}}</span>
+				</div>
+			</div>
+			<div class="right-doctor-one">
+				<div class="right-doctor-one-left">
+					<img :src="detailInfo.pUrl?detailInfo.pUrl:'images/Bitmap.png'"  /><P><span style="display: block;">{{detailInfo.pName}}</span><span>{{detailInfo.pSex=='1'?'男':'女'}} {{detailInfo.pAge}}岁</span></P>
+				</div><div class="right-doctor-one-right">
+					<template v-for="(item,index) in examReports">
+						<div class="doctor-report-item" v-bind:data-url="item.ecgUrl" @click.stop="showbanner(item.ecgUrl)" v-if="item.ecgUrl">
+							<img src="images/baogao1.png" /><span style="display: block;">心电图报告</span>
+						</div>
+					</template>
+					<template v-for="(item,index) in examReports">
+						<div class="doctor-report-item" v-bind:data-url="item.reportUrl" @click.stop="openpdf(item.reportUrl)" v-if="item.reportUrl">
+							<img src="images/baogao1.png" /><span style="display: block;">报告{{index+1}}</span>
+						</div>
+					</template>
+				</div>
+			</div>
+			<div class="right-doctor-one">
+				<P style="margin-bottom: 10px;">问题描述</p>
+				<div class="doctor-one-bottom">
+					<div class="one-bottom-text">
+						<textarea placeholder="问题描述" class="problemDescription" v-model="symptom"></textarea>
+					</div><div class="one-bottom-description">
+						<P>语音（2）</P>
+					</div>
+				</div>
+			</div>
+			<div class="doctor-diagnose">
+	        	<div class="doctor-diagnose-left">
+	        		<img src="images/wenjuancopy3.png" />
+	        		<span>诊断</span>
+	        	</div>
+	        	<div class="doctor-diagnose-right">
+	        		<textarea placeholder="请填写给病人的诊断结果" class="diagnose-text" @change="changediagnosis" v-model="detailInfo.diagnosis"></textarea>
+	        	</div>
+	        </div>
+	        <div class="treatment">
+	        	<p><img src="images/zhuanzhen.png"/><span style="color:#3C9BFF;vertical-align: middle;">转诊</span></p>
+	        	<form action="" method="get" style="display: inline-block;vertical-align: middle;margin-left: 10px;"> 
+					<label><input class="transfer" name="transfer" type="radio" value="需要" style="margin-right: 5px;"/>需要 </label> 
+					<label><input class="transfer" name="transfer" type="radio" value="不需要" style="margin-right: 5px;"/>不需要 </label> 
+				</form> 
+	        </div>
+	        <div class="assistClinical-btn">
+	        	<div class="assistClinical-btn-text" @click.stop="submitdetail">提交</div>
+	        </div>
+		</div>
+	</div>
+	<div class="win-img" v-show="isimgsrc" @click.stop="closewinimg">
+	  	<div class="win-img-content">
+	  		<img src="" class="win-img-banner"/>
+	  	</div>
+	  </div>
+</div>
+</script>
+<script>
+var timerecord = null;
+Vue.component('product-counter', {
+   	template:"#app",		
+   	data: function () {
+    	return {
+       		result:[],
+       		url:'https://ymmdev.verify.fc18.com.cn',
+       		doctorId:423254276,
+       		isimgsrc:false,
+       		detailInfo:{},
+       		mcsEcgInfo:{},
+       		intertime:0,
+       		start:0,
+       		id:'',
+       		diagnosis:'',
+       		schedulingId:'',
+       		doctordetail:{},
+       		searval:'',
+       		examReports:[],
+       		symptom:''
+	    }
+	},
+  	created:function (){
+  		var vm = this;
+  		var myDate = new Date();
+	  	var timer = dateFormat(myDate.getTime(),'Y-m-d')+' '+'0:0:0';
+	  	var mydatetwo = new Date(timer).getTime();
+	  	vm.start = mydatetwo;
+	  	vm.intertime = mydatetwo+86400000;
+	  	var origin = window.location.origin;
+	  	var doctorId = getUrlParam('doctorId');
+	  	if(!empty(doctorId)){
+	  		vm.doctorId = doctorId;
+	  	}
+	  	switch(origin){
+	  		case'http://localhost':
+	  			vm.url = 'https://ymmdev.verify.fc18.com.cn';
+	  			break;
+	  		case'http://127.0.0.1:8020':
+	  			vm.url = 'https://ymmdev.verify.fc18.com.cn';
+	  			break;
+	  		case'https://ymmdev.verify.fc18.com.cn':
+	  			vm.url = 'https://ymmdev.verify.fc18.com.cn';
+	  		break;
+	  		case'https://ymmsit.verify.fc18.com.cn':
+	  			vm.url = 'https://ymmsit.verify.fc18.com.cn';
+	  		break;
+	  		case'https://demoymm.verify.fc18.com.cn':
+	  			vm.url = 'https://demoymm.verify.fc18.com.cn';
+	  		break;
+	  		case'https://www.fc18.com.cn':
+	  			vm.url = 'https://www.fc18.com.cn';
+	  		break;
+	  		default:vm.url = origin;
+	  	}
+	  	vm.getecglist(vm.start,vm.intertime);
+	  	vm.getdoctor();
+ 	},
+ 	mounted:function(){
+ 		
+	},
+ 	watch:{
+		
+	},
+	methods: {
+		openpdf:function(rurl){
+			var vm = this;
+			window.open(rurl);
+		},
+		gotourl:function(tex){
+			var vm = this;
+			if(tex=='远程协诊'){
+			}else{
+				window.nativeView.toast('敬请期待');
+			}
+		},
+		searinput:function(val){
+			var vm = this;
+			vm.searval = val;
+			vm.getecglist(vm.start,vm.intertime,val);
+		},
+		getrecord:function(id){
+			var vm = this;
+			doGet(
+				vm.url+'/ymmopenapi/sgw/v1/integratedMachine/cpc/getPeriodExamRecord',
+				{
+					"patientId": id,
+				}
+			).done(function(msg){
+				vm.examReports = msg.examReports;
+			})
+		},
+		getdoctor:function(){
+			var vm = this;
+			doGet(
+				vm.url+'/ymmopenapi/sgw/v1/integratedMachine/getClinicAppointment',
+				{"doctorId": vm.doctorId},
+				null,null,null,true
+			).done(function(res){
+				vm.doctordetail = res.result;
+				vm.schedulingId = res.result.schedulingId;
+			})
+		},
+		showbanner:function(url){
+			var vm = this;
+			if(!empty(url)){
+				vm.isimgsrc = true;
+				$('.win-img-banner').attr('src',url);
+			}
+		},
+		closewinimg:function(){
+			var vm = this;
+			vm.isimgsrc = false;
+		},
+		changediagnosis:function(){
+			var vm = this;
+			vm.diagnosis = $('.diagnose-text').val();
+		},
+		getecglist:function(start,end,tex){
+			var vm = this;
+			doGet(
+				vm.url + '/ymmopenapi/sgw/v1/integratedMachine/assistClinic/queryAssistClinicList',
+				{
+//					"startTime":start,
+//					"endTime":end,
+					"filterName":tex?tex:'',
+					"subjectType":'General'
+				}
+			).done(function(msg){
+				var resultList = msg.resultList;
+				if(!empty(resultList)){
+					resultList.forEach(function(item){
+						item.time = dateFormat(parseInt(item.time), 'Y-m-d G:i')
+					})
+					vm.result = resultList;
+					vm.getecgdetail(resultList[0].id,resultList[0].type);
+				}
+			})
+		},
+		getecgdetail:function(id,typ,ischeck){
+			var vm = this;
+			vm.id = id;
+			vm.type = typ;
+			doGet(
+				vm.url + '/ymmopenapi/sgw/v1/integratedMachine/assistClinic/queryAssistDetail',
+				{
+					id:id
+				}
+			).done(function(msg){
+				var detailInfo = msg.detailInfo;
+				if(!empty(detailInfo)){
+					detailInfo.time = dateFormat(parseInt(detailInfo.time), 'Y-m-d G:i');
+					vm.detailInfo = detailInfo;
+					vm.mcsEcgInfo = detailInfo.mcsEcgInfo;
+					vm.symptom = detailInfo.symptom;
+					vm.getrecord(detailInfo.patientId);
+				}
+				vm.checkitem(id);
+				
+			})
+		},
+		checkitem:function(id){
+			var vm = this;
+			var resultList = vm.result;
+			resultList.forEach(function(item){
+				if(item.id==id){
+					item.select = true;
+				}else{
+					item.select = false;
+				}
+			})
+		},
+		submitdetail:function(){
+			var vm = this;
+			var needTe =  $("input[name='transfer']:checked").val();
+			var diagnose = $('.diagnose-text').val();
+			if(empty(vm.id)){
+				window.nativeView.toast('当前没有需要诊断的患者');
+				return;
+			}
+			if(empty(diagnose)){
+				window.nativeView.toast('请填写给病人的诊断结果');
+				return;
+			}
+			var obj = {
+				"id":vm.id,
+				"diagnosis":diagnose,
+				"diagDoctor":vm.doctordetail.doctorName,
+				"type": vm.type,
+				"needTransfer":needTe=='需要'?1:0
+			}
+			doPost(
+				vm.url + '/ymmopenapi/sgw/v1/integratedMachine/assistClinic/commitAssistClinicDiagnosis',
+				JSON.stringify(obj)
+			).done(function(msg){
+				vm.getecglist(vm.start,vm.intertime,vm.searval);
+				window.nativeView.toast('提交成功');
+			})
+		}
+	}
+})
+	
+new Vue({
+  el: '#counter-event-example'
+})
+Vue.filter('tim', function(input) {
+	if(input) {
+		return dateFormat(parseInt(input), 'G:i');
+	}
+})
+</script>
+</body>
+</html>

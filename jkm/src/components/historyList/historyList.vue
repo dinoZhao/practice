@@ -13,8 +13,8 @@
         <!--<span v-for='(item,index) in title' v-if="examReportType">{{item}}</span>-->
         <span >{{title}}</span>
         <div class="tipsbox">
-        	<div class="tips" >尿常规</div>
-        	<div class="tips" >BMI</div>
+        	<!--<div class="tips" >尿常规</div>
+        	<div class="tips" >BMI</div>-->
             <!--<div class="tips" v-for='(item,index) in tips' :key='index' v-else>{{item}}</div>-->
         </div>
     </div>
@@ -31,7 +31,7 @@ export default {
 </script>
 <style scoped>
     .historylist{
-        width:14rem;
+        width:9.8rem;
         height: 1.7rem;
         border:1px solid #eee;
         box-shadow: 0px -1px 15px 8px #eff4fa;

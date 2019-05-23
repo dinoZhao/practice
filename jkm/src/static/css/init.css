@@ -1,57 +1,346 @@
-* { margin:0; padding:0;-webkit-tap-highlight-color: transparent}
-h1, h2, h3, h4, h5, h6, p { margin:0; font-weight:normal;}
-i, em { font-style:normal;}
-body {font-family:Arial,"Helvetica Neue",Helvetica,sans-serif; font-size:16px;}
-a{text-decoration: none;color: #000}
-a:hover, a:focus, a:active, a:visited { text-decoration:none;}
-ul { margin-bottom:0;}
-li { list-style:none;}
-label { font-weight:normal;}
-input:hover, input:focus { outline:none;}
-input, button, select, textarea{font-family:Arial,"Helvetica Neue",Helvetica,sans-serif;-moz-appearance: none;-webkit-appearance: none;appearance: none;}
-body.greyBg{background: #eee;}
-#win-loading{
+* {
+	margin: 0;
+	padding: 0;
+	-webkit-tap-highlight-color: transparent
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+	margin: 0;
+	font-weight: normal;
+}
+
+i,
+em {
+	font-style: normal;
+}
+
+body {
+	font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+	font-size: 16px;
+}
+
+a {
+	text-decoration: none;
+	color: #000
+}
+
+a:hover,
+a:focus,
+a:active,
+a:visited {
+	text-decoration: none;
+}
+
+ul {
+	margin-bottom: 0;
+}
+
+li {
+	list-style: none;
+}
+
+label {
+	font-weight: normal;
+}
+
+input:hover,
+input:focus {
+	outline: none;
+}
+
+input,
+button,
+select,
+textarea {
+	font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+body.greyBg {
+	background: #eee;
+}
+
+#win-loading {
 	width: 100%;
 	height: 100%;
 	position: fixed;
 	top: 0;
-	left:0;
-	background:rgba(0,0,0,0.7);
+	left: 0;
+	background: rgba(0, 0, 0, 0.7);
 	z-index: 20;
 }
-.loading-content{
+
+.loading-content {
 	margin-top: 20%;
 }
-.loading-content img{
+
+.loading-content img {
 	width: auto;
 	height: 60px;
 }
-.cov-date-caption{
- 	color:#3C9BFF !important;
- }
- .checked{
- 	background:#3C9BFF !important;
- }
- .cov-datepicker{
- 	border-color:#999 !important;
- 	padding: 0 0 0 10px !important;
+
+.cov-date-caption {
+	color: #3C9BFF !important;
+}
+
+.checked {
+	background: #3C9BFF !important;
+}
+
+.cov-datepicker {
+	border-color: #999 !important;
+	padding: 0 0 0 10px !important;
 	box-sizing: border-box;
- 	width: 150px !important;
- 	height: 40px !important;
- 	line-height: 40px !important;
- }
- .cov-date-caption{
- 	font-size: 1.5vw !important;
- }
- .cov-date-body,.cov-picker-box{
- 	width: 647px !important;
- }
- .cov-picker-box{
- 	height: 420px !important;
- }
- .day{
- 	width: 65px !important;
- 	height: 65px !important;
+	width: 150px !important;
+	height: 40px !important;
+	line-height: 40px !important;
+}
+
+.cov-date-caption {
+	font-size: 1.5vw !important;
+}
+
+.cov-date-body,
+.cov-picker-box {
+	width: 647px !important;
+}
+
+.cov-picker-box {
+	height: 420px !important;
+}
+
+.day {
+	width: 65px !important;
+	height: 65px !important;
 	line-height: 65px !important;
 	font-size: 23px;
- }
+}
+
+.viewer-toolbar,
+.viewer-navbar,
+.viewer-title {
+	display: none !important;
+}
+
+.viewer-open .viewer-backdrop {
+	background-color: #fff;
+}
+
+.viewer-open .viewer-button {
+	height: 180px;
+	right: -90px;
+	top: -90px;
+	width: 180px;
+}
+
+.viewer-open .viewer-button::before {
+	bottom: 20%;
+	left: 20%;
+	width: 30px;
+	height: 30px;
+	background: url('../../assets/close.png');
+	position: absolute;
+	background-size: 100%;
+}
+
+
+/*//按钮点击样式*/
+
+.cliect:active {
+	background: #307CCC !important;
+}
+
+
+/*//为native左侧刘导航栏*/
+
+.fornative {
+	margin-left: 200px;
+}
+/*公卫服务体检表通用样式*/
+input{
+	outline: none;
+	border: 1px solid #eee;
+}
+.table-content-head{
+	padding: 15px 30px;
+    border-bottom: 1px solid #eee;
+    box-sizing: content-box;
+}
+.table-content-head>div{
+	display: inline-block;
+	width: 50%;
+}
+.table-content-head .content-head-left>span:nth-child(2){
+	color: #999;
+	margin-left: 10px;
+}
+.table-content-head .content-head-right>p{
+	display: inline-block;
+	vertical-align: middle;
+}
+.table-content-head .content-head-right>p:nth-child(1){
+	margin-right: 10px;
+}
+.table-content-head .content-head-right{
+	text-align: right;
+	color: #3C9BFF;
+}
+.table-content-head .content-head-right img{
+	width: .5rem;
+	height: .5rem;
+	vertical-align: middle;
+	margin-right: 10px;
+}
+.table-content-head .content-head-right span{
+	vertical-align: middle;
+}
+.table-content-bottom{
+	padding: 15px 30px;
+}
+.table-content-bottom>div{
+	display: inline-block;
+	vertical-align: text-top;
+}
+.table-content-left{
+	width: 9%;
+}
+.table-content-left>div{
+	margin-bottom: 10px;
+	text-align: right;
+}
+.table-content-left>div span{
+	display: inline-block;
+	background: #F2F2F2;
+	width: 100%;
+	text-align: center;
+	padding: 10px 0;
+	border-radius: 15% 0 0 15%;
+	color: #999;
+}
+.table-content-left>div.on span{
+	background:rgba(60,155,255,0.1) !important;
+	color: #3C9BFF;
+}
+.table-content-right{
+	width: 91%;
+	border: 1px solid #eee;
+	box-sizing: border-box;
+}
+
+/*公卫服务公共样式开始*/
+
+.healthservice {
+	font-size: 0.28rem;
+	width:calc(100% - 200px);
+	margin-left: 200px;
+	height: 100%;
+}
+
+
+/*左侧蓝色线*/
+
+.healthservice .lineleft {
+	display: inline-block;
+	width: 0.04rem;
+	height: 0.3rem;
+	background: #3C9BFF;
+}
+
+
+/*通用input*/
+
+.healthservice input {
+	width: 19vw;
+	height: 0.6rem;
+}
+/*左边导航*/
+.healthservice .left{
+	width: 16.8%;
+}
+/*导航具体项目*/
+.healthservice .left .item{
+	height: 0.9rem;
+	line-height: 0.9rem;
+	width: 100%;
+}
+/*大input*/
+
+.healthservice input.big {
+	width: 58vw
+}
+
+
+/*小input*/
+
+.healthservice input.small {
+	width: 15vw
+}
+
+
+/*选择按钮*/
+
+.healthservice .select{
+	display: inline-block;
+	width: 2.3rem;
+	line-height: 0.55rem;
+	font-size: 0.23rem;
+	border-radius: 7px;
+	color: #fff;
+	background: rgba(60, 155, 255, 1);
+	text-align: center;
+}
+/*选择小按钮未选中*/
+.healthservice .chosebtn{
+	display: inline-block;
+    margin-left: 15px;
+    border: 1px solid #3C9BFF;
+    line-height: .6rem;
+    padding: 0 0.4rem;
+    border-radius: 8px;
+    color: #3C9BFF;
+}
+/*选择小按钮选中*/
+.healthservice .chosebtn.on{
+	display: inline-block;
+    margin-left: 15px;
+    background:#3C9BFF;
+    border: 1px solid #3C9BFF;
+    line-height: .6rem;
+    padding: 0 0.4rem;
+    border-radius: 8px;
+    color: #fff;
+}
+/*检测按钮*/
+
+.healthservice .detect {
+	display: inline-block;
+	line-height: 0.6rem;
+	border: 1px solid #3C9BFF;
+	padding: 0 0.35rem;
+	font-size: 0.26rem;
+	border-radius: 0.1rem;
+	color: #3C9BFF;
+}
+/*选择框未选中*/
+.healthservice .selectbox{
+	width:0.5rem;
+	height:0.5rem;
+	border: 1px solid #999999;
+	background: #FFFFFF;
+	border-radius: 0.3rem;
+}
+/*选择框选中*/
+.healthservice .selectbox.on{
+	background: url(../../assets/already.png);
+	background-size: contain;
+	border: none;
+}
+/*公卫服务公共样式结束*/
