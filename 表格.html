@@ -1,26 +1,77 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title></title>
-	</head>
-	<script type="text/javascript">
-		
-	</script>
-	<style type="text/css">
-		tr td:first-child{
-			background: #eee;
-		}
-	</style>
-	<body>
-	<table border="0" cellspacing="0" cellpadding="5">
-		<tr><th colspan="4">Header</th></tr>
-		<tr><td rowspan="2">Data</td><td>Data</td><td>Data</td><td>Data</td></tr>
-		<tr><td>Data</td><td>Data</td><td>Data</td></tr>
-		
-		<tr><td>Data</td><td>Data</td><td>Data</td><td>Data</td></tr>
-		<tr><td>Data</td><td>Data</td><td>Data</td><td>Data</td></tr>
-	
-	</table>
-	</body>
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+<script type="text/javascript">
+
+</script>
+<style type="text/css">
+  .wrap {
+    padding: 20px;
+    width: 900px;
+  }
+  .cell{
+    text-align: center;
+  }
+</style>
+
+<body>
+  <div class="wrap" id="app">
+    <el-header>
+      请选择月份 
+      <el-select width='100' v-model='date'>
+       <el-option value='2019年07月'>2019年07月</el-option>
+      </el-select> 
+      <span style="margin-left: 20px;color:#999;">您可以查询近十三个月的账单信息</span>
+    </el-header>
+    <el-main>
+      <el-row style="text-align: right;margin-bottom: 20px;font-size:0.7em;">账单周期：2019/07/01-2019/07/31</el-row>
+      <el-table :border='true' :data="tableData">
+          <el-table-column
+          prop="item"
+          label="项目"
+         >
+        </el-table-column>
+        <el-table-column
+          prop="price"
+          label="费用(元)"
+          >
+        </el-table-column>
+      </el-table> 
+      <el-row style="text-align: right;margin-top: 10px;">消费合计：<span style="font-size: 1.5em;">69.0元</span></el-row>
+      <el-row style="text-align: right;margin-bottom: 10px;">应交费用：<span  style="font-size: 1.5em;">69.0元</span></el-row>
+
+      <el-row style="text-align: center;"><el-button type="primary" size='medium' round>下载账单</el-button></el-row>
+    </el-main>
+  </div>
+</body>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+<script>
+ new Vue({
+      el: '#app',
+      data: function() {
+        return { 
+          date:'2019年07月',
+          tableData:[
+            {
+              item:'套餐及叠加包基本费',
+              price:'69.0'
+            },
+            {
+              item:'天翼套餐费',
+              price:'69.0'
+            },
+          ]
+         }
+      }
+    })
+
+</script>
 </html>

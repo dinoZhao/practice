@@ -10,6 +10,25 @@
     <div id="example"></div>
 
 
-<script type="text/javascript" src="bundle.js"></script></body>
+    <script type="text/javascript" src="bundle.js"></script>
+</body>
+<script>
+    var findNthDigit = function (n) {
+        var arr = []
+        for (var i = 1; i <= n; i++) {
+            if ((arr.join('').length + String(i).length) < Math.pow(2, 31)) {
+                arr.push(i)
+                console.log((arr.join('').length + String(i).length))
+            } else {
+                return false
+            }
+
+
+        }
+        var str = arr.join('')
+        return str[n - 1]
+    };
+    findNthDigit(10000000)
+</script>
 
 </html>
